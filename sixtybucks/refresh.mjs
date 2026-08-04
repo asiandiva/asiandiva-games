@@ -20,7 +20,9 @@ const MAX_REPRICE    = 60;     // existing games re-checked per run
 const LOOKUP_DELAY   = 1500;   // ms between Steam calls. be polite or get rate limited
 const MIN_PRICE      = 1.00;
 const MAX_PRICE      = 200.00;
-const MIN_REVIEWS    = 200;    // if barely anyone has played it, nobody can guess its price
+const MIN_REVIEWS    = 10000;  // a few thousand reviews is nothing on Steam. this is the
+                               // line where a game is recognisable. anything rejected gets
+                               // reconsidered every week, so new releases join once they grow.
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const log   = (...a) => console.log(...a);
@@ -52,8 +54,8 @@ async function searchPage(params, start){
 async function gatherCandidates(){
   const found = new Set();
   const runs = [
-    {params:{filter:'topsellers'},  pages:8},   // recognisable, the good stuff
-    {params:{filter:'popularnew'},  pages:4}    // this month's releases that people noticed
+    {params:{filter:'topsellers'},  pages:5},   // deeper pages get obscure fast
+    {params:{filter:'popularnew'},  pages:3}    // this month's releases that people noticed
   ];
   for (const run of runs){
     for (let p = 0; p < run.pages; p++){
