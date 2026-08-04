@@ -294,6 +294,7 @@ body.dev .proto{display:flex}
 .pchip:hover{transform:translateY(-2px)}
 .pchip.arm{background:#E85D3D;border-color:#8C2F18;color:#FFF3E8}
 .pchip.arm .cards,.pchip.arm .dot{background:#8C2F18;color:#FFF3E8}
+.empty{font-size:14px;font-weight:700;color:var(--boba-soft);opacity:.75;padding:4px 2px}
 .plisthint{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--boba-soft);margin-bottom:10px}
 .kicked{text-align:center;padding:34px 10px}
 .kicked img{width:120px;opacity:.5;filter:grayscale(.6);margin-bottom:10px}
@@ -889,6 +890,9 @@ function checkAll(){
 }
 
 function buildPlayers(){
+  /* A real room starts empty. The stand-in names are only for previewing
+     the room list, so they live behind ?dev=1. */
+  if(!DEV){ fake=[]; renderPlayers(); return; }
   const pace=PATTERNS[pattern].pace;
   fake=NAMES.map((n,i)=>({name:n,dot:DOTS[i],cards:1+Math.floor(Math.random()*3),hits:0,
     need:Math.round((9+Math.random()*6)*pace)}));
@@ -898,6 +902,12 @@ function renderPlayers(){
   const l=document.getElementById('plist'); l.innerHTML='';
   const roster = me ? [...fake,{name:me.name,dot:'#FFD84D',cards:cardCount,hits:0,need:99,you:true}] : fake;
   document.getElementById('pcount').textContent = roster.length;
+  const hint=document.querySelector('.plisthint');
+  if(hint) hint.style.display = roster.length ? '' : 'none';
+  if(!roster.length){
+    l.innerHTML='<div class="empty">Nobody yet. Read the code out and they will turn up.</div>';
+    return;
+  }
   roster.forEach(p=>{
     const d=document.createElement('div');
     d.className='pchip'+(p.you?' you':'')+(p.hits>=p.need-2?' close':'');
@@ -943,8 +953,7 @@ function callOne(){
     document.getElementById('nowVal').textContent=label(n);
     now.classList.remove('pulse'); void now.offsetWidth; now.classList.add('pulse');
 
-    fake.forEach(p=>{ if(Math.random()<0.18*p.cards) p.hits++; });
-    renderPlayers();
+    if(DEV){ fake.forEach(p=>{ if(Math.random()<0.18*p.cards) p.hits++; }); renderPlayers(); }
     const w=fake.find(p=>p.hits>=p.need+5);
     if(w){ win(w.name, 'got there first on '+w.cards+(w.cards>1?' cards':' card')); return; }
     checkAll();
@@ -1079,6 +1088,7 @@ document.getElementById('callbtn').onclick=claimBingo;
 
 /* ===== duck animator =====
    requestAnimationFrame + inline styles, so "reduce motion" can't switch it off. */
+const DEV = new URLSearchParams(location.search).has('dev');
 const PARK=[430,150], REACH=[256,372], HOLD=[296,220], DUR=2000;
 let fetchT=null, splashT=null, motion=true;
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -1198,8 +1208,8 @@ function fitHost(){
 }
 window.addEventListener('resize',fitHost);
 
-/* add ?dev=1 to the address to bring up the preview tools */
-if(new URLSearchParams(location.search).has('dev')) document.body.classList.add('dev');
+/* add ?dev=1 to the address for the preview tools and some stand-in players */
+if(DEV) document.body.classList.add('dev');
 
 reset(false);
 setCode(newCode());
