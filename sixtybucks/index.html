@@ -262,12 +262,34 @@ function picksForDay(n){
   return out;
 }
 
-/* ---------- one play per day ---------- */
+/* ---------- one play per day ----------
+   Written to two places. Some browsers, especially the ones embedded inside
+   Discord and other apps, allow one and block the other. Neither survives a
+   browser that wipes everything on close, which is why in-app browsers can
+   replay. Stopping that would need accounts and a server.                    */
 function readSave(){
-  try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch(e){ return null; }
+  let best = null;
+  try {
+    const v = localStorage.getItem(STORE_KEY);
+    if (v) best = JSON.parse(v);
+  } catch(e){}
+  try {
+    const m = new RegExp('(?:^|;\\s*)' + STORE_KEY + '=([^;]+)').exec(document.cookie);
+    if (m){
+      const c = JSON.parse(decodeURIComponent(m[1]));
+      // prefer whichever one is further along
+      if (!best || (c.results||[]).length > (best.results||[]).length) best = c;
+    }
+  } catch(e){}
+  return best;
 }
 function writeSave(obj){
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch(e){}
+  const json = JSON.stringify(obj);
+  try { localStorage.setItem(STORE_KEY, json); } catch(e){}
+  try {
+    document.cookie = STORE_KEY + '=' + encodeURIComponent(json) +
+      ';path=/;max-age=172800;SameSite=Lax';    // two days is plenty
+  } catch(e){}
 }
 
 /* ---------- art ---------- */
@@ -353,13 +375,18 @@ function checkPrice(){
 
   $('next').textContent = idx === deck.length-1 ? 'SEE TODAY\u2019S SCORE' : 'NEXT GAME';
   $('next').focus();
+
+  // save every guess, not just the last one. closing the tab at game three
+  // should pick up at game four, not hand out a fresh round.
+  writeSave({date:dateKey, day:dayIndex+1, score, results, done:results.length >= deck.length});
 }
 
 function next(){
   idx++;
   if (idx >= deck.length){
-    writeSave({date:dateKey, day:dayIndex+1, score, results});
-    return showResults({date:dateKey, day:dayIndex+1, score, results}, true);
+    const save = {date:dateKey, day:dayIndex+1, score, results, done:true};
+    writeSave(save);
+    return showResults(save, true);
   }
   paint();
 }
@@ -470,9 +497,19 @@ function begin(){
   $('roundTot').textContent = deck.length;
 
   const save = readSave();
-  if (save && save.date === dateKey) return showResults(save, false);
+  const resuming = save && save.date === dateKey;
+  const answered = (resuming && Array.isArray(save.results)) ? save.results.length : 0;
+
+  // `done` didn't exist in the first version, so a full set of answers counts too
+  if (resuming && (save.done || answered >= deck.length)) return showResults(save, false);
 
   idx = 0; score = 0; results = [];
+  if (answered){
+    results = save.results;                  // pick up mid-round
+    score   = save.score || 0;
+    idx     = Math.min(answered, deck.length - 1);
+  }
+
   $('lock').onclick = checkPrice;
   $('next').onclick = next;
   $('bid').onkeydown = e => { if (e.key === 'Enter') checkPrice(); };
