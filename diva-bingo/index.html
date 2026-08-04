@@ -540,50 +540,166 @@ body.dev .proto{display:flex}
 </div>
 
 <script>
-const DUCKLING_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8CAMAAADhV0xWAAAAP1BMVEX9zy4BAQBINCE1JBzdoiNqYlyujChoUCGTbSLweQpXRTdOPCtmYw1UQTD39PRrAAAAAAAAAAAAAAAAAAAAAAAGK4BZAAAAEHRSTlP/APb+/hX+/f7+XakNlwMCpU1sLwAAAwpJREFUeNqVVweSwzAIxDJIWC75/28P1NxUfEwyk3HMirogmJry26bp2Pxqkuwe9OnjLWjqizrtojdnkd8rheffACZaVds4tohorXOKIRC/LwByjBd1wwinIMsTA18sID3+oR5EIdYxwG8iOd691NUKJwjH2ALRZ6gL322oAfwOsd8CtBG8ONkGoKmrDyBeUEGASgKobX+Mg2SzJLNiwSHxg67YWZJJTQDfdyA6sXZisI4MCCbkKMC7hMYGaBS8ZIu2mgVSwjAUN+9NF5oeWHvzYTqIqAIADQ9QOjMjS2cmjlgJKkWAjfrL0Lbwg3k1J01bA8DNuT/EFl4W+Sy4VADAGKxnTgQjFGMQQTBzxYI6gDpuU/yWJLjMbwtaMSjBnGdRRFUPHkBIxKU5RwDqQNRfhJ7WA8rRZytx1wCH4fAFedaCFhPIe4pT4EMrRIAkWtCgUYuEL2YAbOT7PpicgxACASAThofZixN9OpB0GtYi0BCoC+FAq4S/e7EACNZWIgsvhzLUr2Qdkstscm3qX3bUzHFWKr1nAEDrTCpxxwM20LOPOEC0+crrOgFlDo7ZwAbrY+rhA//UEY6t2v5qBY/tsGW4wC3r1p3bgLMwGi7bA0CTmbcB1m2gF0zJwhNAzLoeiopn+8y+3WLwrh+pOu4z+xUAKy9L1fFgOp11gNV3XTPLNrIRnN1rXL192/Wo402ayRXirh3WrAg0YUTDpf3/V5QhipvyQVHDxmLVB7hSmHYy/wMguDBdfHAG+bMXGCsJrhsR/ycIOY1Cw2cJDmZCtZBuSxm+2Iyx7UEsZXXjPPiRiE4ps4YguvATAHPlXGcxsWQ7KZjHKqSdwN1pO5JzpyxcMiCsOKSpdFcmYCfCFnuElCmtLJf/KELVh8eW5ofj5FIBErP9tanqDcd9gdArR+iC556ol5zaLeeubV2cib+XBRIRn65pjamAgar1+OPcRy4WhHyki6KRHHCYc4HjLUtaTLo66kjd6lcehT0oXlXnp6SBTNd16L0rp9ogv+/mLrtuD/dtKsof2XgYaBBbYh0AAAAASUVORK5CYII=";
+/* =============================================================
+   Diva Bingo — asiandiva.games
+   The room lives on the server. This page draws it.
+   ============================================================= */
+const SERVER = 'wss://asiandiva-games-server.onrender.com';
+const DEV = new URLSearchParams(location.search).has('dev');
+
 const LETTERS=['B','I','N','G','O'];
-const NAMES=['Teresa','Luke','Jax','Suze','Haz','Ravenlyn','Awkward','BubbleTeaQ','mothpixel'];
-const DOTS=['#FFD84D','#C9A8E8','#A8D5A2','#FF9E7D','#FFD84D','#C9A8E8','#A8D5A2','#FF9E7D','#FFD84D'];
+const label = n => LETTERS[Math.floor((n-1)/15)] + n;
+const $  = s => document.querySelector(s);
+const $$ = id => document.getElementById(id);
 
-let pool=[],called=[],timer=null,running=false,fake=[],flock=[];
-let cardCount=1, decks=[];
-const label=n=>LETTERS[Math.floor((n-1)/15)]+n;
+/* ---------- win patterns (mirrored on the server) ---------- */
+const ROWS=[],COLS=[];
+for(let r=0;r<5;r++) ROWS.push([0,1,2,3,4].map(c=>r*5+c));
+for(let c=0;c<5;c++) COLS.push([0,1,2,3,4].map(r=>r*5+c));
+const DIAG_A=[0,6,12,18,24], DIAG_B=[4,8,12,16,20];
+const ALL=Array.from({length:25},(_,i)=>i);
+const uniq=a=>[...new Set(a)];
+const PATTERNS={
+  line:    {name:'Line',    desc:'ANY ROW, COLUMN<br>OR DIAGONAL', preview:[10,11,12,13,14]},
+  plus:    {name:'Plus',    desc:'MIDDLE ROW AND<br>MIDDLE COLUMN', preview:uniq([...ROWS[2],...COLS[2]])},
+  tee:     {name:'T',       desc:'TOP ROW AND<br>MIDDLE COLUMN',   preview:uniq([...ROWS[0],...COLS[2]])},
+  x:       {name:'X',       desc:'BOTH<br>DIAGONALS',              preview:uniq([...DIAG_A,...DIAG_B])},
+  blackout:{name:'Blackout',desc:'EVERY SQUARE<br>ON THE CARD',    preview:ALL}
+};
 
-function buildPond(){
-  const p=document.getElementById('pond');
-  p.innerHTML='<div class="wave" style="top:30%"></div><div class="wave" style="top:56%"></div>';
-  flock=[];
-  const target=flockSize(75);
-  for(let i=0;i<target;i++) flock.push(newDuck(i/target));
-  flock.forEach(d=>p.appendChild(d.el));
-  document.getElementById('leftCount').textContent=75;
+/* ---------- everything the page currently knows ---------- */
+let view='choose';
+let pattern='line';
+let ROOM_CODE='';
+let iAmHost=false;
+let myName='';
+let cardCount=1;
+let called=[];
+let decks=[];          // [{cells:[25], daubs:[25]}]
+let roster=[];
+let armed=null, armTimer=null;
+let running=false;
+
+/* =============================================================
+   socket
+   ============================================================= */
+let ws=null;
+let onOpen=null;
+
+function connect(then){
+  if(ws && ws.readyState===1){ then && then(); return; }
+  onOpen = then;
+  ws = new WebSocket(SERVER);
+  ws.onopen = ()=>{ const f=onOpen; onOpen=null; f && f(); };
+  ws.onmessage = e => { let m; try{ m=JSON.parse(e.data); }catch{ return; } handle(m); };
+  ws.onclose = ()=>{ if(view==='host'||view==='player') dropped(); };
+  ws.onerror = ()=>{};
+}
+function send(o){ if(ws && ws.readyState===1) ws.send(JSON.stringify(o)); }
+function bye(){ if(ws){ ws.onclose=null; ws.close(); ws=null; } }
+
+function dropped(){
+  bye();
+  notice('Lost the connection', 'The room is gone. Nothing to do but start another one.');
 }
 
-/* a small steady flock. the counter under the pond carries the real number,
-   so the pond just needs to look like a pond. */
-const FLOCK=7;
-function flockSize(remaining){ return remaining<=0?0:FLOCK; }
+/* =============================================================
+   messages from the server
+   ============================================================= */
+function handle(m){
+  switch(m.t){
 
-function newDuck(phase){
-  const wrap=document.createElement('div');
-  wrap.className='duckling';
-  wrap.innerHTML='<img src="'+DUCKLING_SRC+'" alt="">';
-  const wake=document.createElement('div'); wake.className='wake';
-  return {
-    el:wrap, wake:wake,
-    a: phase*Math.PI*2 + Math.random()*0.5,
-    w: (0.16+Math.random()*0.16) * (Math.random()<0.22?-1:1),
-    rx: 50+Math.random()*78,
-    ry: 15+Math.random()*28,
-    ox: (Math.random()-.5)*26,
-    oy: (Math.random()-.5)*16,
-    bob: Math.random()*Math.PI*2,
-    dive: 0
-  };
+    case 'room':                         // you opened a room
+      ROOM_CODE=m.code; pattern=m.pattern;
+      paintCode(); paintGoal(); newBoard();
+      iAmHost=true; showView('host');
+      break;
+
+    case 'joined':                       // you got into a room
+      ROOM_CODE=m.code; pattern=m.pattern;
+      cardsFromServer(m.cards);
+      called=m.called||[]; running=!!m.running;
+      called.forEach(markCalled);
+      $$('leftCount').textContent = 75-called.length;
+      if(called.length) showBall(called[called.length-1], true);
+      paintCode(); paintGoal();
+      $$('lobby').classList.add('hidden');
+      $$('playArea').classList.remove('hidden');
+      $('.phone-top .who').textContent = myName;
+      break;
+
+    case 'err':                          // join was refused
+      $$('joinErr').textContent = m.msg;
+      bye();
+      break;
+
+    case 'players':
+      roster = m.list;
+      renderPlayers();
+      break;
+
+    case 'ball':
+      called.push(m.n);
+      markCalled(m.n);
+      $$('leftCount').textContent = m.left;
+      showBall(m.n, false);
+      break;
+
+    case 'running':
+      running = m.on;
+      $$('startBtn').textContent = running ? 'Pause' : 'Start calling';
+      break;
+
+    case 'round':                        // a fresh round in the same room
+      pattern = m.pattern;
+      if(m.cards) cardsFromServer(m.cards);
+      called=[]; newBoard(); paintGoal(); buildPicker();
+      $$('leftCount').textContent = 75;
+      resetBallDisplay();
+      stopConfetti();
+      $$('winner').classList.add('hidden');
+      break;
+
+    case 'win':
+      showWin(m.name, m.sub, m.cells, m.line);
+      break;
+
+    case 'nope':                         // your bingo was not a bingo
+      badBingo();
+      break;
+
+    case 'kicked':
+      bye();
+      $$('playArea').classList.add('hidden');
+      $$('lobby').classList.add('hidden');
+      $$('kickedView').classList.remove('hidden');
+      break;
+
+    case 'closed':
+      bye();
+      notice('Room closed', m.why || 'The host closed the room.');
+      break;
+  }
 }
 
-function buildBoard(){
-  const b=document.getElementById('board'); b.innerHTML='';
+/* a plain message on the win overlay, reused for disconnects */
+function notice(title, body){
+  stopConfetti();
+  $$('winnerTxt').textContent=title;
+  $$('winnerSub').textContent='';
+  $$('winCardWrap').innerHTML='';
+  $$('winHost').classList.add('hidden');
+  const w=$$('winWait'); w.textContent=body; w.classList.remove('hidden');
+  $('.winner h1').textContent='OH NO';
+  $$('winner').classList.remove('hidden');
+  setTimeout(()=>{ $$('winner').classList.add('hidden'); $('.winner h1').textContent='BINGO'; goHome(); }, 3200);
+}
+
+/* =============================================================
+   the board
+   ============================================================= */
+function newBoard(){
+  const b=$$('board'); b.innerHTML='';
   for(let c=0;c<5;c++){
     const col=document.createElement('div');
     const h=document.createElement('div'); h.className='col-head'; h.textContent=LETTERS[c];
@@ -596,22 +712,19 @@ function buildBoard(){
     }
     col.appendChild(h); col.appendChild(cells); b.appendChild(col);
   }
+  $$('recent').innerHTML='';
 }
+function markCalled(n){ const c=$$('c'+n); if(c) c.classList.add('hit'); }
 
-function buildDecks(){
-  decks=[];
-  const wrap=document.getElementById('cards'); wrap.innerHTML='';
-  for(let d=0;d<cardCount;d++){
-    const nums=[];
-    for(let c=0;c<5;c++){
-      const range=[]; for(let i=1;i<=15;i++) range.push(c*15+i);
-      range.sort(()=>Math.random()-0.5);
-      nums.push(range.slice(0,5));
-    }
-    decks.push({nums,daubs:Array.from({length:25},(_,i)=>i===12)});
-
+/* =============================================================
+   cards
+   ============================================================= */
+function cardsFromServer(list){
+  decks = list.map(cells => ({ cells, daubs: cells.map((_,i)=>i===12) }));
+  const wrap=$$('cards'); wrap.innerHTML='';
+  decks.forEach((deck,d)=>{
     const box=document.createElement('div'); box.className='cardbox'; box.id='box'+d;
-    if(cardCount>1){
+    if(decks.length>1){
       const lab=document.createElement('div'); lab.className='cardlabel';
       lab.innerHTML='<span>CARD '+(d+1)+'</span>';
       box.appendChild(lab);
@@ -619,496 +732,155 @@ function buildDecks(){
     const head=document.createElement('div'); head.className='card-head';
     LETTERS.forEach(l=>{const x=document.createElement('div');x.textContent=l;head.appendChild(x)});
     box.appendChild(head);
-
     const grid=document.createElement('div'); grid.className='card'; grid.id='card'+d;
-    for(let r=0;r<5;r++) for(let c=0;c<5;c++){
-      const free=(r===2&&c===2);
+    for(let i=0;i<25;i++){
+      const free=(i===12);
       const sq=document.createElement('div');
       sq.className='sq'+(free?' free daubed':'');
       sq.tabIndex=0;
-      sq.dataset.n=free?0:nums[c][r];
-      sq.dataset.d=d; sq.dataset.i=r*5+c;
-      sq.innerHTML='<span class="n">'+(free?'FREE':nums[c][r])+'</span>';
+      sq.dataset.d=d; sq.dataset.i=i;
+      sq.innerHTML='<span class="n">'+(free?'FREE':deck.cells[i])+'</span>';
       sq.onclick=()=>daub(sq);
-      sq.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();daub(sq)}};
+      sq.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); daub(sq); } };
       grid.appendChild(sq);
     }
     box.appendChild(grid); wrap.appendChild(box);
-  }
+  });
+  $$('callbtn').classList.remove('live','wrong');
+  $$('callbtn').textContent='BINGO';
+  $$('callbtn').dataset.lock='';
 }
 
+/* mark anything you like, right or wrong. the server checks at the end. */
 function daub(sq){
-  const n=+sq.dataset.n, d=+sq.dataset.d, i=+sq.dataset.i;
-  if(n===0) return;                 // free space stays daubed
-  sq.classList.toggle('daubed');     // you can mark anything, right or wrong
+  const d=+sq.dataset.d, i=+sq.dataset.i;
+  if(i===12) return;
+  sq.classList.toggle('daubed');
   decks[d].daubs[i]=sq.classList.contains('daubed');
-  checkAll();
+  send({t:'daub', card:d, i:i});
+  lightBingoButton();
 }
-
-
-
-
-
-/* ===== the win moment =====
-   A beat of silence first, then the takeover: cheering duck, the winner,
-   their actual card with the line marked, and confetti. */
-let confT=null, confParts=[];
-
-function makeWinningCard(line){
-  /* build a believable card for one of the room players: every square in the
-     winning line is a number that really was called. */
-  const cells=new Array(25).fill(0);
-  for(let c=0;c<5;c++){
-    const lo=c*15+1, hi=c*15+15;
-    const inRange=n=>n>=lo&&n<=hi;
-    const pool=[]; for(let n=lo;n<=hi;n++) pool.push(n);
-    const hits=called.filter(inRange).slice().sort(()=>Math.random()-0.5);
-    const rest=pool.filter(n=>!called.includes(n)).sort(()=>Math.random()-0.5);
-    for(let r=0;r<5;r++){
-      const i=r*5+c;
-      if(i===12){ cells[i]=0; continue; }
-      cells[i] = line.includes(i) && hits.length ? hits.pop()
-               : (rest.length ? rest.pop() : (hits.pop()||lo+r));
-    }
-  }
-  return cells;
-}
-
-function renderWinCard(cells,line){
-  let h='<div class="wincard"><div class="wc-cap">THE WINNING CARD</div>'
-       +'<div class="wc-head"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>'
-       +'<div class="wc-grid">';
-  for(let i=0;i<25;i++){
-    const free=(i===12);
-    const on=line.includes(i);
-    h+='<i class="'+(on?'on ':'')+(free?'free':'')+'">'+(free?'FREE':cells[i])+'</i>';
-  }
-  return h+'</div></div>';
-}
-
-/* confetti, drawn by hand so "reduce motion" cannot switch it off */
-function startConfetti(){
-  const cv=document.getElementById('confetti');
-  const ctx=cv.getContext('2d');
-  const cols=['#FFD84D','#C9A8E8','#A8D5A2','#FF9E7D','#A9DCEF','#FFFDF6'];
-  function size(){ cv.width=cv.clientWidth; cv.height=cv.clientHeight; }
-  size();
-  confParts=[];
-  for(let i=0;i<110;i++) confParts.push({
-    x:Math.random()*cv.width, y:-20-Math.random()*cv.height*0.7,
-    w:6+Math.random()*8, h:9+Math.random()*11,
-    vy:1.6+Math.random()*2.6, vx:(Math.random()-.5)*1.3,
-    rot:Math.random()*6.28, vr:(Math.random()-.5)*0.16,
-    c:cols[(Math.random()*cols.length)|0]
-  });
-  cancelAnimationFrame(confT);
-  (function tick(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    confParts.forEach(p=>{
-      p.y+=p.vy; p.x+=p.vx+Math.sin(p.y/34)*0.5; p.rot+=p.vr;
-      if(p.y>cv.height+24){ p.y=-24; p.x=Math.random()*cv.width; }
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
-      ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
-    });
-    confT=requestAnimationFrame(tick);
-  })();
-}
-function stopConfetti(){ cancelAnimationFrame(confT); confT=null; }
-
-/* ===== which screen you are on =====
-   On the real site these are three separate pages. Here they are one file so
-   you can walk the whole loop without a server. */
-let view='choose';
-function showView(v){
-  view=v;
-  document.getElementById('chooseView').classList.toggle('hidden', v!=='choose');
-  document.getElementById('setupView').classList.toggle('hidden', v!=='setup');
-  document.getElementById('hostView').classList.toggle('hidden', v!=='host');
-  document.getElementById('playerView').classList.toggle('hidden', v!=='player');
-  document.body.classList.toggle('hostmode', v==='host');
-  if(v==='host') fitHost();
-}
-
-/* same room, same people, fresh cards. the host may switch the pattern first. */
-function playAgain(){
-  stopConfetti();
-  document.getElementById('winner').classList.add('hidden');
-  reset(true);
-  showView('setup');
-}
-/* shut the room down and go back to the start */
-function closeRoom(){
-  stopConfetti();
-  document.getElementById('winner').classList.add('hidden');
-  me=null; armed=null; banned.clear(); clearTimeout(armTimer);
-  reset(false);
-  document.getElementById('kickedView').classList.add('hidden');
-  document.getElementById('lobby').classList.remove('hidden');
-  document.getElementById('playArea').classList.add('hidden');
-  const je=document.getElementById('joinErr'); if(je) je.textContent='';
-  showView('choose');
-}
-
-/* ===== kicking =====
-   two clicks, not a confirm() dialog: confirm() is blocked inside OBS browser
-   sources, and this has to work while the host is live. */
-const banned=new Set();
-let armed=null, armTimer=null;
-
-function armKick(name){
-  clearTimeout(armTimer);
-  armed=name;
-  renderPlayers();
-  armTimer=setTimeout(()=>{ armed=null; renderPlayers(); }, 3000);
-}
-function kick(name){
-  clearTimeout(armTimer); armed=null;
-  banned.add(name.toLowerCase());
-  if(me && me.name.toLowerCase()===name.toLowerCase()){
-    me=null;
-    document.getElementById('playArea').classList.add('hidden');
-    document.getElementById('lobby').classList.add('hidden');
-    document.getElementById('kickedView').classList.remove('hidden');
-  } else {
-    const i=fake.findIndex(p=>p.name.toLowerCase()===name.toLowerCase());
-    if(i>-1) fake.splice(i,1);
-  }
-  renderPlayers();
-}
-
-/* ===== joining =====
-   nickname only, no account needed, so this works off Twitch too.
-   names land on the stream overlay, so they get cleaned and checked first. */
-/* Codes skip O/0/I/1/L because these get read out loud and typed by ear. */
-const SAFE='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-let ROOM_CODE='';
-function newCode(){
-  let c=''; for(let i=0;i<4;i++) c+=SAFE[Math.floor(Math.random()*SAFE.length)];
-  return c;
-}
-function setCode(c){
-  ROOM_CODE=c;
-  const v=document.getElementById('codeVal');
-  const chip=document.getElementById('codeChip');
-  if(v && !chip.classList.contains('hid')) v.textContent=c;
-  document.querySelectorAll('.phone-top .rm').forEach(e=>e.textContent='ROOM '+c);
-}
-const BLOCKED=['admin','host','mod','moderator','bingo','server','system','null','undefined'];
-const RUDE=/(f+u+c+k|sh+i+t|b+i+t+c+h|c+u+n+t|n+i+g+|f+a+g|r+a+p+e|d+i+c+k|c+o+c+k|p+u+s+s+y|w+h+o+r+e|s+l+u+t|a+s+s+h+o+l+e)/i;
-let me=null;
-
-function cleanName(raw){
-  return raw.replace(/[^A-Za-z0-9 _-]/g,'').replace(/\s+/g,' ').trim().slice(0,12);
-}
-function nameTaken(n){
-  const low=n.toLowerCase();
-  return fake.some(p=>p.name.toLowerCase()===low);
-}
-function joinRoom(){
-  const err=document.getElementById('joinErr');
-  const code=document.getElementById('codeIn').value.trim().toUpperCase();
-  const name=cleanName(document.getElementById('nameIn').value);
-
-  if(!code)              return err.textContent='Enter the room code.';
-  if(code!==ROOM_CODE)   return err.textContent='No room with that code.';
-  if(name.length<2)      return err.textContent='Names need at least 2 letters.';
-  if(RUDE.test(name.replace(/[^a-z]/gi,''))) return err.textContent='Pick something else.';
-  if(BLOCKED.includes(name.toLowerCase()))   return err.textContent='That name is reserved.';
-  if(banned.has(name.toLowerCase())) return err.textContent='You were removed from this room.';
-  if(nameTaken(name))    return err.textContent='Someone already has that name.';
-
-  err.textContent='';
-  me={name:name,cards:cardCount};
-  document.querySelector('.phone-top .who').textContent=name;
-  document.querySelectorAll('.phone-top .rm').forEach(e=>e.textContent='ROOM '+code);
-  renderPlayers();
-  buildDecks();
-  document.getElementById('lobby').classList.add('hidden');
-  document.getElementById('playArea').classList.remove('hidden');
-}
-
-/* ===== win patterns =====
-   sets = every square group that counts as a win. a claim is good only if one
-   whole set is daubed AND every number in it was actually called. */
-const ROWS=[],COLS=[];
-for(let r=0;r<5;r++) ROWS.push([0,1,2,3,4].map(c=>r*5+c));
-for(let c=0;c<5;c++) COLS.push([0,1,2,3,4].map(r=>r*5+c));
-const DIAG_A=[0,6,12,18,24], DIAG_B=[4,8,12,16,20];
-const ALL=Array.from({length:25},(_,i)=>i);
-
-const PATTERNS={
-  line:     {name:'Line',    desc:'ANY ROW, COLUMN<br>OR DIAGONAL', pace:1.0,
-             preview:[10,11,12,13,14], sets:[...ROWS,...COLS,DIAG_A,DIAG_B]},
-  plus:     {name:'Plus',    desc:'MIDDLE ROW AND<br>MIDDLE COLUMN', pace:1.9,
-             preview:[...ROWS[2],...COLS[2]], sets:[[...new Set([...ROWS[2],...COLS[2]])]]},
-  tee:      {name:'T',       desc:'TOP ROW AND<br>MIDDLE COLUMN', pace:1.9,
-             preview:[...ROWS[0],...COLS[2]], sets:[[...new Set([...ROWS[0],...COLS[2]])]]},
-  x:        {name:'X',       desc:'BOTH<br>DIAGONALS', pace:1.8,
-             preview:[...DIAG_A,...DIAG_B], sets:[[...new Set([...DIAG_A,...DIAG_B])]]},
-  blackout: {name:'Blackout',desc:'EVERY SQUARE<br>ON THE CARD', pace:4.2,
-             preview:ALL, sets:[ALL]}
-};
-let pattern='line';
-function winSets(){ return PATTERNS[pattern].sets; }
-
-function mini5(cells){
-  let h='<div class="mini5">';
-  for(let i=0;i<25;i++) h+='<i class="'+(cells.includes(i)?'on':'')+'"></i>';
-  return h+'</div>';
-}
-function buildPicker(){
-  const g=document.getElementById('patgrid'); g.innerHTML='';
-  Object.entries(PATTERNS).forEach(([k,p])=>{
-    const d=document.createElement('div');
-    d.className='pat'+(k===pattern?' sel':'');
-    d.innerHTML=mini5(p.preview)+'<div class="nm">'+p.name+'</div><div class="ds">'+p.desc+'</div>';
-    d.onclick=()=>{ pattern=k; buildPicker(); paintGoal(); buildPlayers(); };
-    g.appendChild(d);
-  });
-}
-function paintGoal(){
-  const p=PATTERNS[pattern];
-  const html=mini5(p.preview)+'<div class="txt"><small>GET</small>'+p.name+'</div>';
-  ['goalChip','goalChipP','goalChipG'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.innerHTML=html;
-  });
-}
-
-function checkAll(){
+function lightBingoButton(){
+  const sets = PATTERNS[pattern] ? patternSets(pattern) : [];
   let any=false;
   decks.forEach((deck,d)=>{
-    const grid=document.getElementById('card'+d);
-    if(!grid) return;
+    const grid=$$('card'+d); if(!grid) return;
     [...grid.children].forEach(s=>s.classList.remove('winline'));
-    const win=winSets().find(l=>l.every(i=>deck.daubs[i]));
-    if(win){ any=true; win.forEach(i=>grid.children[i].classList.add('winline'));
-      document.getElementById('box'+d).classList.add('won'); }
-    else document.getElementById('box'+d).classList.remove('won');
+    const line=sets.find(l=>l.every(i=>deck.daubs[i]));
+    if(line){ any=true; line.forEach(i=>grid.children[i].classList.add('winline')); }
   });
-  document.getElementById('callbtn').classList.toggle('live',any);
-  return any;
+  $$('callbtn').classList.toggle('live', any);
+}
+function patternSets(p){
+  if(p==='line') return [...ROWS,...COLS,DIAG_A,DIAG_B];
+  return [PATTERNS[p].preview];
+}
+function badBingo(){
+  const btn=$$('callbtn');
+  btn.dataset.lock='1';
+  btn.classList.add('wrong');
+  btn.textContent='SORRY, NOT A BINGO';
+  setTimeout(()=>{ btn.dataset.lock=''; btn.classList.remove('wrong'); btn.textContent='BINGO'; }, 2600);
 }
 
-function buildPlayers(){
-  /* A real room starts empty. The stand-in names are only for previewing
-     the room list, so they live behind ?dev=1. */
-  if(!DEV){ fake=[]; renderPlayers(); return; }
-  const pace=PATTERNS[pattern].pace;
-  fake=NAMES.map((n,i)=>({name:n,dot:DOTS[i],cards:1+Math.floor(Math.random()*3),hits:0,
-    need:Math.round((9+Math.random()*6)*pace)}));
-  renderPlayers();
-}
+/* =============================================================
+   room list
+   ============================================================= */
 function renderPlayers(){
-  const l=document.getElementById('plist'); l.innerHTML='';
-  const roster = me ? [...fake,{name:me.name,dot:'#FFD84D',cards:cardCount,hits:0,need:99,you:true}] : fake;
-  document.getElementById('pcount').textContent = roster.length;
-  const hint=document.querySelector('.plisthint');
+  const l=$$('plist'); l.innerHTML='';
+  $$('pcount').textContent = roster.length;
+  const hint=$('.plisthint');
   if(hint) hint.style.display = roster.length ? '' : 'none';
   if(!roster.length){
     l.innerHTML='<div class="empty">Nobody yet. Read the code out and they will turn up.</div>';
     return;
   }
-  roster.forEach(p=>{
+  const DOTS=['#FFD84D','#C9A8E8','#A8D5A2','#FF9E7D','#9ED2E8'];
+  roster.forEach((p,i)=>{
     const d=document.createElement('div');
-    d.className='pchip'+(p.you?' you':'')+(p.hits>=p.need-2?' close':'');
+    const mine = (!iAmHost && p.name===myName);
+    d.className='pchip'+(mine?' you':'');
     if(armed===p.name){
       d.classList.add('arm');
       d.innerHTML='<span class="dot" style="background:#8C2F18">!</span>REMOVE '+p.name+'?';
       d.onclick=()=>kick(p.name);
     } else {
-      d.innerHTML='<span class="dot" style="background:'+p.dot+'">'+p.name[0]+'</span>'+p.name
-        +' <span class="cards">'+p.cards+'×</span>';
-      d.onclick=()=>armKick(p.name);
+      d.innerHTML='<span class="dot" style="background:'+DOTS[i%DOTS.length]+'">'+p.name[0]+'</span>'+p.name
+        +' <span class="cards">'+p.cards+'\u00d7</span>';
+      d.onclick=()=> iAmHost && armKick(p.name);
     }
     l.appendChild(d);
   });
 }
-
-function callOne(){
-  if(!pool.length){ stop(); return; }
-  const n=pool.pop(); called.push(n);
-  const idx=called.length-1;
-
-
-  // duck winds up, dips into the pond, lifts the ball out
-  document.getElementById('ball').classList.remove('rest');
-  playFetch();
-  document.getElementById('bLetter').textContent=LETTERS[Math.floor((n-1)/15)];
-  document.getElementById('bNum').textContent=n;
-
-  // ...everything else lands on the grab, ~660ms in
-  setTimeout(()=>{
-    splashAt();
-
-    diveOne();
-    document.getElementById('leftCount').textContent=75-idx-1;
-
-    document.getElementById('c'+n).classList.add('hit');
-
-    const r=document.getElementById('recent');
-    const chip=document.createElement('div'); chip.className='r'; chip.textContent=label(n);
-    r.prepend(chip); while(r.children.length>5) r.lastChild.remove();
-
-    const now=document.getElementById('now');
-    document.getElementById('nowVal').textContent=label(n);
-    now.classList.remove('pulse'); void now.offsetWidth; now.classList.add('pulse');
-
-    if(DEV){ fake.forEach(p=>{ if(Math.random()<0.18*p.cards) p.hits++; }); renderPlayers(); }
-    const w=fake.find(p=>p.hits>=p.need+5);
-    if(w){ win(w.name, 'got there first on '+w.cards+(w.cards>1?' cards':' card')); return; }
-    checkAll();
-  }, 640);
+function armKick(name){
+  clearTimeout(armTimer);
+  armed=name; renderPlayers();
+  armTimer=setTimeout(()=>{ armed=null; renderPlayers(); }, 3000);
+}
+function kick(name){
+  clearTimeout(armTimer); armed=null;
+  send({t:'kick', name});
 }
 
-function win(name, sub, cells, line){
-  stop();
-  cells = cells || makeWinningCard(line||winSets()[0]);
-  line  = line  || winSets()[0];
-  setTimeout(()=>{                       // let the last ball land before the takeover
-    document.getElementById('winnerTxt').textContent=name;
-    document.getElementById('winnerSub').textContent=sub||'got there first';
-    document.getElementById('winCardWrap').innerHTML=renderWinCard(cells,line);
-    document.getElementById('winHost').classList.toggle('hidden', view!=='host');
-    document.getElementById('winWait').classList.toggle('hidden', view==='host');
-    document.getElementById('winner').classList.remove('hidden');
-    startConfetti();
-  }, 900);
-}
-
-function start(){
-  if(running) return;
-  running=true;
-  document.getElementById('startBtn').textContent='Pause';
-  callOne();
-  timer=setInterval(callOne,+document.getElementById('speed').value*1000);
-}
-function stop(){ running=false; clearInterval(timer); document.getElementById('startBtn').textContent='Start calling'; }
-
-function reset(keepRoster){
-  stop();
-  pool=Array.from({length:75},(_,i)=>i+1).sort(()=>Math.random()-0.5);
-  called=[];
-  buildBoard(); buildPond(); buildDecks();
-  if(keepRoster && fake.length){
-    const pace=PATTERNS[pattern].pace;
-    fake.forEach(p=>{ p.hits=0; p.need=Math.round((9+Math.random()*6)*pace); });
-    renderPlayers();
-  } else buildPlayers();
-  buildPicker(); paintGoal();
-
-  document.getElementById('recent').innerHTML='';
-  document.getElementById('nowVal').textContent='—';
-  fetchT=null; splashT=null; poseIdle();
-  document.getElementById('ball').classList.add('rest');
-  document.getElementById('bLetter').innerHTML='&nbsp;';
-  document.getElementById('bNum').textContent='ready';
-  document.getElementById('winner').classList.add('hidden');
-  document.getElementById('callbtn').classList.remove('live');
-}
-
-document.querySelectorAll('.pick button').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.pick button').forEach(x=>x.classList.remove('sel'));
-    b.classList.add('sel'); cardCount=+b.dataset.c;
-  };
-});
-document.getElementById('joinBtn').onclick=joinRoom;
-document.getElementById('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
-document.getElementById('codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('nameIn').focus();});
-document.getElementById('startBtn').onclick=()=>running?stop():start();
-document.getElementById('resetBtn').onclick=playAgain;
-/* tap the room code to blank it out while you get set up on stream */
-const codeChip=document.getElementById('codeChip');
-codeChip.onclick=()=>{
-  const hid=codeChip.classList.toggle('hid');
-  document.getElementById('codeVal').textContent = hid ? '\u2022\u2022\u2022\u2022' : ROOM_CODE;
-  document.getElementById('codeTip').textContent = hid ? 'SHOW' : 'HIDE';
-};
-document.getElementById('motionBtn').onclick=e=>{
-  motion=!motion; e.target.classList.toggle('on',motion);
-  e.target.textContent='Idle sway: '+(motion?'on':'off');
-};
-document.getElementById('againBtn').onclick=playAgain;
-document.getElementById('closeBtn').onclick=closeRoom;
-document.getElementById('btnHost').onclick=()=>{ reset(false); setCode(newCode()); showView('setup'); };
-document.getElementById('openRoomBtn').onclick=()=>showView('host');
-document.getElementById('setupBack').onclick=closeRoom;
-document.getElementById('btnJoin').onclick=()=>showView('player');
-document.getElementById('backBtn').onclick=closeRoom;
-document.getElementById('peekBtn').onclick=()=>showView(view==='player'?'host':'player');
-/* jump straight to the win takeover without playing a whole round */
-document.getElementById('testWinBtn').onclick=()=>{
-  if(view!=='host' && view!=='player') showView('host');
-  while(called.length<32 && pool.length){
-    const n=pool.pop(); called.push(n);
-    const c=document.getElementById('c'+n); if(c) c.classList.add('hit');
-  }
-  document.getElementById('leftCount').textContent=75-called.length;
-  stop();
-  win('Teresa','got there first on 3 cards');
-};
-document.getElementById('speed').oninput=e=>{
-  document.getElementById('speedTxt').textContent=e.target.value+'s';
-  if(running){stop();start();}
-};
-/* a claim is only good if every square in the line was actually called */
-function lineIsReal(deck,line){
-  return line.every(i=>{
-    const r=Math.floor(i/5), c=i%5;
-    if(r===2&&c===2) return true;
-    return called.includes(deck.nums[c][r]);
-  });
-}
-function claimBingo(){
-  const btn=document.getElementById('callbtn');
-  if(btn.dataset.lock==='1') return;
-  let hit=null;
-  decks.forEach(deck=>{
-    const line=winSets().find(l=>l.every(i=>deck.daubs[i]));
-    if(line && lineIsReal(deck,line) && !hit) hit={deck:deck,line:line};
-  });
-  if(hit){
-    const cells=new Array(25).fill(0);
-    for(let r=0;r<5;r++) for(let c=0;c<5;c++){
-      const i=r*5+c; cells[i] = (i===12) ? 0 : hit.deck.nums[c][r];
-    }
-    win(me?me.name:'You', 'got there first', cells, hit.line);
-    return;
-  }
-  btn.dataset.lock='1';
-  btn.classList.add('wrong');
-  btn.textContent='SORRY, NOT A BINGO';
-  setTimeout(()=>{
-    btn.dataset.lock='';
-    btn.classList.remove('wrong');
-    btn.textContent='BINGO';
-  },2600);
-}
-document.getElementById('callbtn').onclick=claimBingo;
-
-/* ===== duck animator =====
-   requestAnimationFrame + inline styles, so "reduce motion" can't switch it off. */
-const DEV = new URLSearchParams(location.search).has('dev');
+/* =============================================================
+   the duck
+   ============================================================= */
 const PARK=[430,150], REACH=[256,372], HOLD=[296,220], DUR=2000;
-let fetchT=null, splashT=null, motion=true;
+let fetchT=null, splashT=null, motion=true, flock=[], confT=null;
 const lerp=(a,b,t)=>a+(b-a)*t;
 const seg=(t,a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a)));
 const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-const $=s=>document.querySelector(s);
 
-function poseIdle(){
-  $('.f-idle').style.opacity=1; $('.f-reach').style.opacity=0; $('.f-hold').style.opacity=0;
-  const b=document.getElementById('ball'); b.style.transform='none'; b.style.opacity=1;
-  $('.shift').style.transform='none'; $('#splash').style.opacity=0;
+function showBall(n, quiet){
+  $$('bLetter').textContent=LETTERS[Math.floor((n-1)/15)];
+  $$('bNum').textContent=n;
+  $$('ball').classList.remove('rest');
+  const r=$$('recent');
+  if(r){
+    const chip=document.createElement('div'); chip.className='r'; chip.textContent=label(n);
+    r.prepend(chip); while(r.children.length>5) r.lastChild.remove();
+  }
+  const now=$$('now');
+  if(now){ $$('nowVal').textContent=label(n);
+    now.classList.remove('pulse'); void now.offsetWidth; now.classList.add('pulse'); }
+  if(quiet){ poseIdle(); return; }
+  fetchT=performance.now();
+  setTimeout(()=>{ splashT=performance.now(); diveOne(); }, 640);
 }
-function playFetch(){ fetchT=performance.now(); }
-function splashAt(){ splashT=performance.now(); }
+function resetBallDisplay(){
+  $$('ball').classList.add('rest');
+  $$('bLetter').innerHTML='&nbsp;'; $$('bNum').textContent='ready';
+  $$('nowVal') && ($$('nowVal').textContent='\u2014');
+  fetchT=null; splashT=null; poseIdle(); buildPond();
+}
+function poseIdle(){
+  const a=$('.f-idle'), b=$('.f-reach'), c=$('.f-hold');
+  if(!a) return;
+  a.style.opacity=1; b.style.opacity=0; c.style.opacity=0;
+  const ball=$$('ball'); ball.style.transform='none'; ball.style.opacity=1;
+  $('.shift').style.transform='none'; $$('splash').style.opacity=0;
+}
 
-
-/* ===== the flock =====
-   pond centre 190,75 inside the pond box · each duck circles its own lazy
-   ellipse, faces the way it is swimming, and dives when the hero grabs one. */
-const PC=[163,68];
+/* the pond: a small steady flock, the counter carries the real number */
+const FLOCK=7, PC=[163,68];
+function newDuck(phase){
+  const wrap=document.createElement('div');
+  wrap.className='duckling';
+  wrap.innerHTML='<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8CAMAAADhV0xWAAAAP1BMVEX9zy4BAQBINCE1JBzdoiNqYlyujChoUCGTbSLweQpXRTdOPCtmYw1UQTD39PRrAAAAAAAAAAAAAAAAAAAAAAAGK4BZAAAAEHRSTlP/APb+/hX+/f7+XakNlwMCpU1sLwAAAwpJREFUeNqVVweSwzAIxDJIWC75/28P1NxUfEwyk3HMirogmJry26bp2Pxqkuwe9OnjLWjqizrtojdnkd8rheffACZaVds4tohorXOKIRC/LwByjBd1wwinIMsTA18sID3+oR5EIdYxwG8iOd691NUKJwjH2ALRZ6gL322oAfwOsd8CtBG8ONkGoKmrDyBeUEGASgKobX+Mg2SzJLNiwSHxg67YWZJJTQDfdyA6sXZisI4MCCbkKMC7hMYGaBS8ZIu2mgVSwjAUN+9NF5oeWHvzYTqIqAIADQ9QOjMjS2cmjlgJKkWAjfrL0Lbwg3k1J01bA8DNuT/EFl4W+Sy4VADAGKxnTgQjFGMQQTBzxYI6gDpuU/yWJLjMbwtaMSjBnGdRRFUPHkBIxKU5RwDqQNRfhJ7WA8rRZytx1wCH4fAFedaCFhPIe4pT4EMrRIAkWtCgUYuEL2YAbOT7PpicgxACASAThofZixN9OpB0GtYi0BCoC+FAq4S/e7EACNZWIgsvhzLUr2Qdkstscm3qX3bUzHFWKr1nAEDrTCpxxwM20LOPOEC0+crrOgFlDo7ZwAbrY+rhA//UEY6t2v5qBY/tsGW4wC3r1p3bgLMwGi7bA0CTmbcB1m2gF0zJwhNAzLoeiopn+8y+3WLwrh+pOu4z+xUAKy9L1fFgOp11gNV3XTPLNrIRnN1rXL192/Wo402ayRXirh3WrAg0YUTDpf3/V5QhipvyQVHDxmLVB7hSmHYy/wMguDBdfHAG+bMXGCsJrhsR/ycIOY1Cw2cJDmZCtZBuSxm+2Iyx7UEsZXXjPPiRiE4ps4YguvATAHPlXGcxsWQ7KZjHKqSdwN1pO5JzpyxcMiCsOKSpdFcmYCfCFnuElCmtLJf/KELVh8eW5ofj5FIBErP9tanqDcd9gdArR+iC556ol5zaLeeubV2cib+XBRIRn65pjamAgar1+OPcRy4WhHyki6KRHHCYc4HjLUtaTLo66kjd6lcehT0oXlXnp6SBTNd16L0rp9ogv+/mLrtuD/dtKsof2XgYaBBbYh0AAAAASUVORK5CYII=" alt="">';
+  return { el:wrap, a:phase*Math.PI*2+Math.random()*0.5,
+    w:(0.16+Math.random()*0.16)*(Math.random()<0.22?-1:1),
+    rx:50+Math.random()*78, ry:15+Math.random()*28,
+    ox:(Math.random()-.5)*26, oy:(Math.random()-.5)*16,
+    bob:Math.random()*Math.PI*2, dive:0 };
+}
+function buildPond(){
+  const p=$$('pond');
+  p.innerHTML='<div class="wave" style="top:30%"></div><div class="wave" style="top:56%"></div>';
+  flock=[];
+  for(let i=0;i<FLOCK;i++){ const d=newDuck(i/FLOCK); flock.push(d); p.appendChild(d.el); }
+}
+function duckPos(d,ts){ const a=d.a+d.w*ts;
+  return [PC[0]+d.ox+Math.cos(a)*d.rx, PC[1]+d.oy+Math.sin(a)*d.ry, a]; }
 function diveOne(){
   if(!flock.length) return;
   let best=0,bd=1e9;
@@ -1116,22 +888,14 @@ function diveOne(){
     const dd=Math.hypot(p[0]-37,p[1]-41); if(dd<bd){bd=dd;best=i;} });
   flock[best].dive=performance.now();
 }
-function duckPos(d,ts){
-  const a=d.a+d.w*ts;
-  return [PC[0]+d.ox+Math.cos(a)*d.rx, PC[1]+d.oy+Math.sin(a)*d.ry, a];
-}
 function swim(now){
-  const ts=now/1000, pond=document.getElementById('pond');
-  const want=flockSize(75-called.length);
+  const ts=now/1000, pond=$$('pond'); if(!pond) return;
   for(let i=flock.length-1;i>=0;i--){
     const d=flock[i];
     if(d.dive){
       const u=(now-d.dive)/620;
-      if(u>=1){
-        d.el.remove(); d.wake.remove(); flock.splice(i,1);
-        if(flock.length<want){ const nd=newDuck(Math.random()); flock.push(nd); pond.appendChild(nd.el); }
-        continue;
-      }
+      if(u>=1){ d.el.remove(); flock.splice(i,1);
+        const nd=newDuck(Math.random()); flock.push(nd); pond.appendChild(nd.el); continue; }
       d.el.style.opacity=1-u;
     }
     const p=duckPos(d, motion?ts:0);
@@ -1142,9 +906,6 @@ function swim(now){
     d.el.style.transform='translate('+(p[0]-11).toFixed(1)+'px,'+(p[1]-10+bobY).toFixed(1)+'px) '
       +'rotate('+tilt.toFixed(2)+'deg) scale('+(dx<0?-sc:sc).toFixed(3)+','+sc.toFixed(3)+')';
   }
-  while(flock.length>want && !flock.some(d=>d.dive)){
-    const d=flock.pop(); d.el.remove();
-  }
 }
 
 function frame(now){
@@ -1152,67 +913,248 @@ function frame(now){
   const br=$('.breathe');
   if(br) br.style.transform = motion ? 'rotate('+(1.5*Math.sin(now/1700)).toFixed(3)+'deg)' : 'none';
 
-  const sp=document.getElementById('splash');
+  const sp=$$('splash');
   if(sp){
     if(splashT===null) sp.style.opacity=0;
     else{
       const u=(now-splashT)/750;
       if(u>=1){ splashT=null; sp.style.opacity=0; }
-      else{
-        sp.style.opacity = (u<.2 ? u/.2 : 1-(u-.2)/.8)*.95;
-        sp.style.transform='scale('+lerp(.25,1.7,u).toFixed(3)+')';
-      }
+      else{ sp.style.opacity=(u<.2?u/.2:1-(u-.2)/.8)*.95;
+            sp.style.transform='scale('+lerp(.25,1.7,u).toFixed(3)+')'; }
     }
   }
 
   if(fetchT!==null){
     const t=Math.min(1,(now-fetchT)/DUR);
     const idle=$('.f-idle'), rch=$('.f-reach'), hld=$('.f-hold');
-    const ball=document.getElementById('ball'), shift=$('.shift');
-
-    idle.style.opacity = 1 - seg(t,.07,.14) + seg(t,.88,.96);
-    rch.style.opacity  = seg(t,.07,.14) - seg(t,.40,.47);
-    hld.style.opacity  = seg(t,.40,.47) - seg(t,.88,.96);
-
-    const dip = ease(seg(t,.04,.17)) - ease(seg(t,.42,.58));
-    const up  = ease(seg(t,.44,.57)) - ease(seg(t,.57,.72));
-    shift.style.transform='translate('+(8*dip).toFixed(2)+'px,'+(10*dip-9*up).toFixed(2)+'px)';
-
-    let x,y,s,o=1;
-    if(t<.31){ o=0; x=REACH[0]; y=REACH[1]; s=.35; }
-    else if(t<.40){ const u=seg(t,.31,.40); x=REACH[0]; y=REACH[1]-12*u; s=lerp(1.22,1,ease(u)); }
-    else if(t<.50){ const u=ease(seg(t,.40,.50));
-                    x=lerp(REACH[0],HOLD[0],u); y=lerp(REACH[1]-12,HOLD[1],u); s=1; }
-    else if(t<.84){ const u=seg(t,.50,.64);
-                    x=HOLD[0]; y=HOLD[1]-10*Math.sin(u*Math.PI); s=1+.07*Math.sin(u*Math.PI); }
-    else { const u=ease(seg(t,.84,.97));
-           x=lerp(HOLD[0],PARK[0],u); y=lerp(HOLD[1],PARK[1],u); s=1; }
-
-    ball.style.opacity=o;
-    ball.style.transform='translate('+(x-PARK[0]).toFixed(2)+'px,'+(y-PARK[1]).toFixed(2)+'px) scale('+s.toFixed(3)+')';
+    const ball=$$('ball'), shift=$('.shift');
+    if(idle && ball && shift){
+      idle.style.opacity = 1 - seg(t,.07,.14) + seg(t,.88,.96);
+      rch.style.opacity  = seg(t,.07,.14) - seg(t,.40,.47);
+      hld.style.opacity  = seg(t,.40,.47) - seg(t,.88,.96);
+      const dip = ease(seg(t,.04,.17)) - ease(seg(t,.42,.58));
+      const up  = ease(seg(t,.44,.57)) - ease(seg(t,.57,.72));
+      shift.style.transform='translate('+(8*dip).toFixed(2)+'px,'+(10*dip-9*up).toFixed(2)+'px)';
+      let x,y,s,o=1;
+      if(t<.31){ o=0; x=REACH[0]; y=REACH[1]; s=.35; }
+      else if(t<.40){ const u=seg(t,.31,.40); x=REACH[0]; y=REACH[1]-12*u; s=lerp(1.22,1,ease(u)); }
+      else if(t<.50){ const u=ease(seg(t,.40,.50));
+                      x=lerp(REACH[0],HOLD[0],u); y=lerp(REACH[1]-12,HOLD[1],u); s=1; }
+      else if(t<.84){ const u=seg(t,.50,.64);
+                      x=HOLD[0]; y=HOLD[1]-10*Math.sin(u*Math.PI); s=1+.07*Math.sin(u*Math.PI); }
+      else { const u=ease(seg(t,.84,.97));
+             x=lerp(HOLD[0],PARK[0],u); y=lerp(HOLD[1],PARK[1],u); s=1; }
+      ball.style.opacity=o;
+      ball.style.transform='translate('+(x-PARK[0]).toFixed(2)+'px,'+(y-PARK[1]).toFixed(2)+'px) scale('+s.toFixed(3)+')';
+    }
     if(t>=1) fetchT=null;
   }
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 
-/* keep the 1280x720 host frame fitted to whatever window it is in */
-function fitHost(){
-  const c=document.getElementById('hostCanvas'); if(!c) return;
-  const bar=document.querySelector('.proto');
-  const barH=bar?bar.getBoundingClientRect().height:0;
-  const fit=document.getElementById('hostFit');
-  if(fit) fit.style.height=(window.innerHeight-barH)+'px';
-  const w=window.innerWidth, h=window.innerHeight-barH;
-  c.style.transform='scale('+Math.min(w/1280,h/720).toFixed(4)+')';
+/* =============================================================
+   winning
+   ============================================================= */
+function renderWinCard(cells,line){
+  let h='<div class="wincard"><div class="wc-cap">THE WINNING CARD</div>'
+       +'<div class="wc-head"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>'
+       +'<div class="wc-grid">';
+  for(let i=0;i<25;i++){
+    const free=(i===12), on=line.includes(i);
+    h+='<i class="'+(on?'on ':'')+(free?'free':'')+'">'+(free?'FREE':cells[i])+'</i>';
+  }
+  return h+'</div></div>';
 }
-window.addEventListener('resize',fitHost);
+function showWin(name, sub, cells, line){
+  setTimeout(()=>{
+    $('.winner h1').textContent='BINGO';
+    $$('winnerTxt').textContent=name;
+    $$('winnerSub').textContent=sub||'got there first';
+    $$('winCardWrap').innerHTML=renderWinCard(cells,line);
+    $$('winHost').classList.toggle('hidden', !iAmHost);
+    const w=$$('winWait');
+    w.textContent='Hang tight, the host is setting up the next round.';
+    w.classList.toggle('hidden', iAmHost);
+    $$('winner').classList.remove('hidden');
+    startConfetti();
+  }, 900);
+}
+function startConfetti(){
+  const cv=$$('confetti'), ctx=cv.getContext('2d');
+  const cols=['#FFD84D','#C9A8E8','#A8D5A2','#FF9E7D','#A9DCEF','#FFFDF6'];
+  cv.width=cv.clientWidth; cv.height=cv.clientHeight;
+  const parts=[];
+  for(let i=0;i<110;i++) parts.push({
+    x:Math.random()*cv.width, y:-20-Math.random()*cv.height*0.7,
+    w:6+Math.random()*8, h:9+Math.random()*11,
+    vy:1.6+Math.random()*2.6, vx:(Math.random()-.5)*1.3,
+    rot:Math.random()*6.28, vr:(Math.random()-.5)*0.16,
+    c:cols[(Math.random()*cols.length)|0] });
+  cancelAnimationFrame(confT);
+  (function tick(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    parts.forEach(p=>{
+      p.y+=p.vy; p.x+=p.vx+Math.sin(p.y/34)*0.5; p.rot+=p.vr;
+      if(p.y>cv.height+24){ p.y=-24; p.x=Math.random()*cv.width; }
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    });
+    confT=requestAnimationFrame(tick);
+  })();
+}
+function stopConfetti(){ cancelAnimationFrame(confT); confT=null; }
 
-/* add ?dev=1 to the address for the preview tools and some stand-in players */
-if(DEV) document.body.classList.add('dev');
+/* =============================================================
+   screens
+   ============================================================= */
+function showView(v){
+  view=v;
+  if(v==='setup'){
+    $$('openRoomBtn').textContent = (iAmHost && ROOM_CODE) ? 'START ROUND' : 'HOST';
+    $$('setupBack').textContent   = (iAmHost && ROOM_CODE) ? 'close the room' : 'back';
+    $('.setupwrap .sub').textContent = (iAmHost && ROOM_CODE)
+      ? 'Same room, same people. Pick the shape for this round.'
+      : 'Everybody in the room plays for the same shape.';
+  }
+  ['choose','setup','host','player'].forEach(k=>{
+    $$(k==='choose'?'chooseView':k==='setup'?'setupView':k==='host'?'hostView':'playerView')
+      .classList.toggle('hidden', v!==k);
+  });
+  document.body.classList.toggle('hostmode', v==='host');
+  if(v==='host') fitHost();
+}
+function goHome(){
+  bye();
+  iAmHost=false; myName=''; roster=[]; decks=[]; called=[]; armed=null;
+  $$('kickedView').classList.add('hidden');
+  $$('lobby').classList.remove('hidden');
+  $$('playArea').classList.add('hidden');
+  $$('joinErr').textContent='';
+  $$('winner').classList.add('hidden');
+  stopConfetti();
+  showView('choose');
+}
 
-reset(false);
-setCode(newCode());
+/* ---------- the pattern picker ---------- */
+function mini5(cells){
+  let h='<div class="mini5">';
+  for(let i=0;i<25;i++) h+='<i class="'+(cells.includes(i)?'on':'')+'"></i>';
+  return h+'</div>';
+}
+function buildPicker(){
+  const g=$$('patgrid'); if(!g) return;
+  g.innerHTML='';
+  Object.entries(PATTERNS).forEach(([k,p])=>{
+    const d=document.createElement('div');
+    d.className='pat'+(k===pattern?' sel':'');
+    d.innerHTML=mini5(p.preview)+'<div class="nm">'+p.name+'</div><div class="ds">'+p.desc+'</div>';
+    d.onclick=()=>{ pattern=k; buildPicker(); paintGoal(); };
+    g.appendChild(d);
+  });
+}
+function paintGoal(){
+  const p=PATTERNS[pattern];
+  const html=mini5(p.preview)+'<div class="txt"><small>GET</small>'+p.name+'</div>';
+  ['goalChip','goalChipP','goalChipG'].forEach(id=>{ const el=$$(id); if(el) el.innerHTML=html; });
+}
+function paintCode(){
+  const chip=$$('codeChip'), v=$$('codeVal');
+  if(v && !chip.classList.contains('hid')) v.textContent=ROOM_CODE;
+  document.querySelectorAll('.phone-top .rm').forEach(e=>e.textContent='ROOM '+ROOM_CODE);
+}
+
+/* the host frame is a fixed 16:9 that scales to the window */
+function fitHost(){
+  const c=$$('hostCanvas'); if(!c) return;
+  const bar=$('.proto');
+  const barH=bar?bar.getBoundingClientRect().height:0;
+  const fit=$$('hostFit');
+  if(fit) fit.style.height=(window.innerHeight-barH)+'px';
+  c.style.transform='scale('+Math.min(window.innerWidth/1280,(window.innerHeight-barH)/720).toFixed(4)+')';
+}
+window.addEventListener('resize', fitHost);
+
+/* =============================================================
+   joining
+   ============================================================= */
+function joinRoom(){
+  const err=$$('joinErr');
+  const code=$$('codeIn').value.trim().toUpperCase();
+  const name=$$('nameIn').value.replace(/[^A-Za-z0-9 _-]/g,'').replace(/\s+/g,' ').trim().slice(0,12);
+  if(!code) return err.textContent='Enter the room code.';
+  if(name.length<2) return err.textContent='Names need at least 2 letters.';
+  err.textContent='Looking for the room\u2026';
+  myName=name;
+  connect(()=>send({t:'join', code, name, cards:cardCount}));
+}
+
+/* =============================================================
+   wiring
+   ============================================================= */
+$$('btnHost').onclick=()=>{ buildPicker(); paintGoal(); showView('setup'); };
+$$('btnJoin').onclick=()=>{ paintGoal(); showView('player'); };
+$$('setupBack').onclick=()=>{ if(iAmHost && ROOM_CODE) send({t:'close'}); goHome(); };
+$$('backBtn') && ($$('backBtn').onclick=goHome);
+
+$$('openRoomBtn').onclick=()=>{
+  if(iAmHost && ROOM_CODE){        // already have a room: start the next round in it
+    send({t:'again', pattern});
+    showView('host');
+    return;
+  }
+  $$('openRoomBtn').textContent='OPENING\u2026';
+  connect(()=>{
+    send({t:'host', pattern});
+    setTimeout(()=>$$('openRoomBtn').textContent='HOST', 800);
+  });
+};
+
+$$('startBtn').onclick=()=> send({t: running ? 'pause' : 'start'});
+$$('resetBtn').onclick=()=> send({t:'again', pattern});
+$$('againBtn').onclick=()=>{ stopConfetti(); $$('winner').classList.add('hidden'); showView('setup'); };
+$$('closeBtn').onclick=()=>{ send({t:'close'}); goHome(); };
+$$('speed').oninput=e=>{
+  $$('speedTxt').textContent=e.target.value+'s';
+  send({t:'speed', v:(+e.target.value)*1000});
+};
+$$('motionBtn').onclick=e=>{
+  motion=!motion; e.target.classList.toggle('on',motion);
+  e.target.textContent='Idle sway: '+(motion?'on':'off');
+};
+$$('codeChip').onclick=()=>{
+  const hid=$$('codeChip').classList.toggle('hid');
+  $$('codeVal').textContent = hid ? '\u2022\u2022\u2022\u2022' : ROOM_CODE;
+  $$('codeTip').textContent = hid ? 'SHOW' : 'HIDE';
+};
+
+document.querySelectorAll('.pick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.pick button').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel'); cardCount=+b.dataset.c;
+  };
+});
+$$('joinBtn').onclick=joinRoom;
+$$('nameIn').addEventListener('keydown',e=>{ if(e.key==='Enter') joinRoom(); });
+$$('codeIn').addEventListener('keydown',e=>{ if(e.key==='Enter') $$('nameIn').focus(); });
+$$('callbtn').onclick=()=>{
+  if($$('callbtn').dataset.lock==='1') return;
+  send({t:'bingo'});
+};
+
+/* preview tools, only with ?dev=1 */
+if(DEV){
+  document.body.classList.add('dev');
+  const tw=$$('testWinBtn');
+  if(tw) tw.onclick=()=>{
+    const cells=Array.from({length:25},(_,i)=> i===12?0:(i%5)*15+1+((i/5)|0)*2);
+    showWin('Teresa','got there first on 3 cards', cells, [10,11,12,13,14]);
+  };
+  const pk=$$('peekBtn'); if(pk) pk.remove();
+}
+
+/* ---------- boot ---------- */
+newBoard(); buildPond(); buildPicker(); paintGoal(); renderPlayers(); resetBallDisplay();
 showView('choose');
 </script>
 </body>
