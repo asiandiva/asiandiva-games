@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>asiandiva.games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFF4D6;
+    --card:#FFFDF6;
+    --ink:#4A3A24;
+    --soft:#8A765A;
+    --honey:#F5B92E;
+    --rose:#F79BB8;
+    --mint:#9FD8B8;
+    --lilac:#B9A7EE;
+    --shadow:rgba(122,95,48,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:0 24px 80px;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:56px 0 6px}
+  .mark{
+    font-family:"Fredoka",sans-serif;font-weight:700;
+    font-size:clamp(36px,6.5vw,56px);letter-spacing:-.02em;line-height:1;
+  }
+  .mark b{color:var(--rose)}
+  .tag{font-size:15px;color:var(--soft)}
+  .tag a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--honey)}
+  .tag a:hover{background:var(--honey)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:40px}
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    background:var(--card);border-radius:24px;overflow:hidden;
+    box-shadow:0 3px 0 var(--shadow);
+    transition:transform .16s ease, box-shadow .16s ease;
+  }
+  .art{height:152px;display:flex;align-items:center;justify-content:center}
+  .art svg{width:100%;height:100%}
+  .meta{padding:17px 19px 20px}
+  .meta h2{font-family:"Fredoka",sans-serif;font-weight:600;font-size:21px;letter-spacing:-.01em}
+  .meta p{font-size:14px;line-height:1.45;color:var(--soft);margin-top:5px}
+  a.card:hover{transform:translateY(-5px);box-shadow:0 8px 0 var(--shadow)}
+  .card.soon{opacity:.62}
+  .card.soon .meta h2::after{
+    content:"soon";font-family:"Instrument Sans",sans-serif;font-size:10px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;vertical-align:middle;
+    margin-left:9px;padding:4px 9px;border-radius:99px;
+    background:var(--paper);color:var(--soft);
+  }
+
+  footer{margin-top:58px;padding-top:22px;border-top:2px dotted rgba(122,95,48,.25);
+    font-size:13px;color:var(--soft)}
+  footer a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--honey)}
+
+  a:focus-visible{outline:3px solid var(--lilac);outline-offset:3px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media(max-width:520px){header{padding-top:38px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark">asian<b>diva</b></div>
+    <div class="tag">games i made instead of sleeping · <a href="https://twitch.tv/asiandiva__">twitch</a></div>
+  </header>
+
+  <div class="grid">
+
+    <div class="card soon">
+      <div class="art" style="background:#FFE9A8">
+        <svg viewBox="0 0 240 152" xmlns="http://www.w3.org/2000/svg">
+          <rect x="66" y="16" width="108" height="120" rx="12" fill="#FFFDF6" stroke="#4A3A24" stroke-width="2.5"/>
+          <rect x="66" y="16" width="108" height="24" rx="12" fill="#F79BB8"/>
+          <rect x="66" y="30" width="108" height="10" fill="#F79BB8"/>
+          <g fill="#4A3A24" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" text-anchor="middle">
+            <text x="85" y="33">B</text><text x="105" y="33">I</text><text x="125" y="33">N</text>
+            <text x="145" y="33">G</text><text x="163" y="33">O</text>
+          </g>
+          <g>
+            <circle cx="85" cy="55" r="7.5" fill="#F5B92E"/>
+            <circle cx="105" cy="55" r="7.5" fill="#EFE6D2"/>
+            <circle cx="125" cy="55" r="7.5" fill="#EFE6D2"/>
+            <circle cx="145" cy="55" r="7.5" fill="#EFE6D2"/>
+            <circle cx="163" cy="55" r="7.5" fill="#EFE6D2"/>
+
+            <circle cx="85" cy="76" r="7.5" fill="#EFE6D2"/>
+            <circle cx="105" cy="76" r="7.5" fill="#F5B92E"/>
+            <circle cx="125" cy="76" r="7.5" fill="#EFE6D2"/>
+            <circle cx="145" cy="76" r="7.5" fill="#EFE6D2"/>
+            <circle cx="163" cy="76" r="7.5" fill="#EFE6D2"/>
+
+            <circle cx="85" cy="97" r="7.5" fill="#EFE6D2"/>
+            <circle cx="105" cy="97" r="7.5" fill="#EFE6D2"/>
+            <circle cx="125" cy="97" r="7.5" fill="#F5B92E"/>
+            <circle cx="145" cy="97" r="7.5" fill="#EFE6D2"/>
+            <circle cx="163" cy="97" r="7.5" fill="#EFE6D2"/>
+
+            <circle cx="85" cy="118" r="7.5" fill="#EFE6D2"/>
+            <circle cx="105" cy="118" r="7.5" fill="#EFE6D2"/>
+            <circle cx="125" cy="118" r="7.5" fill="#EFE6D2"/>
+            <circle cx="145" cy="118" r="7.5" fill="#F5B92E"/>
+            <circle cx="163" cy="118" r="7.5" fill="#EFE6D2"/>
+          </g>
+          <line x1="80" y1="50" x2="152" y2="124" stroke="#F0709B" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <h2>Diva BINGO</h2>
+        <p>Chat plays along live. First full card wins bragging rights.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    made on weekends by <a href="https://twitch.tv/asiandiva__">asiandiva__</a>
+  </footer>
+
+</div>
+</body>
+</html>
