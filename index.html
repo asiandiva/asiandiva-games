@@ -70,9 +70,26 @@
     content:"daily";background:var(--honey);
   }
 
-  footer{margin-top:58px;padding-top:22px;border-top:2px dotted rgba(122,95,48,.25);
-    font-size:13px;color:var(--soft)}
-  footer a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--honey)}
+  footer{
+    margin-top:66px;padding-top:28px;
+    border-top:2px dotted rgba(122,95,48,.25);
+    text-align:center;
+  }
+  .made{font-size:14px;color:var(--soft)}
+  .made a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--honey)}
+  .made a:hover{background:var(--honey)}
+
+  .legal{margin-top:15px}
+  .legal a{
+    display:inline-block;
+    font-size:11px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);text-decoration:none;
+    padding-bottom:4px;
+    border-bottom:2px solid transparent;
+    transition:color .16s ease, border-color .16s ease;
+  }
+  .legal a:hover{color:var(--ink);border-bottom-color:var(--honey)}
 
   a:focus-visible{outline:3px solid var(--lilac);outline-offset:3px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -161,7 +178,8 @@
   </div>
 
   <footer>
-    made on weekends by <a href="https://twitch.tv/asiandiva__">asiandiva__</a>
+    <div class="made">made on weekends by <a href="https://twitch.tv/asiandiva__">asiandiva__</a></div>
+    <div class="legal"><a href="/privacy">Privacy Policy</a></div>
   </footer>
 
 </div>
