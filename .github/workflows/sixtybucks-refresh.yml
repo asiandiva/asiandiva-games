@@ -1,0 +1,39 @@
+name: Refresh Sixty Bucks
+
+on:
+  schedule:
+    # 07:00 UTC every Sunday, which is 3am New York in summer, 2am in winter.
+    # Well clear of midnight so the calendar is never rewritten mid-play.
+    - cron: '0 7 * * 0'
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write           # needed so the job can commit the new files
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Pull from Steam and rebuild the calendar
+        working-directory: sixtybucks
+        run: node refresh.mjs
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name  "sixty-bucks-bot"
+          git config user.email "actions@github.com"
+          git add sixtybucks/games.json sixtybucks/calendar.json
+          if git diff --staged --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Refresh game pool and calendar"
+            git push
+          fi
