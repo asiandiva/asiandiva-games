@@ -122,10 +122,13 @@ async function readJson(path, fallback){
 }
 
 /* ---------- calendar ---------- */
+// New York, not UTC. The page reads days in New York, so if these disagreed a manual
+// run late in the evening would leave today with no entry.
 const dayKey = offset => {
   const d = new Date();
   d.setUTCDate(d.getUTCDate() + offset);
-  return d.toISOString().slice(0, 10);
+  return new Intl.DateTimeFormat('en-CA', {timeZone:'America/New_York',
+    year:'numeric', month:'2-digit', day:'2-digit'}).format(d);
 };
 
 function extendCalendar(calendar, pool, freshIds){
