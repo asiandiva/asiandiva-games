@@ -244,18 +244,20 @@ function shuffled(list, seedStr){
   for (let i=a.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
-// walk a shuffled pool six at a time so nothing repeats until the pool is used up
+// walk a shuffled pool one at a time so nothing repeats until the pool is used up.
+// pulls one game per step and skips anything already chosen, because the shuffle
+// changes at a cycle boundary and could otherwise hand back the same game twice.
 function picksForDay(n){
   const N = POOL.length;
-  if (N <= ROUNDS) return shuffled(POOL,'d'+n).slice(0,Math.min(ROUNDS,N));
+  if (N <= ROUNDS) return shuffled(POOL,'d'+n).slice(0, Math.min(ROUNDS, N));
   const out = [];
   let pos = n * ROUNDS;
-  while (out.length < ROUNDS){
-    const cycle = Math.floor(pos / N);
-    const order = shuffled(POOL, 'c'+cycle+':'+N);
-    const take = Math.min(ROUNDS - out.length, N - (pos % N));
-    out.push(...order.slice(pos % N, pos % N + take));
-    pos += take;
+  const stop = pos + N * 2;                    // safety net, never loop forever
+  while (out.length < ROUNDS && pos < stop){
+    const order = shuffled(POOL, 'c' + Math.floor(pos/N) + ':' + N);
+    const g = order[pos % N];
+    pos++;
+    if (g && !out.some(x => x.id === g.id)) out.push(g);
   }
   return out;
 }
@@ -336,8 +338,10 @@ function checkPrice(){
   const mk = over ? 99 : Math.max(1, guess/(actual*2)*100);
   $('marker').style.left = '50%';
   animate(700, p => {
-    $('actual').textContent = money(actual*p);
-    $('marker').style.left = (50 + (mk-50)*p) + '%';
+    const a = $('actual'), m = $('marker');
+    if (!a || !m) return;                 // results screen took over, nothing to draw
+    a.textContent = money(actual*p);
+    m.style.left = (50 + (mk-50)*p) + '%';
   });
 
   const chip = $('chip');
@@ -371,7 +375,11 @@ function showResults(save, justFinished){
     '<span class="nm">'+r.name+'</span>'+
     '<span class="pr">'+money(r.price)+'</span></div>').join('');
 
-  const shareLabel = navigator.share ? 'SHARE RESULT' : 'COPY RESULT';
+  // Windows and Mac share trays throw away everything but the link, so the
+  // share sheet is phones only. Desktop always copies.
+  const isPhone = navigator.maxTouchPoints > 0 &&
+                  /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const shareLabel = (isPhone && navigator.share) ? 'SHARE RESULT' : 'COPY RESULT';
 
   $('card').innerHTML =
     '<div class="priceLbl">'+(justFinished ? 'Today\u2019s score' : 'You already played today')+'</div>'+
@@ -424,7 +432,7 @@ function showResults(save, justFinished){
   }
 
   $('share').onclick = () => {
-    if (navigator.share){
+    if (isPhone && navigator.share){
       navigator.share({text}).then(()=>flash('SHARED')).catch(err => {
         if (err && err.name === 'AbortError') return;      // they backed out, say nothing
         copy();
