@@ -20,6 +20,7 @@ const MAX_REPRICE    = 60;     // existing games re-checked per run
 const LOOKUP_DELAY   = 1500;   // ms between Steam calls. be polite or get rate limited
 const MIN_PRICE      = 1.00;
 const MAX_PRICE      = 200.00;
+const MIN_REVIEWS    = 200;    // if barely anyone has played it, nobody can guess its price
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const log   = (...a) => console.log(...a);
@@ -51,9 +52,8 @@ async function searchPage(params, start){
 async function gatherCandidates(){
   const found = new Set();
   const runs = [
-    {params:{filter:'topsellers'},                 pages:6},   // recognisable, the good stuff
-    {params:{filter:'popularnew'},                 pages:3},   // this month's releases
-    {params:{sort_by:'Released_DESC'},             pages:2}    // very newest
+    {params:{filter:'topsellers'},  pages:8},   // recognisable, the good stuff
+    {params:{filter:'popularnew'},  pages:4}    // this month's releases that people noticed
   ];
   for (const run of runs){
     for (let p = 0; p < run.pages; p++){
@@ -91,6 +91,13 @@ async function inspect(appid){
   const ids = (d.content_descriptors && d.content_descriptors.ids) || [];
   if (ids.some(i => ADULT_IDS.has(i))) return null;
 
+  // subscription and free-to-play-with-a-box games: the shelf price isn't the real price
+  const cats = (d.categories || []).map(c => c.description || '').join(' ').toLowerCase();
+  if (/mmo|subscription/.test(cats)) return null;
+
+  const reviews = (d.recommendations && d.recommendations.total) || 0;
+  if (reviews < MIN_REVIEWS) return null;
+
   const po = d.price_overview;
   if (!po || po.currency !== 'USD') return null;
 
@@ -100,8 +107,9 @@ async function inspect(appid){
 
   return {
     id: appid,
-    name: (d.name || '').trim(),
+    name: (d.name || '').replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim(),
     price: Number(price.toFixed(2)),
+    reviews,
     checked: new Date().toISOString().slice(0, 10)
   };
 }
@@ -172,7 +180,7 @@ for (const id of unseen.slice(0, MAX_LOOKUPS)){
   if (entry){
     known.set(id, entry);
     freshIds.add(id);
-    log(`  + ${entry.name} — $${entry.price}`);
+    log(`  + ${entry.name} — $${entry.price} (${entry.reviews.toLocaleString()} reviews)`);
   }
   await sleep(LOOKUP_DELAY);
 }
