@@ -409,7 +409,7 @@ body.dev .proto{display:flex}
         <div style="display:flex;align-items:center;gap:14px">
           <div class="goal" id="goalChip"></div>
           <div class="code-chip" id="codeChip" title="click to hide">
-            <span class="lbl">ROOM</span><span class="val" id="codeVal">DUCK</span><span class="tip" id="codeTip">HIDE</span>
+            <span class="lbl">ROOM</span><span class="val" id="codeVal">----</span><span class="tip" id="codeTip">HIDE</span>
           </div>
         </div>
       </div>
@@ -468,7 +468,7 @@ body.dev .proto{display:flex}
     <div class="phone">
       <div class="phone-top">
         <span class="who">dave</span>
-        <span class="rm">ROOM DUCK</span>
+        <span class="rm">ROOM ----</span>
       </div>
 
       <div class="lobby" id="lobby">
@@ -478,7 +478,7 @@ body.dev .proto{display:flex}
         <div class="joinbrand">asiandiva.games</div>
         <div class="fld">
           <span>ROOM CODE</span>
-          <input id="codeIn" maxlength="4" placeholder="DUCK" autocomplete="off" spellcheck="false">
+          <input id="codeIn" maxlength="4" placeholder="CODE" autocomplete="off" spellcheck="false">
         </div>
         <div class="fld">
           <span>YOUR NAME</span>
@@ -778,7 +778,20 @@ function kick(name){
 /* ===== joining =====
    nickname only, no account needed, so this works off Twitch too.
    names land on the stream overlay, so they get cleaned and checked first. */
-const ROOM_CODE='DUCK';
+/* Codes skip O/0/I/1/L because these get read out loud and typed by ear. */
+const SAFE='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+let ROOM_CODE='';
+function newCode(){
+  let c=''; for(let i=0;i<4;i++) c+=SAFE[Math.floor(Math.random()*SAFE.length)];
+  return c;
+}
+function setCode(c){
+  ROOM_CODE=c;
+  const v=document.getElementById('codeVal');
+  const chip=document.getElementById('codeChip');
+  if(v && !chip.classList.contains('hid')) v.textContent=c;
+  document.querySelectorAll('.phone-top .rm').forEach(e=>e.textContent='ROOM '+c);
+}
 const BLOCKED=['admin','host','mod','moderator','bingo','server','system','null','undefined'];
 const RUDE=/(f+u+c+k|sh+i+t|b+i+t+c+h|c+u+n+t|n+i+g+|f+a+g|r+a+p+e|d+i+c+k|c+o+c+k|p+u+s+s+y|w+h+o+r+e|s+l+u+t|a+s+s+h+o+l+e)/i;
 let me=null;
@@ -999,7 +1012,7 @@ document.getElementById('resetBtn').onclick=playAgain;
 const codeChip=document.getElementById('codeChip');
 codeChip.onclick=()=>{
   const hid=codeChip.classList.toggle('hid');
-  document.getElementById('codeVal').textContent = hid ? '\u2022\u2022\u2022\u2022' : 'DUCK';
+  document.getElementById('codeVal').textContent = hid ? '\u2022\u2022\u2022\u2022' : ROOM_CODE;
   document.getElementById('codeTip').textContent = hid ? 'SHOW' : 'HIDE';
 };
 document.getElementById('motionBtn').onclick=e=>{
@@ -1008,7 +1021,7 @@ document.getElementById('motionBtn').onclick=e=>{
 };
 document.getElementById('againBtn').onclick=playAgain;
 document.getElementById('closeBtn').onclick=closeRoom;
-document.getElementById('btnHost').onclick=()=>{ reset(false); showView('setup'); };
+document.getElementById('btnHost').onclick=()=>{ reset(false); setCode(newCode()); showView('setup'); };
 document.getElementById('openRoomBtn').onclick=()=>showView('host');
 document.getElementById('setupBack').onclick=closeRoom;
 document.getElementById('btnJoin').onclick=()=>showView('player');
@@ -1189,6 +1202,7 @@ window.addEventListener('resize',fitHost);
 if(new URLSearchParams(location.search).has('dev')) document.body.classList.add('dev');
 
 reset(false);
+setCode(newCode());
 showView('choose');
 </script>
 </body>
