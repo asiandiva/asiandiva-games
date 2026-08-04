@@ -99,6 +99,8 @@ body{background:var(--yellow);color:var(--ink);font-family:'Outfit',system-ui,sa
 .credit a:hover{background:var(--pink);border-bottom-color:var(--ink)}
 .credit a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
 .credit .fine{display:block;margin-top:8px;font-size:11px;font-weight:600;color:#8A7300;letter-spacing:.02em}
+.warn{margin-top:16px;background:#FFF0D2;border:2px dashed rgba(224,43,32,.5);border-radius:10px;
+  padding:12px 14px;font-size:12.5px;font-weight:600;line-height:1.5;color:#8A5A1E;text-align:center}
 .sharebox{margin-top:18px;background:#fff;border:3px dashed rgba(20,16,12,.3);border-radius:10px;
   padding:14px;text-align:center;font-size:15px;font-weight:700;line-height:1.6;
   white-space:pre-wrap;word-break:break-word;user-select:all;cursor:text}
@@ -283,13 +285,19 @@ function readSave(){
   } catch(e){}
   return best;
 }
+let storageBroken = false;
+
 function writeSave(obj){
   const json = JSON.stringify(obj);
-  try { localStorage.setItem(STORE_KEY, json); } catch(e){}
+  let stored = false;
+  try { localStorage.setItem(STORE_KEY, json); stored = localStorage.getItem(STORE_KEY) === json; } catch(e){}
   try {
     document.cookie = STORE_KEY + '=' + encodeURIComponent(json) +
       ';path=/;max-age=172800;SameSite=Lax';    // two days is plenty
+    if (document.cookie.indexOf(STORE_KEY + '=') !== -1) stored = true;
   } catch(e){}
+  // read it straight back. if nothing took, say so rather than failing quietly.
+  storageBroken = !stored;
 }
 
 /* ---------- art ---------- */
@@ -420,7 +428,12 @@ function showResults(save, justFinished){
     '<div class="recap">'+rows+'</div>'+
     '<div class="sharebox" id="sharebox"></div>'+
     '<button class="btn wide" id="share" style="margin-top:12px">'+shareLabel+'</button>'+
-    '<div class="countdown">Next six unlock at midnight New York<b id="clock">--:--:--</b></div>';
+    '<div class="countdown">Next six unlock at midnight New York<b id="clock">--:--:--</b></div>'+
+    (storageBroken
+      ? '<div class="warn">This browser isn\u2019t saving your result, so it will let you '+
+        'replay today. Usually a private window, or a setting that clears site data. '+
+        'Your score is still correct.</div>'
+      : '');
 
   const text = 'SIXTY BUCKS #'+save.day+'  '+save.score+'/'+max+'\n'+grid+'\nhttps://asiandiva.games/sixtybucks';
   $('sharebox').textContent = text;                       // always visible, always selectable
