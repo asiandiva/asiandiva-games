@@ -99,6 +99,9 @@ body{background:var(--yellow);color:var(--ink);font-family:'Outfit',system-ui,sa
 .credit a:hover{background:var(--pink);border-bottom-color:var(--ink)}
 .credit a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
 .credit .fine{display:block;margin-top:8px;font-size:11px;font-weight:600;color:#8A7300;letter-spacing:.02em}
+.sharebox{margin-top:18px;background:#fff;border:3px dashed rgba(20,16,12,.3);border-radius:10px;
+  padding:14px;text-align:center;font-size:15px;font-weight:700;line-height:1.6;
+  white-space:pre-wrap;word-break:break-word;user-select:all;cursor:text}
 .usdnote{margin-top:12px;text-align:center;font-size:11px;letter-spacing:.16em;
   text-transform:uppercase;font-weight:800;color:var(--mute)}
 .usdnote b{color:var(--ink)}
@@ -380,19 +383,50 @@ function showResults(save, justFinished){
                              'You have only ever bought games on sale.')+
     '</p>'+
     '<div class="recap">'+rows+'</div>'+
-    '<button class="btn wide" id="share" style="margin-top:20px">'+shareLabel+'</button>'+
+    '<div class="sharebox" id="sharebox"></div>'+
+    '<button class="btn wide" id="share" style="margin-top:12px">'+shareLabel+'</button>'+
     '<div class="countdown">Next six unlock at midnight New York<b id="clock">--:--:--</b></div>';
 
   const text = 'SIXTY BUCKS #'+save.day+'  '+save.score+'/'+max+'\n'+grid+'\nhttps://asiandiva.games/sixtybucks';
-  const flash = word => { $('share').textContent = word; setTimeout(()=>$('share').textContent = shareLabel, 1600); };
-  const copy = () => navigator.clipboard.writeText(text)
-    .then(()=>flash('COPIED'))
-    .catch(()=>flash('PRESS CTRL+C'));
+  $('sharebox').textContent = text;                       // always visible, always selectable
+
+  const flash = word => { $('share').textContent = word; setTimeout(()=>$('share').textContent = shareLabel, 1800); };
+
+  // three ways to copy, because any one of them can be blocked
+  function copy(){
+    const done = () => flash('COPIED');
+    if (navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done).catch(legacy);
+    } else legacy();
+
+    function legacy(){
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) return done();
+      } catch(e){}
+      select();                                            // last resort: highlight it for them
+      flash('SELECTED, HIT CTRL+C');
+    }
+  }
+
+  function select(){
+    const r = document.createRange();
+    r.selectNodeContents($('sharebox'));
+    const s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+  }
 
   $('share').onclick = () => {
-    if (navigator.share) {
-      navigator.share({text}).catch(err => {
-        if (err && err.name === 'AbortError') return;   // they backed out, say nothing
+    if (navigator.share){
+      navigator.share({text}).then(()=>flash('SHARED')).catch(err => {
+        if (err && err.name === 'AbortError') return;      // they backed out, say nothing
         copy();
       });
     } else copy();
