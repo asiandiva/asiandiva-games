@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sixty Bucks · guess what the game costs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#FFCE1F; --ink:#14100C; --paper:#FFF9EC;
+  --red:#E02B20; --green:#1B9E57; --pink:#FF6FB5; --mute:#8A7A55;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--yellow);color:var(--ink);font-family:'Outfit',system-ui,sans-serif;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.stage{width:100%;max-width:860px}
+
+.sign{text-align:center;margin-bottom:8px}
+.tag{display:inline-block;position:relative;background:var(--ink);color:var(--yellow);
+  font-family:'Bungee',cursive;font-size:clamp(30px,7vw,58px);line-height:1;
+  padding:16px 30px 16px 46px;border-radius:6px 16px 16px 6px}
+.tag::before{content:'';position:absolute;left:18px;top:50%;margin-top:-7px;width:14px;height:14px;
+  border-radius:50%;background:var(--yellow);box-shadow:inset 0 2px 3px rgba(0,0,0,.4)}
+.tagline{margin-top:14px;font-size:14px;letter-spacing:.24em;text-transform:uppercase;font-weight:800}
+
+.hud{display:flex;justify-content:space-between;align-items:center;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin:24px 4px 10px;color:#7A6400}
+.hud b{color:var(--ink);font-family:'Bungee',cursive;letter-spacing:0;font-size:17px}
+
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:10px;
+  padding:24px;box-shadow:8px 8px 0 rgba(20,16,12,.9)}
+.frame{background:var(--ink);border-radius:6px;padding:10px;display:flex;
+  align-items:center;justify-content:center;min-height:230px;overflow:hidden}
+.frame img{width:100%;border-radius:3px;display:block}
+.ph{width:100%;min-height:210px;border-radius:3px;
+  background:repeating-linear-gradient(45deg,#241E16,#241E16 14px,#2E2619 14px,#2E2619 28px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center}
+.ph .t{font-family:'Bungee',cursive;font-size:clamp(16px,3vw,24px);color:var(--yellow);line-height:1.2}
+.ph .s{font-size:11px;color:#9A8A60;letter-spacing:.14em;font-weight:700;text-transform:uppercase}
+
+.itemname{font-size:clamp(20px,3.4vw,29px);font-weight:800;text-align:center;margin:18px 0 3px;line-height:1.2}
+.itemsub{text-align:center;color:var(--mute);font-size:13px;font-weight:600;margin-bottom:20px}
+
+.bidrow{display:flex;gap:12px}
+.bidbox{flex:1;display:flex;align-items:center;background:#fff;border:3px solid var(--ink);
+  border-radius:10px;padding:0 16px}
+.bidbox span{font-family:'Bungee',cursive;font-size:26px;color:var(--mute);padding-right:6px}
+.bidbox input{flex:1;background:none;border:0;outline:0;color:var(--ink);
+  font-family:'Bungee',cursive;font-size:26px;width:100%;padding:15px 0}
+.bidbox input::placeholder{color:#D6C89E}
+.btn{font-family:'Bungee',cursive;font-size:16px;background:var(--ink);color:var(--yellow);
+  border:0;border-radius:10px;padding:0 26px;cursor:pointer;box-shadow:0 5px 0 #000;white-space:nowrap}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #000}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.wide{width:100%;padding:17px}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:3px solid var(--ink)}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+
+.reveal{margin-top:20px;display:none}
+.priceLbl{text-align:center;font-size:11px;letter-spacing:.22em;color:var(--mute);
+  text-transform:uppercase;font-weight:800}
+.pricebig{text-align:center;font-family:'Bungee',cursive;font-size:clamp(38px,8vw,64px);
+  color:var(--red);line-height:1.1}
+.track{position:relative;height:44px;margin:22px 0 6px;background:#EFE6CE;
+  border:3px solid var(--ink);border-radius:22px;overflow:hidden}
+.band{position:absolute;top:0;bottom:0}
+.band.close{background:var(--yellow)}
+.band.exact{background:var(--green)}
+.center{position:absolute;top:0;bottom:0;width:2px;background:var(--ink);left:50%}
+.marker{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
+  background:var(--pink);border:3px solid var(--ink)}
+.scale{display:flex;justify-content:space-between;font-size:10px;color:var(--mute);
+  letter-spacing:.14em;font-weight:800}
+.verdict{text-align:center;margin-top:18px}
+.chip{display:inline-block;font-family:'Bungee',cursive;font-size:15px;padding:11px 22px;
+  border-radius:999px;border:3px solid var(--ink)}
+.chip.p3{background:var(--green);color:#fff}
+.chip.p1{background:var(--yellow);color:var(--ink)}
+.chip.p0{background:#E3D9BE;color:#6E6045}
+.verdict p{color:var(--mute);font-size:14px;font-weight:600;margin-top:12px}
+
+.grid{font-size:32px;letter-spacing:5px;text-align:center;margin:16px 0}
+.final{font-family:'Bungee',cursive;font-size:clamp(44px,10vw,76px);color:var(--red);text-align:center;line-height:1}
+.recap{margin:18px 0 0;border-top:2px dashed rgba(20,16,12,.25)}
+.recap .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  padding:9px 2px;border-bottom:1px dashed rgba(20,16,12,.18);font-size:14px}
+.recap .row .nm{font-weight:700;flex:1;text-align:left}
+.recap .row .pr{font-family:'Bungee',cursive;font-size:14px;color:var(--red)}
+.recap .row .dot{font-size:15px}
+.countdown{text-align:center;margin-top:18px;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:800;color:var(--mute)}
+.countdown b{font-family:'Bungee',cursive;color:var(--ink);font-size:20px;letter-spacing:0;display:block;margin-top:6px}
+
+.credit{margin-top:26px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.06em;color:#7A6400}
+.credit a{color:var(--ink);text-decoration:none;border-bottom:3px solid var(--pink);
+  padding-bottom:1px;font-weight:800}
+.credit a:hover{background:var(--pink);border-bottom-color:var(--ink)}
+.credit a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.credit .fine{display:block;margin-top:8px;font-size:11px;font-weight:600;color:#8A7300;letter-spacing:.02em}
+.usdnote{margin-top:12px;text-align:center;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:800;color:var(--mute)}
+.usdnote b{color:var(--ink)}
+@media(max-width:560px){.bidrow{flex-direction:column}.btn{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="sign">
+    <div class="tag">SIXTY BUCKS</div>
+    <div class="tagline">Guess what the game costs</div>
+  </div>
+
+  <div class="hud">
+    <div>Day <b id="dayNum">1</b> &middot; Game <b id="roundNum">1</b> of <b id="roundTot">6</b></div>
+    <div>Score <b id="score">0</b></div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="frame" id="frame"></div>
+    <div class="itemname" id="itemname">Loading</div>
+    <div class="itemsub" id="itemsub"></div>
+
+    <div class="bidrow" id="bidrow">
+      <div class="bidbox"><span>$</span>
+        <input id="bid" type="number" inputmode="decimal" placeholder="0.00" step="0.01" min="0" autocomplete="off"></div>
+      <button class="btn" id="lock">CHECK PRICE</button>
+    </div>
+    <div class="usdnote" id="usdnote">Guess in <b>US dollars</b> &middot; prices from the US Steam store</div>
+
+    <div class="reveal" id="reveal">
+      <div class="priceLbl">Full price, no sale</div>
+      <div class="pricebig" id="actual">$0</div>
+      <div class="track">
+        <div class="band close" id="bandClose"></div>
+        <div class="band exact" id="bandExact"></div>
+        <div class="center"></div>
+        <div class="marker" id="marker"></div>
+      </div>
+      <div class="scale"><span>$0</span><span>ACTUAL</span><span>2&times;</span></div>
+      <div class="verdict">
+        <div class="chip" id="chip">+0</div>
+        <p id="verdictText"></p>
+      </div>
+      <button class="btn wide" id="next" style="margin-top:18px">NEXT GAME</button>
+    </div>
+  </div>
+
+  <div class="credit">
+    an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production
+    <span class="fine">prices from Steam, US storefront, full price &middot; not affiliated with Valve</span>
+  </div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------
+   SIXTY BUCKS
+   Six games a day. Same six for everyone. Rolls over at midnight
+   New York time. games.json is written weekly by the GitHub Action;
+   the list below is the fallback if that file is missing.
+--------------------------------------------------------------- */
+
+const FALLBACK = [
+  {id:620,     name:"Portal 2",                 price:9.99},
+  {id:105600,  name:"Terraria",                 price:9.99},
+  {id:1794680, name:"Vampire Survivors",        price:4.99},
+  {id:413150,  name:"Stardew Valley",           price:14.99},
+  {id:367520,  name:"Hollow Knight",            price:14.99},
+  {id:322330,  name:"Don't Starve Together",    price:14.99},
+  {id:739630,  name:"Phasmophobia",             price:19.99},
+  {id:1145360, name:"Hades",                    price:24.99},
+  {id:292030,  name:"The Witcher 3",            price:39.99, sub:"Wild Hunt"},
+  {id:632470,  name:"Disco Elysium",            price:39.99, sub:"The Final Cut"},
+  {id:1245620, name:"ELDEN RING",               price:59.99},
+  {id:1086940, name:"Baldur's Gate 3",          price:59.99},
+  {id:1091500, name:"Cyberpunk 2077",           price:59.99},
+  {id:1687950, name:"Persona 5 Royal",          price:59.99},
+  {id:1174180, name:"Red Dead Redemption 2",    price:59.99},
+  {id:1462040, name:"Final Fantasy VII Remake", price:69.99, sub:"Intergrade"}
+];
+
+const HOSTS = [
+  "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/{id}/header.jpg",
+  "https://cdn.cloudflare.steamstatic.com/steam/apps/{id}/header.jpg",
+  "https://cdn.akamai.steamstatic.com/steam/apps/{id}/header.jpg",
+  "https://steamcdn-a.akamaihd.net/steam/apps/{id}/header.jpg"
+];
+
+// locked scoring. everyone plays the same rules or the share grid is meaningless.
+const EXACT_PCT = 3,  EXACT_MIN = 1;
+const CLOSE_PCT = 15, CLOSE_MIN = 3;
+
+const ROUNDS = 6;
+const ZONE = 'America/New_York';
+const EPOCH = '2026-08-04';           // launch day = Day 1. don't change this after launch.
+const STORE_KEY = 'sixtybucks';
+
+const $ = id => document.getElementById(id);
+const money = n => '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const winExact = p => Math.max(p*EXACT_PCT/100, EXACT_MIN);
+const winClose = p => Math.max(p*CLOSE_PCT/100, CLOSE_MIN, winExact(p));
+
+let POOL = FALLBACK.slice();
+let deck=[], idx=0, score=0, results=[], item=null, locked=false, dayIndex=0, dateKey='';
+
+/* ---------- date, in New York regardless of where the player is ---------- */
+function nyDateKey(){
+  return new Intl.DateTimeFormat('en-CA',{timeZone:ZONE,year:'numeric',month:'2-digit',day:'2-digit'})
+    .format(new Date());                       // "2026-08-04"
+}
+function daysSinceEpoch(key){
+  const a = Date.parse(key + 'T00:00:00Z');
+  const b = Date.parse(EPOCH + 'T00:00:00Z');
+  return Math.max(0, Math.round((a-b)/86400000));
+}
+function secondsToMidnight(){
+  const p = new Intl.DateTimeFormat('en-US',{timeZone:ZONE,hour12:false,
+    hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(new Date());
+  const g = t => +p.find(x=>x.type===t).value;
+  let h = g('hour'); if (h === 24) h = 0;      // some engines report hour 24
+  return 86400 - (h*3600 + g('minute')*60 + g('second'));
+}
+
+/* ---------- deterministic shuffle so every browser gets the same six ---------- */
+function seedFrom(str){
+  let h = 2166136261;
+  for (let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function rng(seed){
+  return function(){
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed>>>15, 1 | seed);
+    t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t;
+    return ((t ^ t>>>14) >>> 0) / 4294967296;
+  };
+}
+function shuffled(list, seedStr){
+  const a = list.slice(), r = rng(seedFrom(seedStr));
+  for (let i=a.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+// walk a shuffled pool six at a time so nothing repeats until the pool is used up
+function picksForDay(n){
+  const N = POOL.length;
+  if (N <= ROUNDS) return shuffled(POOL,'d'+n).slice(0,Math.min(ROUNDS,N));
+  const out = [];
+  let pos = n * ROUNDS;
+  while (out.length < ROUNDS){
+    const cycle = Math.floor(pos / N);
+    const order = shuffled(POOL, 'c'+cycle+':'+N);
+    const take = Math.min(ROUNDS - out.length, N - (pos % N));
+    out.push(...order.slice(pos % N, pos % N + take));
+    pos += take;
+  }
+  return out;
+}
+
+/* ---------- one play per day ---------- */
+function readSave(){
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch(e){ return null; }
+}
+function writeSave(obj){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch(e){}
+}
+
+/* ---------- art ---------- */
+function loadArt(appid, name){
+  const frame = $('frame');
+  let h = 0;
+  const img = new Image();
+  img.alt = '';
+  img.onload = () => { frame.innerHTML=''; frame.appendChild(img); };
+  img.onerror = () => {
+    h++;
+    if (h < HOSTS.length) img.src = HOSTS[h].replace('{id}', appid);
+    else frame.innerHTML = '<div class="ph"><div class="t">'+name+'</div>'+
+      '<div class="s">cover unavailable &middot; app '+appid+'</div></div>';
+  };
+  img.src = HOSTS[0].replace('{id}', appid);
+}
+
+function animate(ms, fn){                     // rAF, never CSS: reduce-motion kills CSS silently
+  const t0 = performance.now();
+  (function f(now){
+    const p = Math.min(1,(now-t0)/ms);
+    fn(1 - Math.pow(1-p,3));
+    if (p<1) requestAnimationFrame(f);
+  })(t0);
+}
+
+function paint(){
+  item = deck[idx]; locked = false;
+  $('roundNum').textContent = idx+1;
+  $('score').textContent = score;
+  $('itemname').textContent = item.name;
+  $('itemsub').textContent = item.sub || 'PC \u00b7 base game';
+  $('frame').innerHTML = '<div class="ph"><div class="s">loading cover</div></div>';
+  loadArt(item.id, item.name);
+  $('reveal').style.display = 'none';
+  $('bidrow').style.display = 'flex';
+  $('usdnote').style.display = 'block';
+  $('bid').value = '';
+  $('lock').disabled = false;
+  $('bid').focus();
+}
+
+function checkPrice(){
+  if (locked) return;
+  const guess = parseFloat($('bid').value);
+  if (!(guess >= 0)) { $('bid').focus(); return; }
+  locked = true;
+  $('lock').disabled = true;
+  $('bidrow').style.display = 'none';
+  $('usdnote').style.display = 'none';
+  $('reveal').style.display = 'block';
+
+  const actual = item.price;
+  const gap = Math.abs(guess - actual);
+  const eWin = winExact(actual), cWin = winClose(actual);
+  const pts = gap <= eWin ? 3 : gap <= cWin ? 1 : 0;
+  score += pts;
+  results.push({pts, guess, name:item.name, price:actual});
+  $('score').textContent = score;
+
+  const L = p => 50 + p/2;
+  const c = Math.min(100, cWin/actual*100), e = Math.min(100, eWin/actual*100);
+  $('bandClose').style.left = L(-c)+'%'; $('bandClose').style.width = c+'%';
+  $('bandExact').style.left = L(-e)+'%'; $('bandExact').style.width = e+'%';
+
+  const over = guess > actual*2;
+  const mk = over ? 99 : Math.max(1, guess/(actual*2)*100);
+  $('marker').style.left = '50%';
+  animate(700, p => {
+    $('actual').textContent = money(actual*p);
+    $('marker').style.left = (50 + (mk-50)*p) + '%';
+  });
+
+  const chip = $('chip');
+  chip.className = 'chip p'+pts;
+  chip.textContent = pts===3 ? 'NAILED IT  +3' : pts===1 ? 'CLOSE  +1' : 'NOPE  +0';
+  $('verdictText').textContent = over
+    ? 'You guessed ' + money(guess) + '. Nobody charges that.'
+    : 'You guessed ' + money(guess) + '. Off by ' + money(gap) + ', ' + (guess>actual?'over':'under') + '.';
+
+  $('next').textContent = idx === deck.length-1 ? 'SEE TODAY\u2019S SCORE' : 'NEXT GAME';
+  $('next').focus();
+}
+
+function next(){
+  idx++;
+  if (idx >= deck.length){
+    writeSave({date:dateKey, day:dayIndex+1, score, results});
+    return showResults({date:dateKey, day:dayIndex+1, score, results}, true);
+  }
+  paint();
+}
+
+/* ---------- results ---------- */
+const face = p => p===3 ? '\u{1F7E9}' : p===1 ? '\u{1F7E8}' : '\u2B1B';
+
+function showResults(save, justFinished){
+  const grid = save.results.map(r => face(r.pts)).join('');
+  const max = save.results.length * 3;
+  const rows = save.results.map(r =>
+    '<div class="row"><span class="dot">'+face(r.pts)+'</span>'+
+    '<span class="nm">'+r.name+'</span>'+
+    '<span class="pr">'+money(r.price)+'</span></div>').join('');
+
+  const shareLabel = navigator.share ? 'SHARE RESULT' : 'COPY RESULT';
+
+  $('card').innerHTML =
+    '<div class="priceLbl">'+(justFinished ? 'Today\u2019s score' : 'You already played today')+'</div>'+
+    '<div class="final">'+save.score+' / '+max+'</div>'+
+    '<div class="grid">'+grid+'</div>'+
+    '<p style="text-align:center;color:var(--mute);font-size:14px;font-weight:600">'+
+      (save.score >= max-4 ? 'Suspiciously good. Do you work at Valve?' :
+       save.score >= max/2 ? 'Respectable. The Diva Squad would allow it.' :
+                             'You have only ever bought games on sale.')+
+    '</p>'+
+    '<div class="recap">'+rows+'</div>'+
+    '<button class="btn wide" id="share" style="margin-top:20px">'+shareLabel+'</button>'+
+    '<div class="countdown">Next six unlock at midnight New York<b id="clock">--:--:--</b></div>';
+
+  const text = 'SIXTY BUCKS #'+save.day+'  '+save.score+'/'+max+'\n'+grid+'\nhttps://asiandiva.games/sixtybucks';
+  const flash = word => { $('share').textContent = word; setTimeout(()=>$('share').textContent = shareLabel, 1600); };
+  const copy = () => navigator.clipboard.writeText(text)
+    .then(()=>flash('COPIED'))
+    .catch(()=>flash('PRESS CTRL+C'));
+
+  $('share').onclick = () => {
+    if (navigator.share) {
+      navigator.share({text}).catch(err => {
+        if (err && err.name === 'AbortError') return;   // they backed out, say nothing
+        copy();
+      });
+    } else copy();
+  };
+  tickClock();
+}
+
+function tickClock(){
+  const el = $('clock');
+  if (!el) return;
+  let s = secondsToMidnight();
+  const pad = n => String(n).padStart(2,'0');
+  el.textContent = pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);
+  setTimeout(() => {
+    if (nyDateKey() !== dateKey) location.reload();   // rolled over, load the new six
+    tickClock();
+  }, 1000);
+}
+
+/* ---------- boot ---------- */
+let CALENDAR = null;
+
+function begin(){
+  dateKey  = nyDateKey();
+  dayIndex = daysSinceEpoch(dateKey);
+  $('dayNum').textContent = dayIndex + 1;
+
+  // the calendar is the real source. the shuffle is only a safety net
+  // for before the Action has ever run.
+  deck = (CALENDAR && Array.isArray(CALENDAR[dateKey]) && CALENDAR[dateKey].length)
+    ? CALENDAR[dateKey]
+    : picksForDay(dayIndex);
+  $('roundTot').textContent = deck.length;
+
+  const save = readSave();
+  if (save && save.date === dateKey) return showResults(save, false);
+
+  idx = 0; score = 0; results = [];
+  $('lock').onclick = checkPrice;
+  $('next').onclick = next;
+  $('bid').onkeydown = e => { if (e.key === 'Enter') checkPrice(); };
+  paint();
+}
+
+const grab = f => fetch(f, {cache:'no-store'}).then(r => r.ok ? r.json() : null).catch(() => null);
+
+Promise.all([grab('calendar.json'), grab('games.json')])
+  .then(([cal, pool]) => {
+    if (cal && typeof cal === 'object') CALENDAR = cal;
+    if (Array.isArray(pool) && pool.length >= ROUNDS) POOL = pool;
+  })
+  .finally(begin);
+</script>
+</body>
+</html>
