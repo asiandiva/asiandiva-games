@@ -130,6 +130,21 @@ body.dev .proto{display:flex}
 }
 .sheet-board i.hit{background:var(--boba);color:var(--butter);opacity:1;font-weight:700}
 
+/* ===== turned away mid-round, offered a seat to watch ===== */
+.inprog{text-align:center;padding:20px 6px 6px}
+.inprog h3{font-family:var(--display);font-weight:600;font-size:23px;margin-bottom:8px}
+.inprog p{font-size:13px;font-weight:600;color:var(--boba-soft);line-height:1.5;margin-bottom:18px}
+.inprog .fine{font-size:11px;margin-top:12px;margin-bottom:0}
+.watching{padding-top:2px}
+.watchtag{
+  font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.14em;
+  text-align:center;background:var(--taro);color:var(--boba);
+  border:2.5px solid var(--boba);border-radius:999px;padding:5px 12px;margin-bottom:12px;
+}
+.watching .sheet-board{max-height:none;overflow:visible}
+.pchip.watch{background:#F4ECFB;border-style:dashed}
+.pchip.watch .cards{background:var(--taro)}
+
 /* ===== choose screen (this is what /bingo shows) ===== */
 #chooseView{min-height:calc(100vh - var(--bar));display:flex;align-items:center;justify-content:center;padding:30px 20px}
 .choose{max-width:640px;text-align:center}
@@ -496,7 +511,7 @@ body.dev .proto{display:flex}
 
       <div class="hostbar">
         <button id="startBtn" class="hb primary">Start calling</button>
-        <button id="resetBtn" class="hb">New game</button>
+        <button id="resetBtn" class="hb">New round</button>
         <label class="hb speed">Ball every
           <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
         </label>
@@ -538,6 +553,26 @@ body.dev .proto{display:flex}
           <button data-c="3">3<small>CHAOS</small></button>
         </div>
         <button class="callbtn" id="joinBtn" style="background:var(--butter);color:var(--boba);box-shadow:0 5px 0 var(--butter-deep)">JOIN</button>
+      </div>
+
+      <div class="inprog hidden" id="inprog">
+        <h3>This round already started</h3>
+        <p>Cards are dealt at the start, so jumping in now would not be a fair one.</p>
+        <button class="callbtn" id="watchBtn" style="background:var(--butter);color:var(--boba);box-shadow:0 5px 0 var(--butter-deep)">WATCH THIS ROUND</button>
+        <p class="fine">You will be dealt in automatically when the next round starts.</p>
+        <button class="backlink" id="inprogBack">back</button>
+      </div>
+
+      <div class="watching hidden" id="watchArea">
+        <div class="watchtag">WATCHING &middot; you get cards next round</div>
+        <div class="now" id="wNow">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8CAMAAADhV0xWAAAAP1BMVEX9zy4BAQBINCE1JBzdoiNqYlyujChoUCGTbSLweQpXRTdOPCtmYw1UQTD39PRrAAAAAAAAAAAAAAAAAAAAAAAGK4BZAAAAEHRSTlP/APb+/hX+/f7+XakNlwMCpU1sLwAAAwpJREFUeNqVVweSwzAIxDJIWC75/28P1NxUfEwyk3HMirogmJry26bp2Pxqkuwe9OnjLWjqizrtojdnkd8rheffACZaVds4tohorXOKIRC/LwByjBd1wwinIMsTA18sID3+oR5EIdYxwG8iOd691NUKJwjH2ALRZ6gL322oAfwOsd8CtBG8ONkGoKmrDyBeUEGASgKobX+Mg2SzJLNiwSHxg67YWZJJTQDfdyA6sXZisI4MCCbkKMC7hMYGaBS8ZIu2mgVSwjAUN+9NF5oeWHvzYTqIqAIADQ9QOjMjS2cmjlgJKkWAjfrL0Lbwg3k1J01bA8DNuT/EFl4W+Sy4VADAGKxnTgQjFGMQQTBzxYI6gDpuU/yWJLjMbwtaMSjBnGdRRFUPHkBIxKU5RwDqQNRfhJ7WA8rRZytx1wCH4fAFedaCFhPIe4pT4EMrRIAkWtCgUYuEL2YAbOT7PpicgxACASAThofZixN9OpB0GtYi0BCoC+FAq4S/e7EACNZWIgsvhzLUr2Qdkstscm3qX3bUzHFWKr1nAEDrTCpxxwM20LOPOEC0+crrOgFlDo7ZwAbrY+rhA//UEY6t2v5qBY/tsGW4wC3r1p3bgLMwGi7bA0CTmbcB1m2gF0zJwhNAzLoeiopn+8y+3WLwrh+pOu4z+xUAKy9L1fFgOp11gNV3XTPLNrIRnN1rXL192/Wo402ayRXirh3WrAg0YUTDpf3/V5QhipvyQVHDxmLVB7hSmHYy/wMguDBdfHAG+bMXGCsJrhsR/ycIOY1Cw2cJDmZCtZBuSxm+2Iyx7UEsZXXjPPiRiE4ps4YguvATAHPlXGcxsWQ7KZjHKqSdwN1pO5JzpyxcMiCsOKSpdFcmYCfCFnuElCmtLJf/KELVh8eW5ofj5FIBErP9tanqDcd9gdArR+iC556ol5zaLeeubV2cib+XBRIRn65pjamAgar1+OPcRy4WhHyki6KRHHCYc4HjLUtaTLo66kjd6lcehT0oXlXnp6SBTNd16L0rp9ogv+/mLrtuD/dtKsof2XgYaBBbYh0AAAAASUVORK5CYII=" alt="">
+          <div class="txt">
+            <div class="lbl">NOW CALLING</div>
+            <div class="val" id="wNowVal">&mdash;</div>
+          </div>
+        </div>
+        <div class="sheet-board" id="watchBoard"></div>
       </div>
 
       <div class="sheet hidden" id="calledSheet">
@@ -632,6 +667,8 @@ let decks=[];          // [{cells:[25], daubs:[25]}]
 let roster=[];
 let armed=null, armTimer=null;
 let running=false;
+let watching=false;
+let pending=null;
 
 /* =============================================================
    socket
@@ -670,7 +707,8 @@ function handle(m){
 
     case 'joined':                       // you got into a room
       ROOM_CODE=m.code; pattern=m.pattern;
-      cardsFromServer(m.cards);
+      watching = !!m.watching;
+      cardsFromServer(m.cards||[]);
       called=m.called||[]; running=!!m.running;
       called.forEach(markCalled);
       buildSheet(); paintRecent();
@@ -678,8 +716,18 @@ function handle(m){
       if(called.length) showBall(called[called.length-1], true);
       paintCode(); paintGoal();
       $$('lobby').classList.add('hidden');
-      $$('playArea').classList.remove('hidden');
+      $$('inprog').classList.add('hidden');
+      $$('playArea').classList.toggle('hidden', watching);
+      $$('watchArea').classList.toggle('hidden', !watching);
       $('.phone-top .who').textContent = myName;
+      break;
+
+    case 'inprogress':                   // too late for a fair card
+      called=m.called||[]; pattern=m.pattern;
+      buildSheet();
+      $$('joinErr').textContent='';
+      $$('lobby').classList.add('hidden');
+      $$('inprog').classList.remove('hidden');
       break;
 
     case 'err':                          // join was refused
@@ -707,7 +755,14 @@ function handle(m){
 
     case 'round':                        // a fresh round in the same room
       pattern = m.pattern;
-      if(m.cards) cardsFromServer(m.cards);
+      if(m.cards && m.cards.length){
+        cardsFromServer(m.cards);
+        if(watching){                    // you were watching, now you are playing
+          watching=false;
+          $$('watchArea').classList.add('hidden');
+          $$('playArea').classList.remove('hidden');
+        }
+      }
       called=[]; newBoard(); buildSheet(); paintRecent(); paintGoal(); buildPicker();
       $$('leftCount').textContent = 75;
       resetBallDisplay();
@@ -772,9 +827,10 @@ function newBoard(){
 function markCalled(n){ const c=$$('c'+n); if(c) c.classList.add('hit'); }
 
 /* ---------- the phone's copy of the board ----------
-   Players cannot see the host screen, so they get their own. */
-function buildSheet(){
-  const b=$$('sheetBoard'); if(!b) return;
+   Players cannot see the host screen, so they get their own.
+   Same board is used by the sheet (prefix s) and the watch view (prefix w). */
+function buildMiniBoard(hostId, prefix){
+  const b=$$(hostId); if(!b) return;
   b.innerHTML='';
   for(let c=0;c<5;c++){
     const col=document.createElement('div'); col.className='sc';
@@ -782,15 +838,22 @@ function buildSheet(){
     col.appendChild(h);
     for(let i=1;i<=15;i++){
       const n=c*15+i;
-      const cell=document.createElement('i'); cell.id='s'+n; cell.textContent=n;
+      const cell=document.createElement('i'); cell.id=prefix+n; cell.textContent=n;
       col.appendChild(cell);
     }
     b.appendChild(col);
   }
+}
+function buildSheet(){
+  buildMiniBoard('sheetBoard','s');
+  buildMiniBoard('watchBoard','w');
   paintSheet();
 }
 function paintSheet(){
-  called.forEach(n=>{ const e=$$('s'+n); if(e) e.classList.add('hit'); });
+  called.forEach(n=>{
+    const e=$$('s'+n); if(e) e.classList.add('hit');
+    const g=$$('w'+n); if(g) g.classList.add('hit');
+  });
   const a=$$('allCount'), s=$$('sheetCount');
   if(a) a.textContent=called.length;
   if(s) s.textContent=called.length;
@@ -886,14 +949,14 @@ function renderPlayers(){
   roster.forEach((p,i)=>{
     const d=document.createElement('div');
     const mine = (!iAmHost && p.name===myName);
-    d.className='pchip'+(mine?' you':'');
+    d.className='pchip'+(mine?' you':'')+(p.watching?' watch':'');
     if(armed===p.name){
       d.classList.add('arm');
       d.innerHTML='<span class="dot" style="background:#8C2F18">!</span>REMOVE '+p.name+'?';
       d.onclick=()=>kick(p.name);
     } else {
       d.innerHTML='<span class="dot" style="background:'+DOTS[i%DOTS.length]+'">'+p.name[0]+'</span>'+p.name
-        +' <span class="cards">'+p.cards+'\u00d7</span>';
+        +' <span class="cards">'+(p.watching?'WATCHING':p.cards+'\u00d7')+'</span>';
       d.onclick=()=> iAmHost && armKick(p.name);
     }
     l.appendChild(d);
@@ -919,6 +982,9 @@ const seg=(t,a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a)));
 const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 
 function showBall(n, quiet){
+  const wv=$$('wNowVal'); if(wv) wv.textContent=label(n);
+  const wn=$$('wNow');
+  if(wn){ wn.classList.remove('pulse'); void wn.offsetWidth; wn.classList.add('pulse'); }
   $$('bLetter').textContent=LETTERS[Math.floor((n-1)/15)];
   $$('bNum').textContent=n;
   $$('ball').classList.remove('rest');
@@ -1114,6 +1180,9 @@ function showView(v){
 function goHome(){
   bye();
   iAmHost=false; myName=''; roster=[]; decks=[]; called=[]; armed=null;
+  watching=false; pending=null;
+  $$('inprog').classList.add('hidden');
+  $$('watchArea').classList.add('hidden');
   $$('kickedView').classList.add('hidden');
   $$('calledSheet').classList.add('hidden');
   $$('lobby').classList.remove('hidden');
@@ -1174,6 +1243,7 @@ function joinRoom(){
   if(name.length<2) return err.textContent='Names need at least 2 letters.';
   err.textContent='Looking for the room\u2026';
   myName=name;
+  pending={code, name, cards:cardCount};
   connect(()=>send({t:'join', code, name, cards:cardCount}));
 }
 
@@ -1199,7 +1269,9 @@ $$('openRoomBtn').onclick=()=>{
 };
 
 $$('startBtn').onclick=()=> send({t: running ? 'pause' : 'start'});
-$$('resetBtn').onclick=()=> send({t:'again', pattern});
+/* both routes to a new round go through the pattern picker, so the host can
+   change the shape without changing the room code */
+$$('resetBtn').onclick=()=> showView('setup');
 $$('againBtn').onclick=()=>{ stopConfetti(); $$('winner').classList.add('hidden'); showView('setup'); };
 $$('closeBtn').onclick=()=>{ send({t:'close'}); goHome(); };
 /* the label follows the slider, but the server only hears about it when
@@ -1225,6 +1297,13 @@ document.querySelectorAll('.pick button').forEach(b=>{
 $$('joinBtn').onclick=joinRoom;
 $$('nameIn').addEventListener('keydown',e=>{ if(e.key==='Enter') joinRoom(); });
 $$('codeIn').addEventListener('keydown',e=>{ if(e.key==='Enter') $$('nameIn').focus(); });
+$$('watchBtn').onclick=()=>{ if(pending) send({t:'watch', ...pending}); };
+$$('inprogBack').onclick=()=>{
+  bye();
+  $$('inprog').classList.add('hidden');
+  $$('lobby').classList.remove('hidden');
+  $$('joinErr').textContent='';
+};
 $$('allBtn').onclick=()=>{ paintSheet(); $$('calledSheet').classList.remove('hidden'); };
 $$('sheetClose').onclick=()=>$$('calledSheet').classList.add('hidden');
 $$('callbtn').onclick=()=>{
