@@ -479,6 +479,21 @@ body.dev .proto{display:flex}
   .now.pulse{animation:none}
 }
 
+/* sound toggle on the player footer */
+#muteBtn{
+  flex:none;width:34px;height:34px;padding:0;cursor:pointer;
+  background:#FFFDF6;border:2.5px solid rgba(74,52,40,.4);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+#muteBtn svg{width:19px;height:19px;fill:var(--boba);stroke:var(--boba);
+  stroke-width:1.9;stroke-linecap:round}
+#muteBtn svg .wave1,#muteBtn svg .wave2,#muteBtn svg .cross{fill:none}
+#muteBtn svg .cross{display:none;stroke:#B8452A}
+#muteBtn.off{border-color:#B8452A}
+#muteBtn.off svg{fill:#B8452A;stroke:#B8452A}
+#muteBtn.off svg .wave1,#muteBtn.off svg .wave2{display:none}
+#muteBtn.off svg .cross{display:block}
+
 /* ===== hosting from a phone =====
    The 16:9 frame is right for a laptop being captured. On a phone it just
    makes everything tiny, so the whole thing restacks instead of shrinking. */
@@ -637,6 +652,7 @@ body.dev .proto{display:flex}
 
         <div id="tabControls">
           <button class="mrow act" id="resetBtn">New round<small>pick a new win pattern</small></button>
+          <button class="mrow act" id="soundBtn">Sound: on<small>the plop and the win fanfare</small></button>
           <button class="mrow act" id="motionBtn">Idle sway: on<small>the duck and the pond keep moving</small></button>
           <button class="mrow act" id="homeBtn">Back to asiandiva.games<small>the rest of the games</small></button>
           <button class="mrow act danger" id="quitBtn">Close the room<small>ends the game for everybody</small></button>
@@ -740,6 +756,14 @@ body.dev .proto{display:flex}
     </div>
 
   <div class="pfoot" id="pfoot">
+    <button id="muteBtn" title="Sound">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+        <path class="wave1" d="M16.5 8.5a5 5 0 0 1 0 7"/>
+        <path class="wave2" d="M19 6a8.5 8.5 0 0 1 0 12"/>
+        <path class="cross" d="M17 9.5l5 5M22 9.5l-5 5"/>
+      </svg>
+    </button>
     <button id="leaveBtn" class="hidden">Leave</button>
     <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
   </div>
@@ -1047,6 +1071,7 @@ function daub(sq){
   if(i===12) return;
   sq.classList.toggle('daubed');
   decks[d].daubs[i]=sq.classList.contains('daubed');
+  Sound.tick();
   send({t:'daub', card:d, i:i});
   lightBingoButton();
 }
@@ -1138,7 +1163,10 @@ function showBall(n, quiet){
     now.classList.remove('pulse'); void now.offsetWidth; now.classList.add('pulse'); }
   if(quiet){ poseIdle(); return; }
   fetchT=performance.now();
-  setTimeout(()=>{ splashT=performance.now(); diveOne(); }, 640);
+  setTimeout(()=>{
+    splashT=performance.now(); diveOne();
+    if(iAmHost) Sound.plop();
+  }, 640);
 }
 function resetBallDisplay(){
   $$('ball').classList.add('rest');
@@ -1271,6 +1299,7 @@ function showWin(name, sub, cells, line){
     w.classList.toggle('hidden', iAmHost);
     $$('winner').classList.remove('hidden');
     startConfetti();
+    if(iAmHost) Sound.fanfare();
   }, 900);
 }
 function startConfetti(){
@@ -1297,6 +1326,86 @@ function startConfetti(){
   })();
 }
 function stopConfetti(){ cancelAnimationFrame(confT); confT=null; }
+
+/* =============================================================
+   sound
+   Made in the browser rather than loaded, so there are no files to ship
+   and nothing to wait for. Browsers keep audio asleep until you interact
+   with the page, so the first tap wakes it up.
+   ============================================================= */
+const Sound = {
+  ctx:null, on:true,
+  unlock(){
+    if(!this.ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return;
+      this.ctx = new AC();
+    }
+    if(this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  /* a short falling tone with a little spray on top */
+  plop(){
+    if(!this.on || !this.ctx) return;
+    const c=this.ctx, t=c.currentTime;
+    const o=c.createOscillator(), g=c.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(880, t);
+    o.frequency.exponentialRampToValueAtTime(170, t+0.13);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.34, t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+0.20);
+    o.connect(g).connect(c.destination);
+    o.start(t); o.stop(t+0.22);
+    const len=Math.floor(c.sampleRate*0.05);
+    const buf=c.createBuffer(1,len,c.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
+    const n=c.createBufferSource(); n.buffer=buf;
+    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1400;
+    const ng=c.createGain();
+    ng.gain.setValueAtTime(0.10, t);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t+0.06);
+    n.connect(hp).connect(ng).connect(c.destination);
+    n.start(t+0.005);
+  },
+  /* four notes up, the last one held */
+  fanfare(){
+    if(!this.on || !this.ctx) return;
+    const c=this.ctx, t0=c.currentTime;
+    [[523.25,0,0.13],[659.25,0.10,0.13],[783.99,0.20,0.15],[1046.5,0.32,0.62]]
+    .forEach(function(n){
+      const f=n[0], at=n[1], dur=n[2];
+      [0,3].forEach(function(detune,k){
+        const o=c.createOscillator(), g=c.createGain();
+        o.type = k ? 'sine' : 'triangle';
+        o.frequency.value=f; o.detune.value=detune;
+        const t=t0+at;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(k?0.09:0.16, t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+        o.connect(g).connect(c.destination);
+        o.start(t); o.stop(t+dur+0.05);
+      });
+    });
+  },
+  /* barely there, just enough to feel the tap land */
+  tick(){
+    if(!this.on || !this.ctx) return;
+    const c=this.ctx, t=c.currentTime;
+    const o=c.createOscillator(), g=c.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(1500, t);
+    o.frequency.exponentialRampToValueAtTime(900, t+0.03);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.09, t+0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+0.05);
+    o.connect(g).connect(c.destination);
+    o.start(t); o.stop(t+0.06);
+  }
+};
+['click','touchstart','keydown'].forEach(function(ev){
+  document.addEventListener(ev, function(){ Sound.unlock(); }, {passive:true});
+});
 
 /* =============================================================
    screens
@@ -1501,6 +1610,13 @@ $$('homeBtn').onclick=()=>{
   }, 3000);
 };
 
+$$('soundBtn').onclick=e=>{
+  Sound.on=!Sound.on;
+  if(Sound.on) Sound.plop();
+  e.currentTarget.innerHTML='Sound: '+(Sound.on?'on':'off')
+    +'<small>the plop and the win fanfare</small>';
+};
+
 $$('motionBtn').onclick=e=>{
   motion=!motion;
   e.currentTarget.innerHTML='Idle sway: '+(motion?'on':'off')
@@ -1530,6 +1646,12 @@ $$('inprogBack').onclick=()=>{
 };
 /* leaving only affects you, but a stray tap mid-game would sting, so it asks */
 let leaveArmed=null;
+$$('muteBtn').onclick=()=>{
+  Sound.on=!Sound.on;
+  $$('muteBtn').classList.toggle('off', !Sound.on);
+  if(Sound.on) Sound.tick();
+};
+
 $$('leaveBtn').onclick=()=>{
   const b=$$('leaveBtn');
   if(b.classList.contains('arm')){ clearTimeout(leaveArmed); goHome(); return; }
