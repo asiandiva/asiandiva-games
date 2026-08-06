@@ -145,6 +145,16 @@ body.dev .proto{display:flex}
 .pchip.watch{background:#F4ECFB;border-style:dashed}
 .pchip.watch .cards{background:var(--taro)}
 
+/* ===== credit line, on every screen ===== */
+.credit{
+  text-align:center;font-size:12px;font-weight:700;letter-spacing:.02em;
+  color:var(--boba-soft);opacity:.85;margin-top:22px;
+}
+.credit a{color:var(--boba);text-decoration:none;border-bottom:2px solid var(--butter);padding-bottom:1px}
+.credit a:hover{background:var(--butter)}
+.hostbar .credit{margin:0 14px 0 0;font-size:12px;opacity:.7;white-space:nowrap}
+.hostbar .credit a{border-bottom-width:2px}
+
 /* ===== choose screen (this is what /bingo shows) ===== */
 #chooseView{min-height:calc(100vh - var(--bar));display:flex;align-items:center;justify-content:center;padding:30px 20px}
 .choose{max-width:640px;text-align:center}
@@ -442,6 +452,7 @@ body.dev .proto{display:flex}
           <span class="d">Somebody gave you a code? Come this way.</span>
         </button>
       </div>
+      <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
     </div>
   </div>
 
@@ -453,6 +464,7 @@ body.dev .proto{display:flex}
       <div class="patgrid big" id="patgrid"></div>
       <button class="hostbtn" id="openRoomBtn">HOST</button>
       <button class="backlink" id="setupBack">back</button>
+      <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
     </div>
   </div>
 
@@ -516,6 +528,7 @@ body.dev .proto{display:flex}
           <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
         </label>
         <div class="spacer"></div>
+        <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
         <button id="motionBtn" class="hb on">Idle sway: on</button>
       </div>
 
@@ -605,6 +618,7 @@ body.dev .proto{display:flex}
         <div class="hint">mark your own squares · call a bingo that is not real and you lose the call</div>
       </div>
     </div>
+      <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
   </div>
 
 </div>
