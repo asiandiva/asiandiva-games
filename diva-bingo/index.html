@@ -1342,15 +1342,35 @@ const VOICE_MAP=[[0.15, 0.61], [0.91, 0.62], [1.68, 0.72], [2.55, 0.7], [3.4, 0.
 const Sound = {
   ctx:null, on:true, voiceOn:true, voiceBuf:null, voiceTried:false,
 
-  /* fetched once, the first time a room opens */
+  /* Fetched once, the first time a room opens.
+     The page can be reached as /diva-bingo, /diva-bingo/ or
+     /diva-bingo/index.html, and a plain relative path resolves differently
+     in each case, so the folder is worked out first and a couple of
+     fallbacks are tried after it. */
+  voicePaths(){
+    const p = location.pathname;
+    let dir;
+    if(p.endsWith('/'))                              dir = p;
+    else if(p.lastIndexOf('.') > p.lastIndexOf('/')) dir = p.slice(0, p.lastIndexOf('/')+1);
+    else                                             dir = p + '/';
+    return [dir+'voice.mp3', 'voice.mp3', '/diva-bingo/voice.mp3'];
+  },
   loadVoice(){
     if(this.voiceTried || !this.ctx) return;
     this.voiceTried = true;
-    fetch('voice.mp3')
-      .then(r => r.ok ? r.arrayBuffer() : Promise.reject())
-      .then(a => this.ctx.decodeAudioData(a))
-      .then(b => { this.voiceBuf = b; })
-      .catch(()=>{ /* no voice file, the game just stays quiet */ });
+    const urls = this.voicePaths();
+    const tryNext = i => {
+      if(i >= urls.length){
+        console.warn('Diva Bingo: could not find voice.mp3, tried', urls);
+        return;
+      }
+      fetch(urls[i])
+        .then(r => r.ok ? r.arrayBuffer() : Promise.reject())
+        .then(a => this.ctx.decodeAudioData(a))
+        .then(b => { this.voiceBuf = b; this.voiceFrom = urls[i]; })
+        .catch(() => tryNext(i+1));
+    };
+    tryNext(0);
   },
 
   /* say a number out loud */
