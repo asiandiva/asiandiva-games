@@ -582,12 +582,14 @@ body.dev .proto{display:flex}
           </label>
           <button class="mrow act" id="resetBtn">New round<small>pick a new win pattern</small></button>
           <button class="mrow act" id="motionBtn">Idle sway: on<small>the duck and the pond keep moving</small></button>
+          <button class="mrow act" id="homeBtn">Back to asiandiva.games<small>the rest of the games</small></button>
           <button class="mrow act danger" id="quitBtn">Close the room<small>ends the game for everybody</small></button>
         </div>
 
         <div id="tabAbout" class="hidden">
           <p>Diva Bingo was made by <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> on weekends, for the Diva Squad.</p>
           <p>More things to play at <a href="https://asiandiva.games">asiandiva.games</a>. Come say hi on <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">Twitch</a> or <a href="https://youtube.com/@AsiandivaGG" target="_blank" rel="noopener">YouTube</a>.</p>
+          <p>Join the <a href="https://discord.gg/jWfufVzBw9" target="_blank" rel="noopener">Discord</a> to share discoveries and report bugs.</p>
           <p class="fine">No accounts, no cookies, nothing saved. Names disappear when the room closes.</p>
         </div>
       </div>
@@ -1384,6 +1386,25 @@ $$('quitBtn').onclick=()=>{
 };
 
 $$('resetBtn').onclick=()=>{ menu.classList.add('hidden'); showView('setup'); };
+
+/* leaving the page closes the room, so it checks first when one is open */
+let homeArmed=null;
+$$('homeBtn').onclick=()=>{
+  const b=$$('homeBtn');
+  if(!(iAmHost && ROOM_CODE)){ location.href='https://asiandiva.games'; return; }
+  if(b.classList.contains('arm')){
+    clearTimeout(homeArmed);
+    send({t:'close'});
+    setTimeout(()=>{ location.href='https://asiandiva.games'; }, 150);
+    return;
+  }
+  b.classList.add('arm');
+  b.innerHTML='Leave? Click again<small>this closes the room too</small>';
+  homeArmed=setTimeout(()=>{
+    b.classList.remove('arm');
+    b.innerHTML='Back to asiandiva.games<small>the rest of the games</small>';
+  }, 3000);
+};
 
 $$('motionBtn').onclick=e=>{
   motion=!motion;
