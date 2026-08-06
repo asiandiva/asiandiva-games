@@ -1363,26 +1363,45 @@ const Sound = {
     voice(560, 1520,  0.18, 0.016, 2200);
   },
 
-  /* four notes up, the last one held */
+  /* three bubbles rising into a soft chord, so the win grows out of the
+     same sound the balls make. kept gentle: it lands on a quiet room. */
   fanfare(){
     if(!this.on || !this.ctx) return;
     const c=this.ctx, t0=c.currentTime;
-    [[523.25,0,0.13],[659.25,0.10,0.13],[783.99,0.20,0.15],[1046.5,0.32,0.62]]
-    .forEach(function(n){
-      const f=n[0], at=n[1], dur=n[2];
-      [0,3].forEach(function(detune,k){
-        const o=c.createOscillator(), g=c.createGain();
-        o.type = k ? 'sine' : 'triangle';
-        o.frequency.value=f; o.detune.value=detune;
-        const t=t0+at;
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(k?0.09:0.16, t+0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
-        o.connect(g).connect(c.destination);
-        o.start(t); o.stop(t+dur+0.05);
+
+    const bub=(t,vol)=>{
+      [[280,760,0.30,vol,1700],[560,1520,0.18,vol*0.21,2200]].forEach(v=>{
+        const o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
+        o.type='sine';
+        o.frequency.setValueAtTime(v[0],t);
+        o.frequency.exponentialRampToValueAtTime(v[1],t+v[2]*0.7);
+        f.type='lowpass'; f.frequency.value=v[4]; f.Q.value=0.6;
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(v[3],t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+v[2]);
+        o.connect(g).connect(f).connect(c.destination);
+        o.start(t); o.stop(t+v[2]+0.05);
       });
+    };
+    bub(t0,        0.055);
+    bub(t0+0.13,   0.055);
+    bub(t0+0.26,   0.060);
+
+    /* the chord blooms in rather than hitting, and the notes are staggered a
+       few milliseconds so four sines do not stack into one loud spike */
+    [523.25, 659.25, 783.99, 1046.5].forEach((f,i)=>{
+      const o=c.createOscillator(), g=c.createGain(), lp=c.createBiquadFilter();
+      o.type='sine'; o.frequency.value=f;
+      lp.type='lowpass'; lp.frequency.value=2600; lp.Q.value=0.6;
+      const t=t0+0.42+i*0.012;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.052-i*0.008, t+0.045);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+1.15);
+      o.connect(g).connect(lp).connect(c.destination);
+      o.start(t); o.stop(t+1.20);
     });
   },
+
   /* barely there, just enough to feel the tap land */
   tick(){
     if(!this.on || !this.ctx) return;
@@ -1392,7 +1411,7 @@ const Sound = {
     o.frequency.setValueAtTime(1500, t);
     o.frequency.exponentialRampToValueAtTime(900, t+0.03);
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.09, t+0.005);
+    g.gain.exponentialRampToValueAtTime(0.062, t+0.006);
     g.gain.exponentialRampToValueAtTime(0.0001, t+0.05);
     o.connect(g).connect(c.destination);
     o.start(t); o.stop(t+0.06);
