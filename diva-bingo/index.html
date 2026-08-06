@@ -185,6 +185,23 @@ body.dev .proto{display:flex}
 #tabAbout a:hover{background:var(--butter)}
 #tabAbout .fine{font-size:9.5px;line-height:1.45;opacity:.6;margin-top:12px;margin-bottom:2px}
 
+/* ===== player footer: always in view, never scrolls away ===== */
+.pfoot{
+  position:fixed;left:0;right:0;bottom:0;z-index:120;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:9px 16px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(255,247,230,.94);backdrop-filter:blur(6px);
+  border-top:2.5px solid rgba(74,52,40,.16);
+}
+.pfoot .credit{margin:0;font-size:11.5px}
+#leaveBtn{
+  flex:none;font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.06em;
+  background:#FFFDF6;color:var(--boba-soft);border:2.5px solid rgba(74,52,40,.4);
+  border-radius:999px;padding:5px 15px;cursor:pointer;
+}
+#leaveBtn.arm{background:#E85D3D;color:#FFF3E8;border-color:#8C2F18}
+#playerView{padding-bottom:78px}
+
 /* ===== credit line, on every screen ===== */
 .credit{
   text-align:center;font-size:12px;font-weight:700;letter-spacing:.02em;
@@ -679,7 +696,11 @@ body.dev .proto{display:flex}
         <div class="hint">mark your own squares · call a bingo that is not real and you lose the call</div>
       </div>
     </div>
-      <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
+    </div>
+
+  <div class="pfoot" id="pfoot">
+    <button id="leaveBtn" class="hidden">Leave</button>
+    <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
   </div>
 
 </div>
@@ -794,6 +815,7 @@ function handle(m){
       $$('inprog').classList.add('hidden');
       $$('playArea').classList.toggle('hidden', watching);
       $$('watchArea').classList.toggle('hidden', !watching);
+      showLeave(true);
       $('.phone-top .who').textContent = myName;
       break;
 
@@ -803,6 +825,7 @@ function handle(m){
       $$('joinErr').textContent='';
       $$('lobby').classList.add('hidden');
       $$('inprog').classList.remove('hidden');
+      showLeave(false);
       break;
 
     case 'err':                          // join was refused
@@ -858,6 +881,7 @@ function handle(m){
       $$('playArea').classList.add('hidden');
       $$('lobby').classList.add('hidden');
       $$('kickedView').classList.remove('hidden');
+      showLeave(false);
       break;
 
     case 'closed':
@@ -1238,6 +1262,7 @@ function stopConfetti(){ cancelAnimationFrame(confT); confT=null; }
    ============================================================= */
 function showView(v){
   view=v;
+  const pf=$$('pfoot'); if(pf) pf.style.display = (v==='player') ? 'flex' : 'none';
   if(v==='setup'){
     $$('openRoomBtn').textContent = (iAmHost && ROOM_CODE) ? 'START ROUND' : 'HOST';
     $$('setupBack').textContent   = (iAmHost && ROOM_CODE) ? 'close the room' : 'back';
@@ -1257,6 +1282,7 @@ function goHome(){
   const mn=$$('menu'); if(mn) mn.classList.add('hidden');
   iAmHost=false; myName=''; roster=[]; decks=[]; called=[]; armed=null;
   watching=false; pending=null;
+  showLeave(false);
   $$('inprog').classList.add('hidden');
   $$('watchArea').classList.add('hidden');
   $$('kickedView').classList.add('hidden');
@@ -1432,6 +1458,21 @@ $$('inprogBack').onclick=()=>{
   $$('lobby').classList.remove('hidden');
   $$('joinErr').textContent='';
 };
+/* leaving only affects you, but a stray tap mid-game would sting, so it asks */
+let leaveArmed=null;
+$$('leaveBtn').onclick=()=>{
+  const b=$$('leaveBtn');
+  if(b.classList.contains('arm')){ clearTimeout(leaveArmed); goHome(); return; }
+  b.classList.add('arm'); b.textContent='Leave? tap again';
+  leaveArmed=setTimeout(()=>{ b.classList.remove('arm'); b.textContent='Leave'; }, 3000);
+};
+function showLeave(on){
+  const b=$$('leaveBtn'); if(!b) return;
+  b.classList.toggle('hidden', !on);
+  b.classList.remove('arm'); b.textContent='Leave';
+  clearTimeout(leaveArmed);
+}
+
 $$('allBtn').onclick=()=>{ paintSheet(); $$('calledSheet').classList.remove('hidden'); };
 $$('sheetClose').onclick=()=>$$('calledSheet').classList.add('hidden');
 $$('callbtn').onclick=()=>{
