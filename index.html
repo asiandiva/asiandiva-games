@@ -48,6 +48,8 @@
   }
   .art{height:152px;display:flex;align-items:center;justify-content:center}
   .art svg{width:100%;height:100%}
+  /* drawn artwork fills the strip and is cropped from the middle */
+  .art img{width:100%;height:100%;object-fit:cover;display:block}
   .meta{padding:17px 19px 20px}
   .meta h2{font-family:"Fredoka",sans-serif;font-weight:600;font-size:21px;letter-spacing:-.01em}
   .meta p{font-size:14px;line-height:1.45;color:var(--soft);margin-top:5px}
@@ -133,45 +135,12 @@
 
     <a class="card" href="/diva-bingo">
       <div class="art" style="background:#FFE9A8">
-        <svg viewBox="0 0 240 152" xmlns="http://www.w3.org/2000/svg">
-          <rect x="66" y="16" width="108" height="120" rx="12" fill="#FFFDF6" stroke="#4A3A24" stroke-width="2.5"/>
-          <rect x="66" y="16" width="108" height="24" rx="12" fill="#F79BB8"/>
-          <rect x="66" y="30" width="108" height="10" fill="#F79BB8"/>
-          <g fill="#4A3A24" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" text-anchor="middle">
-            <text x="85" y="33">B</text><text x="105" y="33">I</text><text x="125" y="33">N</text>
-            <text x="145" y="33">G</text><text x="163" y="33">O</text>
-          </g>
-          <g>
-            <circle cx="85" cy="55" r="7.5" fill="#F5B92E"/>
-            <circle cx="105" cy="55" r="7.5" fill="#EFE6D2"/>
-            <circle cx="125" cy="55" r="7.5" fill="#EFE6D2"/>
-            <circle cx="145" cy="55" r="7.5" fill="#EFE6D2"/>
-            <circle cx="163" cy="55" r="7.5" fill="#EFE6D2"/>
-
-            <circle cx="85" cy="76" r="7.5" fill="#EFE6D2"/>
-            <circle cx="105" cy="76" r="7.5" fill="#F5B92E"/>
-            <circle cx="125" cy="76" r="7.5" fill="#EFE6D2"/>
-            <circle cx="145" cy="76" r="7.5" fill="#EFE6D2"/>
-            <circle cx="163" cy="76" r="7.5" fill="#EFE6D2"/>
-
-            <circle cx="85" cy="97" r="7.5" fill="#EFE6D2"/>
-            <circle cx="105" cy="97" r="7.5" fill="#EFE6D2"/>
-            <circle cx="125" cy="97" r="7.5" fill="#F5B92E"/>
-            <circle cx="145" cy="97" r="7.5" fill="#EFE6D2"/>
-            <circle cx="163" cy="97" r="7.5" fill="#EFE6D2"/>
-
-            <circle cx="85" cy="118" r="7.5" fill="#EFE6D2"/>
-            <circle cx="105" cy="118" r="7.5" fill="#EFE6D2"/>
-            <circle cx="125" cy="118" r="7.5" fill="#EFE6D2"/>
-            <circle cx="145" cy="118" r="7.5" fill="#F5B92E"/>
-            <circle cx="163" cy="118" r="7.5" fill="#EFE6D2"/>
-          </g>
-          <line x1="80" y1="50" x2="152" y2="124" stroke="#F0709B" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-        </svg>
+        <img src="/bingo.png" width="760" height="507" loading="lazy"
+             alt="A duck sitting beside a bingo card with a line of daubed squares">
       </div>
       <div class="meta">
         <h2>Diva BINGO</h2>
-        <p>Real bingo, called by a duck. One screen everybody watches, one card each on your phones.</p>
+        <p>Real bingo, called by a duck. One screen everybody watches, up to three cards each on your phones.</p>
       </div>
     </a>
 
