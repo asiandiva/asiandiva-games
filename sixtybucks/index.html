@@ -382,7 +382,9 @@ function checkPrice(){
     : 'You guessed ' + money(guess) + '. Off by ' + money(gap) + ', ' + (guess>actual?'over':'under') + '.';
 
   $('next').textContent = idx === deck.length-1 ? 'SEE TODAY\u2019S SCORE' : 'NEXT GAME';
-  $('next').focus();
+  // don't grab focus straight away. the same Enter press that revealed the
+  // answer would land on this button and skip past the result.
+  setTimeout(() => { const n = $('next'); if (n) n.focus(); }, 450);
 
   // save every guess, not just the last one. closing the tab at game three
   // should pick up at game four, not hand out a fresh round.
@@ -525,7 +527,9 @@ function begin(){
 
   $('lock').onclick = checkPrice;
   $('next').onclick = next;
-  $('bid').onkeydown = e => { if (e.key === 'Enter') checkPrice(); };
+  $('bid').onkeydown = e => {
+    if (e.key === 'Enter'){ e.preventDefault(); e.stopPropagation(); checkPrice(); }
+  };
   paint();
 }
 
