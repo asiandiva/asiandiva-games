@@ -509,6 +509,7 @@ body.dev .proto{display:flex}
           <span class="d">Somebody gave you a code? Come this way.</span>
         </button>
       </div>
+      <button class="backlink" id="chooseBack">back to asiandiva.games</button>
       <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
     </div>
   </div>
@@ -644,6 +645,7 @@ body.dev .proto{display:flex}
           <button data-c="3">3<small>CHAOS</small></button>
         </div>
         <button class="callbtn" id="joinBtn" style="background:var(--butter);color:var(--boba);box-shadow:0 5px 0 var(--butter-deep)">JOIN</button>
+        <button class="backlink" id="joinBack">back</button>
       </div>
 
       <div class="inprog hidden" id="inprog">
@@ -1354,6 +1356,8 @@ function joinRoom(){
    ============================================================= */
 $$('btnHost').onclick=()=>{ buildPicker(); paintGoal(); showView('setup'); };
 $$('btnJoin').onclick=()=>{ paintGoal(); showView('player'); };
+$$('chooseBack').onclick=()=>{ location.href='https://asiandiva.games'; };
+$$('joinBack').onclick=goHome;
 $$('setupBack').onclick=()=>{ if(iAmHost && ROOM_CODE) send({t:'close'}); goHome(); };
 $$('backBtn') && ($$('backBtn').onclick=goHome);
 
