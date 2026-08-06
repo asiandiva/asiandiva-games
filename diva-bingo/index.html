@@ -652,7 +652,8 @@ body.dev .proto{display:flex}
 
         <div id="tabControls">
           <button class="mrow act" id="resetBtn">New round<small>pick a new win pattern</small></button>
-          <button class="mrow act" id="soundBtn">Sound: on<small>the plop and the win fanfare</small></button>
+          <button class="mrow act" id="voiceBtn">Caller voice: on<small>reads each number out loud</small></button>
+          <button class="mrow act" id="soundBtn">Sound: on<small>the bubble and the win chord</small></button>
           <button class="mrow act" id="motionBtn">Idle sway: on<small>the duck and the pond keep moving</small></button>
           <button class="mrow act" id="homeBtn">Back to asiandiva.games<small>the rest of the games</small></button>
           <button class="mrow act danger" id="quitBtn">Close the room<small>ends the game for everybody</small></button>
@@ -861,6 +862,7 @@ function handle(m){
   switch(m.t){
 
     case 'room':                         // you opened a room
+      Sound.unlock(); Sound.loadVoice();
       ROOM_CODE=m.code; pattern=m.pattern;
       paintCode(); paintGoal(); newBoard();
       iAmHost=true; showView('host');
@@ -1167,6 +1169,8 @@ function showBall(n, quiet){
     splashT=performance.now(); diveOne();
     if(iAmHost) Sound.plop();
   }, 640);
+  /* the number is spoken just after the bubble, as the duck lifts the ball clear */
+  if(iAmHost) setTimeout(()=>Sound.say(n), 880);
 }
 function resetBallDisplay(){
   $$('ball').classList.add('rest');
@@ -1333,8 +1337,33 @@ function stopConfetti(){ cancelAnimationFrame(confT); confT=null; }
    and nothing to wait for. Browsers keep audio asleep until you interact
    with the page, so the first tap wakes it up.
    ============================================================= */
+/* one audio file holds all 75 callouts; these are where each one sits in it */
+const VOICE_MAP=[[0.15, 0.61], [0.91, 0.62], [1.68, 0.72], [2.55, 0.7], [3.4, 0.66], [4.21, 0.82], [5.18, 0.77], [6.1, 0.67], [6.92, 0.69], [7.76, 0.69], [8.6, 0.88], [9.63, 0.67], [10.45, 0.86], [11.46, 0.86], [12.47, 0.8], [13.42, 0.87], [14.44, 0.89], [15.48, 0.8], [16.43, 0.85], [17.43, 0.76], [18.34, 0.91], [19.4, 0.91], [20.46, 0.94], [21.55, 0.96], [22.66, 0.98], [23.79, 1.2], [25.14, 1.12], [26.41, 1.06], [27.62, 1.08], [28.85, 0.88], [29.88, 1.08], [31.11, 1.11], [32.37, 1.09], [33.61, 1.11], [34.87, 1.13], [36.15, 1.28], [37.58, 1.11], [38.84, 1.07], [40.06, 1.07], [41.28, 0.82], [42.25, 0.95], [43.35, 0.92], [44.42, 0.93], [45.5, 0.96], [46.61, 0.98], [47.74, 1.19], [49.0801, 1.06], [50.2901, 0.86], [51.3001, 0.97], [52.4201, 0.8], [53.3701, 0.98], [54.5001, 1.01], [55.6601, 1.03], [56.8401, 1.04], [58.0301, 1.05], [59.2301, 1.15], [60.5301, 1.02], [61.7001, 0.83], [62.6801, 0.92], [63.7501, 0.81], [64.7101, 1.04], [65.9001, 1.03], [67.0801, 1.1], [68.3301, 1.08], [69.5601, 1.1], [70.8101, 1.19], [72.1501, 1.23], [73.5301, 1.05], [74.7301, 1.12], [76.0001, 0.96], [77.1102, 1.13], [78.3902, 1.11], [79.6502, 1.23], [81.0302, 1.26], [82.4402, 1.38]];
 const Sound = {
-  ctx:null, on:true,
+  ctx:null, on:true, voiceOn:true, voiceBuf:null, voiceTried:false,
+
+  /* fetched once, the first time a room opens */
+  loadVoice(){
+    if(this.voiceTried || !this.ctx) return;
+    this.voiceTried = true;
+    fetch('voice.mp3')
+      .then(r => r.ok ? r.arrayBuffer() : Promise.reject())
+      .then(a => this.ctx.decodeAudioData(a))
+      .then(b => { this.voiceBuf = b; })
+      .catch(()=>{ /* no voice file, the game just stays quiet */ });
+  },
+
+  /* say a number out loud */
+  say(n){
+    if(!this.on || !this.voiceOn || !this.voiceBuf || !this.ctx) return;
+    const seg = VOICE_MAP[n-1];
+    if(!seg) return;
+    const s = this.ctx.createBufferSource(), g = this.ctx.createGain();
+    s.buffer = this.voiceBuf;
+    g.gain.value = 0.85;
+    s.connect(g).connect(this.ctx.destination);
+    s.start(0, seg[0], seg[1]);
+  },
   unlock(){
     if(!this.ctx){
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -1624,11 +1653,18 @@ $$('homeBtn').onclick=()=>{
   }, 3000);
 };
 
+$$('voiceBtn').onclick=e=>{
+  Sound.voiceOn=!Sound.voiceOn;
+  if(Sound.voiceOn) Sound.say(12);
+  e.currentTarget.innerHTML='Caller voice: '+(Sound.voiceOn?'on':'off')
+    +'<small>reads each number out loud</small>';
+};
+
 $$('soundBtn').onclick=e=>{
   Sound.on=!Sound.on;
   if(Sound.on) Sound.plop();
   e.currentTarget.innerHTML='Sound: '+(Sound.on?'on':'off')
-    +'<small>the plop and the win fanfare</small>';
+    +'<small>the bubble and the win chord</small>';
 };
 
 $$('motionBtn').onclick=e=>{
