@@ -183,7 +183,7 @@ body.dev .proto{display:flex}
 #tabAbout p{font-size:13px;font-weight:600;line-height:1.55;color:var(--boba-soft);margin-bottom:9px;padding:0 3px}
 #tabAbout a{color:var(--boba);text-decoration:none;border-bottom:2px solid var(--butter)}
 #tabAbout a:hover{background:var(--butter)}
-#tabAbout .fine{font-size:11px;opacity:.8;margin-bottom:2px}
+#tabAbout .fine{font-size:9.5px;line-height:1.45;opacity:.6;margin-top:12px;margin-bottom:2px}
 
 /* ===== credit line, on every screen ===== */
 .credit{
@@ -563,6 +563,9 @@ body.dev .proto{display:flex}
 
       <div class="hostbar">
         <button id="startBtn" class="hb primary">Start calling</button>
+        <label class="hb speed">Ball every
+          <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
+        </label>
         <div class="spacer"></div>
         <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
         <button id="menuBtn" class="hb">MENU</button>
@@ -576,10 +579,6 @@ body.dev .proto{display:flex}
         </div>
 
         <div id="tabControls">
-          <label class="mrow speed">
-            <span>Ball every</span>
-            <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
-          </label>
           <button class="mrow act" id="resetBtn">New round<small>pick a new win pattern</small></button>
           <button class="mrow act" id="motionBtn">Idle sway: on<small>the duck and the pond keep moving</small></button>
           <button class="mrow act" id="homeBtn">Back to asiandiva.games<small>the rest of the games</small></button>
@@ -587,8 +586,8 @@ body.dev .proto{display:flex}
         </div>
 
         <div id="tabAbout" class="hidden">
-          <p>Diva Bingo was made by <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> on weekends, for the Diva Squad.</p>
-          <p>More things to play at <a href="https://asiandiva.games">asiandiva.games</a>. Come say hi on <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">Twitch</a> or <a href="https://youtube.com/@AsiandivaGG" target="_blank" rel="noopener">YouTube</a>.</p>
+          <p>Diva Bingo was made by <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a>, instead of sleeping, for the Diva Squad.</p>
+          <p>More things to play at <a href="https://asiandiva.games">asiandiva.games</a>. Come say hi on <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">Twitch</a> or <a href="https://www.youtube.com/@asiandiva__" target="_blank" rel="noopener">YouTube</a>.</p>
           <p>Join the <a href="https://discord.gg/jWfufVzBw9" target="_blank" rel="noopener">Discord</a> to share discoveries and report bugs.</p>
           <p class="fine">No accounts, no cookies, nothing saved. Names disappear when the room closes.</p>
         </div>
