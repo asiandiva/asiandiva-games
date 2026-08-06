@@ -56,6 +56,7 @@ body{background:var(--yellow);color:var(--ink);font-family:'Outfit',system-ui,sa
 .btn:disabled{opacity:.35;cursor:default}
 .btn.wide{width:100%;padding:17px}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:3px solid var(--ink)}
+a.btn{display:block;text-align:center;text-decoration:none;line-height:1}
 .btn:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:3px}
 
 .reveal{margin-top:20px;display:none}
@@ -430,6 +431,7 @@ function showResults(save, justFinished){
     '<div class="recap">'+rows+'</div>'+
     '<div class="sharebox" id="sharebox"></div>'+
     '<button class="btn wide" id="share" style="margin-top:12px">'+shareLabel+'</button>'+
+    '<a class="btn wide ghost" href="/" style="margin-top:10px">MORE DIVA GAMES</a>'+
     '<div class="countdown">Next six unlock at midnight New York<b id="clock">--:--:--</b></div>'+
     (storageBroken
       ? '<div class="warn">This browser isn\u2019t saving your result, so it will let you '+
