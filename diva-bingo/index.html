@@ -478,6 +478,44 @@ body.dev .proto{display:flex}
   .sq.daubed::after{animation:none}
   .now.pulse{animation:none}
 }
+
+/* ===== hosting from a phone =====
+   The 16:9 frame is right for a laptop being captured. On a phone it just
+   makes everything tiny, so the whole thing restacks instead of shrinking. */
+@media (max-width: 900px){
+  body.hostmode{overflow:auto}
+  .hostfit{height:auto !important;display:block;overflow:visible}
+  .hostcanvas{
+    width:100% !important;height:auto !important;
+    transform:none !important;padding:14px 12px 26px;
+  }
+  .host-top{flex-wrap:wrap;gap:10px;margin-bottom:10px}
+  .bigtitle{font-size:24px}
+  .code-chip{padding:7px 16px}
+  .code-chip .val{font-size:30px;min-width:auto}
+
+  /* let the three blocks reorder: duck, controls, then the board */
+  .cols{display:contents}
+  .colL{order:1}
+  .hostbar{order:2;margin:14px 0 16px;flex-wrap:wrap;gap:10px}
+  .colR{order:3;display:flex;flex-direction:column;gap:12px}
+
+  .arenawrap{overflow:hidden}
+  .arena{transform-origin:top left}
+  .leftfoot{margin-top:6px;flex-wrap:wrap;gap:10px}
+
+  .hostbar .hb.primary{flex:1 1 150px;font-size:17px;padding:11px 20px}
+  .hostbar .hb.speed{flex:1 1 190px;gap:7px;padding:7px 14px;min-width:0}
+  .hostbar .hb.speed input{width:auto;flex:1 1 50px;min-width:0}
+  .hostbar .hb.speed b{flex:none}
+  .hostbar #menuBtn{flex:none}
+  .hostbar .credit{display:none}
+  .boardpanel{flex:none}
+  .boardpanel .board{min-height:330px}
+  .boardpanel .cell{font-size:12px}
+  .menu{right:12px;left:12px;width:auto;bottom:auto;top:56px;position:fixed}
+}
+
 </style>
 </head>
 <body>
@@ -545,7 +583,7 @@ body.dev .proto{display:flex}
 
       <div class="cols">
         <div class="colL">
-          <div class="arena">
+          <div class="arenawrap"><div class="arena">
             <div class="pond-ground"><div class="pond" id="pond"></div></div>
             <div class="splash" id="splash"></div>
             <div class="rig" id="rig">
@@ -559,6 +597,7 @@ body.dev .proto{display:flex}
               <div class="l" id="bLetter">&nbsp;</div>
               <div class="n" id="bNum">ready</div>
             </div>
+          </div>
           </div>
           <div class="leftfoot">
             <div class="left-count"><span id="leftCount">75</span> DUCKS LEFT</div>
@@ -1277,7 +1316,7 @@ function showView(v){
       .classList.toggle('hidden', v!==k);
   });
   document.body.classList.toggle('hostmode', v==='host');
-  if(v==='host') fitHost();
+  if(v==='host') requestAnimationFrame(fitHost);
 }
 function goHome(){
   bye();
@@ -1326,14 +1365,33 @@ function paintCode(){
 }
 
 /* the host frame is a fixed 16:9 that scales to the window */
+const PHONE = () => window.matchMedia('(max-width: 900px)').matches;
 function fitHost(){
   const c=$$('hostCanvas'); if(!c) return;
+  const arena=$('.arena'), wrap=$('.arenawrap');
+
+  if(PHONE()){
+    /* stacked layout: the frame fills the width, only the duck is scaled */
+    c.style.transform='none';
+    const fit=$$('hostFit'); if(fit) fit.style.height='auto';
+    if(arena && wrap){
+      const avail=wrap.clientWidth || (window.innerWidth-24);
+      const s=Math.min(1, avail/560);
+      arena.style.transform='scale('+s.toFixed(4)+')';
+      wrap.style.height=Math.round(474*s)+'px';
+    }
+    return;
+  }
+
+  if(arena){ arena.style.transform=''; }
+  if(wrap){ wrap.style.height=''; }
   const bar=$('.proto');
   const barH=bar?bar.getBoundingClientRect().height:0;
   const fit=$$('hostFit');
   if(fit) fit.style.height=(window.innerHeight-barH)+'px';
   c.style.transform='scale('+Math.min(window.innerWidth/1280,(window.innerHeight-barH)/720).toFixed(4)+')';
 }
+window.addEventListener('orientationchange', ()=>setTimeout(fitHost,150));
 window.addEventListener('resize', fitHost);
 
 /* =============================================================
