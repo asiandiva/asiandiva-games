@@ -1114,10 +1114,10 @@ $$('startBtn').onclick=()=> send({t: running ? 'pause' : 'start'});
 $$('resetBtn').onclick=()=> send({t:'again', pattern});
 $$('againBtn').onclick=()=>{ stopConfetti(); $$('winner').classList.add('hidden'); showView('setup'); };
 $$('closeBtn').onclick=()=>{ send({t:'close'}); goHome(); };
-$$('speed').oninput=e=>{
-  $$('speedTxt').textContent=e.target.value+'s';
-  send({t:'speed', v:(+e.target.value)*1000});
-};
+/* the label follows the slider, but the server only hears about it when
+   you let go, so dragging cannot spam the room */
+$$('speed').oninput  = e => { $$('speedTxt').textContent = e.target.value+'s'; };
+$$('speed').onchange = e => { send({t:'speed', v:(+e.target.value)*1000}); };
 $$('motionBtn').onclick=e=>{
   motion=!motion; e.target.classList.toggle('on',motion);
   e.target.textContent='Idle sway: '+(motion?'on':'off');
