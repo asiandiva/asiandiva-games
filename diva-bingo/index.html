@@ -145,6 +145,46 @@ body.dev .proto{display:flex}
 .pchip.watch{background:#F4ECFB;border-style:dashed}
 .pchip.watch .cards{background:var(--taro)}
 
+/* ===== host menu ===== */
+.menu{
+  position:absolute;right:20px;bottom:62px;width:330px;z-index:60;
+  background:#FFFDF6;border:3px solid var(--boba);border-radius:20px;
+  box-shadow:0 10px 0 var(--shadow);padding:12px;
+}
+.menu-tabs{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.mt{
+  font:inherit;font-family:var(--display);font-weight:600;font-size:14px;
+  background:var(--milk);color:var(--boba-soft);border:2.5px solid var(--boba);
+  border-radius:999px;padding:5px 16px;cursor:pointer;
+}
+.mt.on{background:var(--butter);color:var(--boba)}
+.mx{
+  margin-left:auto;font-size:22px;line-height:1;background:none;border:none;cursor:pointer;
+  color:var(--boba-soft);padding:0 4px;
+}
+.mrow{
+  display:block;width:100%;text-align:left;font:inherit;
+  background:var(--cream);border:2.5px solid var(--boba);border-radius:13px;
+  padding:9px 13px;margin-bottom:8px;cursor:pointer;
+  font-family:var(--display);font-weight:600;font-size:15px;color:var(--boba);
+}
+.mrow small{display:block;font-family:var(--body);font-size:11px;font-weight:700;
+  color:var(--boba-soft);margin-top:1px;letter-spacing:.01em}
+.mrow.act:hover{background:var(--milk)}
+.mrow.act:active{transform:translateY(2px)}
+.mrow.danger{border-color:#B8452A;color:#B8452A}
+.mrow.danger small{color:#B8452A;opacity:.7}
+.mrow.danger.arm{background:#E85D3D;color:#FFF3E8;border-color:#8C2F18}
+.mrow.danger.arm small{color:#FFF3E8;opacity:.85}
+.mrow.speed{display:flex;align-items:center;gap:10px;cursor:default}
+.mrow.speed span{flex:none;font-size:14px}
+.mrow.speed input{flex:1;accent-color:var(--butter)}
+.mrow.speed b{font-family:var(--display);min-width:24px;text-align:right}
+#tabAbout p{font-size:13px;font-weight:600;line-height:1.55;color:var(--boba-soft);margin-bottom:9px;padding:0 3px}
+#tabAbout a{color:var(--boba);text-decoration:none;border-bottom:2px solid var(--butter)}
+#tabAbout a:hover{background:var(--butter)}
+#tabAbout .fine{font-size:11px;opacity:.8;margin-bottom:2px}
+
 /* ===== credit line, on every screen ===== */
 .credit{
   text-align:center;font-size:12px;font-weight:700;letter-spacing:.02em;
@@ -207,7 +247,7 @@ body.dev .proto{display:flex}
    Fixed 1280x720 canvas scaled to the window, so the whole board always fits
    with no scrolling and the capture stays a clean 16:9. */
 .hostfit{width:100%;height:calc(100vh - var(--bar));display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hostcanvas{width:1280px;height:720px;flex:none;transform-origin:center center;
+.hostcanvas{position:relative;width:1280px;height:720px;flex:none;transform-origin:center center;
   display:flex;flex-direction:column;padding:16px 20px 12px;background:var(--cream)}
 .bigtitle{font-family:var(--display);font-weight:600;font-size:31px;margin-top:1px;line-height:1}
 .host-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex:none}
@@ -523,13 +563,33 @@ body.dev .proto{display:flex}
 
       <div class="hostbar">
         <button id="startBtn" class="hb primary">Start calling</button>
-        <button id="resetBtn" class="hb">New round</button>
-        <label class="hb speed">Ball every
-          <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
-        </label>
         <div class="spacer"></div>
         <div class="credit">an <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> production</div>
-        <button id="motionBtn" class="hb on">Idle sway: on</button>
+        <button id="menuBtn" class="hb">MENU</button>
+      </div>
+
+      <div class="menu hidden" id="menu">
+        <div class="menu-tabs">
+          <button class="mt on" data-tab="controls">Controls</button>
+          <button class="mt" data-tab="about">About</button>
+          <button class="mx" id="menuClose">&times;</button>
+        </div>
+
+        <div id="tabControls">
+          <label class="mrow speed">
+            <span>Ball every</span>
+            <input type="range" id="speed" min="2" max="9" value="4"><b id="speedTxt">4s</b>
+          </label>
+          <button class="mrow act" id="resetBtn">New round<small>pick a new win pattern</small></button>
+          <button class="mrow act" id="motionBtn">Idle sway: on<small>the duck and the pond keep moving</small></button>
+          <button class="mrow act danger" id="quitBtn">Close the room<small>ends the game for everybody</small></button>
+        </div>
+
+        <div id="tabAbout" class="hidden">
+          <p>Diva Bingo was made by <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a> on weekends, for the Diva Squad.</p>
+          <p>More things to play at <a href="https://asiandiva.games">asiandiva.games</a>. Come say hi on <a href="https://twitch.tv/asiandiva__" target="_blank" rel="noopener">Twitch</a> or <a href="https://youtube.com/@AsiandivaGG" target="_blank" rel="noopener">YouTube</a>.</p>
+          <p class="fine">No accounts, no cookies, nothing saved. Names disappear when the room closes.</p>
+        </div>
       </div>
 
     </div>
@@ -1193,6 +1253,7 @@ function showView(v){
 }
 function goHome(){
   bye();
+  const mn=$$('menu'); if(mn) mn.classList.add('hidden');
   iAmHost=false; myName=''; roster=[]; decks=[]; called=[]; armed=null;
   watching=false; pending=null;
   $$('inprog').classList.add('hidden');
@@ -1283,18 +1344,51 @@ $$('openRoomBtn').onclick=()=>{
 };
 
 $$('startBtn').onclick=()=> send({t: running ? 'pause' : 'start'});
-/* both routes to a new round go through the pattern picker, so the host can
-   change the shape without changing the room code */
-$$('resetBtn').onclick=()=> showView('setup');
 $$('againBtn').onclick=()=>{ stopConfetti(); $$('winner').classList.add('hidden'); showView('setup'); };
 $$('closeBtn').onclick=()=>{ send({t:'close'}); goHome(); };
 /* the label follows the slider, but the server only hears about it when
    you let go, so dragging cannot spam the room */
 $$('speed').oninput  = e => { $$('speedTxt').textContent = e.target.value+'s'; };
 $$('speed').onchange = e => { send({t:'speed', v:(+e.target.value)*1000}); };
+/* menu */
+const menu=$$('menu');
+$$('menuBtn').onclick=e=>{ e.stopPropagation(); menu.classList.toggle('hidden'); };
+$$('menuClose').onclick=()=>menu.classList.add('hidden');
+menu.onclick=e=>e.stopPropagation();
+document.addEventListener('click',()=>menu.classList.add('hidden'));
+document.querySelectorAll('.mt').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.mt').forEach(x=>x.classList.remove('on'));
+    btn.classList.add('on');
+    const c=btn.dataset.tab==='controls';
+    $$('tabControls').classList.toggle('hidden', !c);
+    $$('tabAbout').classList.toggle('hidden', c);
+  };
+});
+
+/* closing the room ends it for everyone, so it takes two clicks */
+let quitArmed=null;
+$$('quitBtn').onclick=()=>{
+  const b=$$('quitBtn');
+  if(b.classList.contains('arm')){
+    clearTimeout(quitArmed);
+    send({t:'close'}); goHome();
+    return;
+  }
+  b.classList.add('arm');
+  b.innerHTML='Close it? Click again<small>everyone gets sent back</small>';
+  quitArmed=setTimeout(()=>{
+    b.classList.remove('arm');
+    b.innerHTML='Close the room<small>ends the game for everybody</small>';
+  }, 3000);
+};
+
+$$('resetBtn').onclick=()=>{ menu.classList.add('hidden'); showView('setup'); };
+
 $$('motionBtn').onclick=e=>{
-  motion=!motion; e.target.classList.toggle('on',motion);
-  e.target.textContent='Idle sway: '+(motion?'on':'off');
+  motion=!motion;
+  e.currentTarget.innerHTML='Idle sway: '+(motion?'on':'off')
+    +'<small>the duck and the pond keep moving</small>';
 };
 $$('codeChip').onclick=()=>{
   const hid=$$('codeChip').classList.toggle('hid');
