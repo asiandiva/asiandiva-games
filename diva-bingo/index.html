@@ -87,6 +87,49 @@ body.dev .proto{display:flex}
 @media(max-width:760px){.wc-grid i{width:42px;height:42px;font-size:16px}}
 
 
+/* ===== what has been called, on the phone ===== */
+.now{position:relative}
+.allbtn{
+  margin-left:auto;flex:none;font-family:var(--display);font-weight:600;font-size:12px;
+  letter-spacing:.1em;background:var(--butter);color:var(--boba);border:2.5px solid var(--boba);
+  border-radius:999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;
+}
+.allbtn b{font-size:14px}
+.recentrow{display:flex;gap:6px;margin:-6px 0 12px;justify-content:center;min-height:26px}
+.recentrow span{
+  font-family:var(--display);font-weight:600;font-size:12px;color:var(--boba);
+  background:var(--milk);border:2px solid var(--boba);border-radius:999px;padding:2px 9px;opacity:.45;
+}
+.recentrow span:first-child{opacity:1;background:var(--butter)}
+.recentrow span:nth-child(2){opacity:.7}
+
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:150;max-height:78vh;
+  background:#FFFDF6;border-top:4px solid var(--boba);
+  border-radius:24px 24px 0 0;box-shadow:0 -8px 26px rgba(74,52,40,.28);
+  display:flex;flex-direction:column;padding:14px 14px 18px;
+}
+.sheet-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex:none}
+.sheet-top span{font-family:var(--display);font-weight:600;font-size:16px}
+.sheet-top b{color:var(--butter-deep)}
+.sheet-top button{
+  font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;
+  background:var(--milk);color:var(--boba);border:2.5px solid var(--boba);
+  border-radius:999px;padding:6px 16px;cursor:pointer;
+}
+.sheet-board{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;overflow-y:auto;min-height:0}
+.sheet-board .sc{display:flex;flex-direction:column;gap:3px}
+.sheet-board .sh{
+  font-family:var(--display);font-weight:700;font-size:19px;text-align:center;
+  background:var(--butter);border-radius:8px;box-shadow:0 3px 0 var(--butter-deep);margin-bottom:3px;
+  position:sticky;top:0;
+}
+.sheet-board i{
+  font-style:normal;font-family:var(--display);font-weight:600;font-size:13px;text-align:center;
+  padding:5px 0;border-radius:6px;background:var(--milk);color:var(--boba-soft);opacity:.45;
+}
+.sheet-board i.hit{background:var(--boba);color:var(--butter);opacity:1;font-weight:700}
+
 /* ===== choose screen (this is what /bingo shows) ===== */
 #chooseView{min-height:calc(100vh - var(--bar));display:flex;align-items:center;justify-content:center;padding:30px 20px}
 .choose{max-width:640px;text-align:center}
@@ -497,6 +540,14 @@ body.dev .proto{display:flex}
         <button class="callbtn" id="joinBtn" style="background:var(--butter);color:var(--boba);box-shadow:0 5px 0 var(--butter-deep)">JOIN</button>
       </div>
 
+      <div class="sheet hidden" id="calledSheet">
+        <div class="sheet-top">
+          <span>Called so far &middot; <b id="sheetCount">0</b></span>
+          <button id="sheetClose">CLOSE</button>
+        </div>
+        <div class="sheet-board" id="sheetBoard"></div>
+      </div>
+
       <div id="kickedView" class="kicked hidden">
         <img src="data:image/png;base64,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" alt="">
         <h3>You were removed</h3>
@@ -508,9 +559,11 @@ body.dev .proto{display:flex}
           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8CAMAAADhV0xWAAAAP1BMVEX9zy4BAQBINCE1JBzdoiNqYlyujChoUCGTbSLweQpXRTdOPCtmYw1UQTD39PRrAAAAAAAAAAAAAAAAAAAAAAAGK4BZAAAAEHRSTlP/APb+/hX+/f7+XakNlwMCpU1sLwAAAwpJREFUeNqVVweSwzAIxDJIWC75/28P1NxUfEwyk3HMirogmJry26bp2Pxqkuwe9OnjLWjqizrtojdnkd8rheffACZaVds4tohorXOKIRC/LwByjBd1wwinIMsTA18sID3+oR5EIdYxwG8iOd691NUKJwjH2ALRZ6gL322oAfwOsd8CtBG8ONkGoKmrDyBeUEGASgKobX+Mg2SzJLNiwSHxg67YWZJJTQDfdyA6sXZisI4MCCbkKMC7hMYGaBS8ZIu2mgVSwjAUN+9NF5oeWHvzYTqIqAIADQ9QOjMjS2cmjlgJKkWAjfrL0Lbwg3k1J01bA8DNuT/EFl4W+Sy4VADAGKxnTgQjFGMQQTBzxYI6gDpuU/yWJLjMbwtaMSjBnGdRRFUPHkBIxKU5RwDqQNRfhJ7WA8rRZytx1wCH4fAFedaCFhPIe4pT4EMrRIAkWtCgUYuEL2YAbOT7PpicgxACASAThofZixN9OpB0GtYi0BCoC+FAq4S/e7EACNZWIgsvhzLUr2Qdkstscm3qX3bUzHFWKr1nAEDrTCpxxwM20LOPOEC0+crrOgFlDo7ZwAbrY+rhA//UEY6t2v5qBY/tsGW4wC3r1p3bgLMwGi7bA0CTmbcB1m2gF0zJwhNAzLoeiopn+8y+3WLwrh+pOu4z+xUAKy9L1fFgOp11gNV3XTPLNrIRnN1rXL192/Wo402ayRXirh3WrAg0YUTDpf3/V5QhipvyQVHDxmLVB7hSmHYy/wMguDBdfHAG+bMXGCsJrhsR/ycIOY1Cw2cJDmZCtZBuSxm+2Iyx7UEsZXXjPPiRiE4ps4YguvATAHPlXGcxsWQ7KZjHKqSdwN1pO5JzpyxcMiCsOKSpdFcmYCfCFnuElCmtLJf/KELVh8eW5ofj5FIBErP9tanqDcd9gdArR+iC556ol5zaLeeubV2cib+XBRIRn65pjamAgar1+OPcRy4WhHyki6KRHHCYc4HjLUtaTLo66kjd6lcehT0oXlXnp6SBTNd16L0rp9ogv+/mLrtuD/dtKsof2XgYaBBbYh0AAAAASUVORK5CYII=" alt="">
           <div class="txt">
             <div class="lbl">NOW CALLING</div>
-            <div class="val" id="nowVal">—</div>
+            <div class="val" id="nowVal">&mdash;</div>
           </div>
+          <button class="allbtn" id="allBtn">ALL<b id="allCount">0</b></button>
         </div>
+        <div class="recentrow" id="recentRow"></div>
         <div class="goal" id="goalChipG" style="margin:0 auto 14px;width:max-content"></div>
         <div id="cards"></div>
         <button class="callbtn" id="callbtn">BINGO</button>
@@ -620,6 +673,7 @@ function handle(m){
       cardsFromServer(m.cards);
       called=m.called||[]; running=!!m.running;
       called.forEach(markCalled);
+      buildSheet(); paintRecent();
       $$('leftCount').textContent = 75-called.length;
       if(called.length) showBall(called[called.length-1], true);
       paintCode(); paintGoal();
@@ -641,6 +695,7 @@ function handle(m){
     case 'ball':
       called.push(m.n);
       markCalled(m.n);
+      paintSheet(); paintRecent();
       $$('leftCount').textContent = m.left;
       showBall(m.n, false);
       break;
@@ -653,7 +708,7 @@ function handle(m){
     case 'round':                        // a fresh round in the same room
       pattern = m.pattern;
       if(m.cards) cardsFromServer(m.cards);
-      called=[]; newBoard(); paintGoal(); buildPicker();
+      called=[]; newBoard(); buildSheet(); paintRecent(); paintGoal(); buildPicker();
       $$('leftCount').textContent = 75;
       resetBallDisplay();
       stopConfetti();
@@ -715,6 +770,38 @@ function newBoard(){
   $$('recent').innerHTML='';
 }
 function markCalled(n){ const c=$$('c'+n); if(c) c.classList.add('hit'); }
+
+/* ---------- the phone's copy of the board ----------
+   Players cannot see the host screen, so they get their own. */
+function buildSheet(){
+  const b=$$('sheetBoard'); if(!b) return;
+  b.innerHTML='';
+  for(let c=0;c<5;c++){
+    const col=document.createElement('div'); col.className='sc';
+    const h=document.createElement('div'); h.className='sh'; h.textContent=LETTERS[c];
+    col.appendChild(h);
+    for(let i=1;i<=15;i++){
+      const n=c*15+i;
+      const cell=document.createElement('i'); cell.id='s'+n; cell.textContent=n;
+      col.appendChild(cell);
+    }
+    b.appendChild(col);
+  }
+  paintSheet();
+}
+function paintSheet(){
+  called.forEach(n=>{ const e=$$('s'+n); if(e) e.classList.add('hit'); });
+  const a=$$('allCount'), s=$$('sheetCount');
+  if(a) a.textContent=called.length;
+  if(s) s.textContent=called.length;
+}
+function paintRecent(){
+  const r=$$('recentRow'); if(!r) return;
+  r.innerHTML='';
+  called.slice(-5).reverse().forEach(n=>{
+    const s=document.createElement('span'); s.textContent=label(n); r.appendChild(s);
+  });
+}
 
 /* =============================================================
    cards
@@ -1028,6 +1115,7 @@ function goHome(){
   bye();
   iAmHost=false; myName=''; roster=[]; decks=[]; called=[]; armed=null;
   $$('kickedView').classList.add('hidden');
+  $$('calledSheet').classList.add('hidden');
   $$('lobby').classList.remove('hidden');
   $$('playArea').classList.add('hidden');
   $$('joinErr').textContent='';
@@ -1137,6 +1225,8 @@ document.querySelectorAll('.pick button').forEach(b=>{
 $$('joinBtn').onclick=joinRoom;
 $$('nameIn').addEventListener('keydown',e=>{ if(e.key==='Enter') joinRoom(); });
 $$('codeIn').addEventListener('keydown',e=>{ if(e.key==='Enter') $$('nameIn').focus(); });
+$$('allBtn').onclick=()=>{ paintSheet(); $$('calledSheet').classList.remove('hidden'); };
+$$('sheetClose').onclick=()=>$$('calledSheet').classList.add('hidden');
 $$('callbtn').onclick=()=>{
   if($$('callbtn').dataset.lock==='1') return;
   send({t:'bingo'});
@@ -1154,7 +1244,7 @@ if(DEV){
 }
 
 /* ---------- boot ---------- */
-newBoard(); buildPond(); buildPicker(); paintGoal(); renderPlayers(); resetBallDisplay();
+newBoard(); buildSheet(); buildPond(); buildPicker(); paintGoal(); renderPlayers(); resetBallDisplay();
 showView('choose');
 </script>
 </body>
