@@ -1378,7 +1378,15 @@ function fitHost(){
       const avail=wrap.clientWidth || (window.innerWidth-24);
       const s=Math.min(1, avail/560);
       arena.style.transform='scale('+s.toFixed(4)+')';
-      wrap.style.height=Math.round(474*s)+'px';
+      /* the pond and its shadow hang below the arena box, so the wrapper is
+         measured from what is actually drawn rather than the box height */
+      const ar=arena.getBoundingClientRect();
+      let deepest=474*s;
+      arena.querySelectorAll('.pond-ground,.rig,.ball').forEach(e=>{
+        const r=e.getBoundingClientRect();
+        deepest=Math.max(deepest, r.bottom-ar.top);
+      });
+      wrap.style.height=Math.ceil(deepest + 9*s)+'px';
     }
     return;
   }
