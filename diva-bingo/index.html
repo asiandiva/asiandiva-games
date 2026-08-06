@@ -1343,31 +1343,26 @@ const Sound = {
     }
     if(this.ctx.state === 'suspended') this.ctx.resume();
   },
-  /* a short falling tone with a little spray on top */
+  /* a soft bubble rising, kept light: this fires every few seconds all round */
   plop(){
     if(!this.on || !this.ctx) return;
     const c=this.ctx, t=c.currentTime;
-    const o=c.createOscillator(), g=c.createGain();
-    o.type='sine';
-    o.frequency.setValueAtTime(880, t);
-    o.frequency.exponentialRampToValueAtTime(170, t+0.13);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.34, t+0.012);
-    g.gain.exponentialRampToValueAtTime(0.0001, t+0.20);
-    o.connect(g).connect(c.destination);
-    o.start(t); o.stop(t+0.22);
-    const len=Math.floor(c.sampleRate*0.05);
-    const buf=c.createBuffer(1,len,c.sampleRate);
-    const d=buf.getChannelData(0);
-    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
-    const n=c.createBufferSource(); n.buffer=buf;
-    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1400;
-    const ng=c.createGain();
-    ng.gain.setValueAtTime(0.10, t);
-    ng.gain.exponentialRampToValueAtTime(0.0001, t+0.06);
-    n.connect(hp).connect(ng).connect(c.destination);
-    n.start(t+0.005);
+    const voice=(f0,f1,dur,vol,lp)=>{
+      const o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
+      o.type='sine';
+      o.frequency.setValueAtTime(f0,t);
+      o.frequency.exponentialRampToValueAtTime(f1,t+dur*0.7);
+      f.type='lowpass'; f.frequency.value=lp; f.Q.value=0.6;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(vol,t+0.020);   // gentle attack, no click
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g).connect(f).connect(c.destination);
+      o.start(t); o.stop(t+dur+0.05);
+    };
+    voice(280,  760,  0.30, 0.075, 1700);
+    voice(560, 1520,  0.18, 0.016, 2200);
   },
+
   /* four notes up, the last one held */
   fanfare(){
     if(!this.on || !this.ctx) return;
