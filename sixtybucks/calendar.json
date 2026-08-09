@@ -446,5 +446,165 @@
    "name": "The Elder Scrolls IV: Oblivion Remastered",
    "price": 49.99
   }
+ ],
+ "2026-08-18": [
+  {
+   "id": 550,
+   "name": "Left 4 Dead 2",
+   "price": 9.99
+  },
+  {
+   "id": 22320,
+   "name": "The Elder Scrolls III: Morrowind Game of the Year Edition",
+   "price": 14.99
+  },
+  {
+   "id": 22370,
+   "name": "Fallout 3: Game of the Year Edition",
+   "price": 19.99
+  },
+  {
+   "id": 22380,
+   "name": "Fallout: New Vegas",
+   "price": 9.99
+  },
+  {
+   "id": 42700,
+   "name": "Call of Duty: Black Ops",
+   "price": 39.99
+  },
+  {
+   "id": 205100,
+   "name": "Dishonored",
+   "price": 9.99
+  }
+ ],
+ "2026-08-19": [
+  {
+   "id": 218620,
+   "name": "PAYDAY 2",
+   "price": 9.99
+  },
+  {
+   "id": 236850,
+   "name": "Europa Universalis IV",
+   "price": 49.99
+  },
+  {
+   "id": 255710,
+   "name": "Cities: Skylines",
+   "price": 29.99
+  },
+  {
+   "id": 350080,
+   "name": "Wolfenstein: The Old Blood",
+   "price": 19.99
+  },
+  {
+   "id": 379720,
+   "name": "DOOM",
+   "price": 19.99
+  },
+  {
+   "id": 393380,
+   "name": "Squad",
+   "price": 39.99
+  }
+ ],
+ "2026-08-20": [
+  {
+   "id": 427410,
+   "name": "Abiotic Factor",
+   "price": 34.99
+  },
+  {
+   "id": 480490,
+   "name": "Prey",
+   "price": 29.99
+  },
+  {
+   "id": 602960,
+   "name": "Barotrauma",
+   "price": 34.99
+  },
+  {
+   "id": 648800,
+   "name": "Raft",
+   "price": 19.99
+  },
+  {
+   "id": 686810,
+   "name": "Hell Let Loose",
+   "price": 49.99
+  },
+  {
+   "id": 782330,
+   "name": "DOOM Eternal",
+   "price": 29.99
+  }
+ ],
+ "2026-08-21": [
+  {
+   "id": 813780,
+   "name": "Age of Empires II: Definitive Edition",
+   "price": 34.99
+  },
+  {
+   "id": 892970,
+   "name": "Valheim",
+   "price": 29.99
+  },
+  {
+   "id": 920210,
+   "name": "LEGO Star Wars: The Skywalker Saga",
+   "price": 49.99
+  },
+  {
+   "id": 945360,
+   "name": "Among Us",
+   "price": 4.99
+  },
+  {
+   "id": 960090,
+   "name": "Bloons TD 6",
+   "price": 13.99
+  },
+  {
+   "id": 1056960,
+   "name": "Wolfenstein: Youngblood",
+   "price": 19.99
+  }
+ ],
+ "2026-08-22": [
+  {
+   "id": 1172710,
+   "name": "Dune: Awakening",
+   "price": 49.99
+  },
+  {
+   "id": 1190970,
+   "name": "House Flipper 2",
+   "price": 39.99
+  },
+  {
+   "id": 1203620,
+   "name": "Enshrouded",
+   "price": 29.99
+  },
+  {
+   "id": 1217060,
+   "name": "Gunfire Reborn",
+   "price": 19.99
+  },
+  {
+   "id": 1282100,
+   "name": "REMNANT II",
+   "price": 49.99
+  },
+  {
+   "id": 1284190,
+   "name": "The Planet Crafter",
+   "price": 23.99
+  }
  ]
 }
