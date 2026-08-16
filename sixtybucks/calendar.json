@@ -606,5 +606,229 @@
    "name": "The Planet Crafter",
    "price": 23.99
   }
+ ],
+ "2026-08-23": [
+  {
+   "id": 214950,
+   "name": "Total War: ROME II - Emperor Edition",
+   "price": 59.99
+  },
+  {
+   "id": 275850,
+   "name": "No Man's Sky",
+   "price": 59.99
+  },
+  {
+   "id": 292000,
+   "name": "No More Room in Hell 2",
+   "price": 29.99
+  },
+  {
+   "id": 364360,
+   "name": "Total War: WARHAMMER",
+   "price": 59.99
+  },
+  {
+   "id": 368260,
+   "name": "Marvel's Midnight Suns",
+   "price": 79.99
+  },
+  {
+   "id": 552520,
+   "name": "Far Cry 5",
+   "price": 59.99
+  }
+ ],
+ "2026-08-24": [
+  {
+   "id": 582160,
+   "name": "Assassin's Creed Origins",
+   "price": 59.99
+  },
+  {
+   "id": 594570,
+   "name": "Total War: WARHAMMER II",
+   "price": 59.99
+  },
+  {
+   "id": 699130,
+   "name": "World War Z",
+   "price": 29.99
+  },
+  {
+   "id": 728880,
+   "name": "Overcooked! 2",
+   "price": 24.99
+  },
+  {
+   "id": 779340,
+   "name": "Total War: THREE KINGDOMS",
+   "price": 39.99
+  },
+  {
+   "id": 933110,
+   "name": "Age of Empires III: Definitive Edition",
+   "price": 34.99
+  }
+ ],
+ "2026-08-25": [
+  {
+   "id": 962130,
+   "name": "Grounded",
+   "price": 39.99
+  },
+  {
+   "id": 1190000,
+   "name": "Car Mechanic Simulator 2021",
+   "price": 24.99
+  },
+  {
+   "id": 1222140,
+   "name": "Detroit: Become Human",
+   "price": 39.99
+  },
+  {
+   "id": 1363080,
+   "name": "Manor Lords",
+   "price": 39.99
+  },
+  {
+   "id": 1449690,
+   "name": "The Walking Dead: The Telltale Definitive Series",
+   "price": 49.99
+  },
+  {
+   "id": 1465360,
+   "name": "SnowRunner",
+   "price": 29.99
+  }
+ ],
+ "2026-08-26": [
+  {
+   "id": 1478500,
+   "name": "Big Walk",
+   "price": 19.99
+  },
+  {
+   "id": 1501750,
+   "name": "Lords of the Fallen",
+   "price": 29.99
+  },
+  {
+   "id": 1562430,
+   "name": "DREDGE",
+   "price": 24.99
+  },
+  {
+   "id": 1643320,
+   "name": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+   "price": 59.99
+  },
+  {
+   "id": 1669000,
+   "name": "Age of Wonders 4",
+   "price": 49.99
+  },
+  {
+   "id": 1703340,
+   "name": "The Stanley Parable: Ultra Deluxe",
+   "price": 24.99
+  }
+ ],
+ "2026-08-27": [
+  {
+   "id": 1778820,
+   "name": "TEKKEN 8",
+   "price": 39.99
+  },
+  {
+   "id": 1782120,
+   "name": "ZERO Sievert",
+   "price": 19.99
+  },
+  {
+   "id": 1857950,
+   "name": "VEIN",
+   "price": 19.99
+  },
+  {
+   "id": 2273430,
+   "name": "BlazBlue Entropy Effect",
+   "price": 19.99
+  },
+  {
+   "id": 2358720,
+   "name": "Black Myth: Wukong",
+   "price": 59.99
+  },
+  {
+   "id": 2369390,
+   "name": "Far Cry 6",
+   "price": 59.99
+  }
+ ],
+ "2026-08-28": [
+  {
+   "id": 2486820,
+   "name": "Sonic Racing: CrossWorlds",
+   "price": 69.99
+  },
+  {
+   "id": 2513280,
+   "name": "SONIC X SHADOW GENERATIONS",
+   "price": 49.99
+  },
+  {
+   "id": 2842040,
+   "name": "Star Wars Outlaws",
+   "price": 69.99
+  },
+  {
+   "id": 3180070,
+   "name": "No, I'm not a Human",
+   "price": 14.99
+  },
+  {
+   "id": 3282300,
+   "name": "Mistfall Hunter",
+   "price": 24.99
+  },
+  {
+   "id": 3595270,
+   "name": "Call of Duty: Modern Warfare III",
+   "price": 69.99
+  }
+ ],
+ "2026-08-29": [
+  {
+   "id": 1297900,
+   "name": "Gothic 1 Remake",
+   "price": 49.99
+  },
+  {
+   "id": 1313140,
+   "name": "Cult of the Lamb",
+   "price": 24.99
+  },
+  {
+   "id": 1426210,
+   "name": "It Takes Two",
+   "price": 39.99
+  },
+  {
+   "id": 1466860,
+   "name": "Age of Empires IV: Anniversary Edition",
+   "price": 39.99
+  },
+  {
+   "id": 1617400,
+   "name": "The Bazaar",
+   "price": 19.99
+  },
+  {
+   "id": 1627720,
+   "name": "Lies of P",
+   "price": 59.99
+  }
  ]
 }
