@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GHA NAT Swatter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--butter:#FFD84D;--cream:#FFF4D6;--honey:#E8A33D;--ink:#1A1614;--bad:#E5544B;--good:#7BD86A;--cyan:#5CF2EA}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(--cream);
+  display:flex;align-items:center;justify-content:center;padding:16px;-webkit-user-select:none;user-select:none}
+
+#stage{position:relative;width:min(100%,1100px);aspect-ratio:16/9;max-height:calc(100vh - 32px);
+  background:#000;border-radius:14px;overflow:hidden;
+  box-shadow:0 24px 70px rgba(0,0,0,.7),0 0 0 1px rgba(255,216,77,.14);touch-action:manipulation}
+#stage.playing{cursor:none}
+#stage.playing.overopts{cursor:default}
+
+.layer{position:absolute;inset:-4%;will-change:transform;backface-visibility:hidden;background-position:center;background-repeat:no-repeat}
+#bg{z-index:1;background-size:cover}
+#mid{z-index:2;background-size:100% auto;background-position:bottom center;filter:blur(1px)}
+#vignette{position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 45%,transparent 38%,rgba(0,0,0,.5) 100%)}
+@keyframes kenburns{from{transform:scale(1.03)}to{transform:scale(1.11)}}
+@keyframes kenburnsMid{from{transform:scale(1.05)}to{transform:scale(1.19)}}
+.storying #bg{animation:kenburns 15s linear forwards}
+.storying #mid{animation:kenburnsMid 15s linear forwards}
+
+/* ---------- gnats ---------- */
+#gnats{position:absolute;inset:0;z-index:3}
+.gwrap{position:absolute;left:0;top:0;will-change:transform;contain:layout style}
+.gnat{width:34px;height:42px;background-size:400% 100%;background-repeat:no-repeat;
+  background-image:url('img/gnat.webp');animation:flap .3s steps(1) infinite}
+@keyframes flap{0%{background-position:0% 0}25%{background-position:33.333% 0}
+  50%{background-position:66.666% 0}75%{background-position:100% 0}}
+.gnat.dart{animation-duration:.16s}
+.gnat.hero{filter:drop-shadow(0 5px 10px rgba(0,0,0,.7))}
+.gnat.fast{animation-duration:.12s;background-image:url('img/gnat-fast.webp');
+  filter:drop-shadow(0 0 7px rgba(255,190,40,.85))}
+.gnat.tiny{background-image:url('img/gnat-tiny.webp');
+  filter:drop-shadow(0 0 6px rgba(235,245,255,.8))}
+.gnat.zigzag{animation-duration:.15s;background-image:url('img/gnat-zigzag.webp');
+  filter:drop-shadow(0 0 7px rgba(110,245,130,.85))}
+.gnat.splitter{animation-duration:.4s;background-image:url('img/gnat-splitter.webp');
+  filter:drop-shadow(0 0 8px rgba(200,120,255,.85))}
+.gnat.shard{background-image:url('img/gnat-splitter.webp');
+  filter:drop-shadow(0 0 6px rgba(200,120,255,.85));
+  animation:flap .18s steps(1) infinite, birthFlash .6s ease-out}
+@keyframes birthFlash{0%{filter:drop-shadow(0 0 18px rgba(225,150,255,1)) brightness(2)}
+  100%{filter:drop-shadow(0 0 6px rgba(200,120,255,.85)) brightness(1)}}
+.gnat.bonus{background-image:url('img/gnat-bonus.webp');
+  animation:flap .14s steps(1) infinite, throb .8s ease-in-out infinite}
+@keyframes throb{0%,100%{filter:drop-shadow(0 0 7px rgba(90,245,240,.85)) brightness(1)}
+  50%{filter:drop-shadow(0 0 19px rgba(140,255,250,1)) brightness(1.28)}}
+.gwrap.leaving{animation:leave .55s ease-in forwards}
+@keyframes leave{to{opacity:0}}
+
+/* ---------- fx ---------- */
+#fx{position:absolute;inset:0;z-index:6;pointer-events:none}
+.splat{position:absolute;width:54px;height:54px;margin:-27px 0 0 -27px;
+  border-radius:48% 52% 44% 56%/52% 46% 54% 48%;
+  background:radial-gradient(circle at 40% 38%,#4A4038,#211C18 70%);
+  animation:splatIn .16s ease-out, splatOut 1.1s .5s ease-in forwards}
+.splat.purple{background:radial-gradient(circle at 40% 38%,#A86BD8,#4A2168 70%)}
+@keyframes splatIn{from{transform:scale(.2)}to{transform:scale(1)}}
+@keyframes splatOut{to{opacity:0;transform:scale(1.12)}}
+.bit{position:absolute;width:7px;height:7px;margin:-3px 0 0 -3px;border-radius:50%;background:#2A2420}
+.pop{position:absolute;font-family:"Fredoka",sans-serif;font-weight:700;font-size:22px;
+  color:var(--butter);text-shadow:0 2px 5px rgba(0,0,0,.75);white-space:nowrap;
+  animation:popUp .75s ease-out forwards}
+@keyframes popUp{0%{opacity:0;transform:translate(-50%,0) scale(.7)}
+  18%{opacity:1;transform:translate(-50%,-14px) scale(1.12)}
+  100%{opacity:0;transform:translate(-50%,-52px) scale(1)}}
+.pop.miss{color:var(--bad);font-size:17px}
+.pop.split{color:#D98BFF;font-size:19px;letter-spacing:.12em}
+.pop.time{color:var(--cyan);font-size:26px}
+.ghost{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;
+  background:rgba(120,245,140,.55);animation:ghostOut .34s linear forwards}
+@keyframes ghostOut{to{opacity:0;transform:scale(.35)}}
+.burst{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;
+  border:5px solid rgba(215,145,255,1);box-shadow:0 0 26px rgba(190,110,255,.9),inset 0 0 18px rgba(190,110,255,.7);
+  animation:burstOut .55s cubic-bezier(.2,.8,.3,1) forwards}
+.ring{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;
+  border:4px solid var(--cyan);box-shadow:0 0 24px rgba(92,242,234,.9);
+  animation:burstOut .6s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes burstOut{to{opacity:0;transform:scale(4.2)}}
+
+/* ---------- swatter ---------- */
+#swatWrap{position:absolute;left:0;top:0;z-index:14;pointer-events:none;will-change:transform;display:none}
+#swatWrap.away{opacity:0}
+#swatter{position:absolute;width:190px;height:127px;left:-40.5px;top:-33.4px;
+  transform-origin:40.5px 33.4px;
+  background:url('img/swatter.webp') center/contain no-repeat;
+  filter:drop-shadow(0 6px 7px rgba(0,0,0,.5))}
+#swatter.hit{animation:swing .19s cubic-bezier(.3,1.5,.5,1)}
+@keyframes swing{0%{transform:rotate(-24deg) translate(7px,-7px) scale(1.05)}
+  35%{transform:rotate(12deg) translate(-4px,5px) scale(.85)}
+  100%{transform:rotate(0deg) translate(0,0) scale(1)}}
+#swatWrap.stun #swatter{filter:saturate(.15) brightness(.55) drop-shadow(0 6px 7px rgba(0,0,0,.5))}
+#hitdot{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;
+  background:rgba(255,244,214,.5);box-shadow:0 0 0 1.5px rgba(0,0,0,.45)}
+#stunring{position:absolute;z-index:13;pointer-events:none;width:66px;height:66px;
+  margin:-33px 0 0 -33px;border-radius:50%;border:3px solid var(--bad);opacity:0}
+#stunring.on{animation:stunPulse .42s ease-out}
+@keyframes stunPulse{0%{opacity:.9;transform:scale(.5)}100%{opacity:0;transform:scale(1.7)}}
+
+/* ---------- HUD ---------- */
+#hud{position:absolute;inset:0;z-index:10;pointer-events:none;display:none}
+#hud.on{display:block}
+#topbar{position:absolute;top:16px;left:20px;right:20px;display:flex;align-items:center;gap:14px}
+#scorebox{min-width:78px;display:flex;flex-direction:column;gap:1px}
+#scorelabel,#quotalabel{font-family:"Fredoka",sans-serif;font-weight:600;font-size:10px;
+  letter-spacing:.22em;color:rgba(255,244,214,.62);text-shadow:0 2px 5px rgba(0,0,0,.8);line-height:1}
+#score{font-family:"Fredoka",sans-serif;font-weight:700;font-size:30px;color:var(--butter);
+  text-shadow:0 3px 8px rgba(0,0,0,.8);line-height:1;transform-origin:left center}
+#score.bump{animation:bump .18s ease-out}
+#runline{font-family:"Fredoka",sans-serif;font-size:10.5px;letter-spacing:.14em;
+  color:var(--cyan);text-shadow:0 2px 6px rgba(0,0,0,.9);margin-top:3px;min-height:12px}
+#srclock{position:absolute;top:76px;left:20px;font-family:"Fredoka",sans-serif;font-weight:700;
+  font-size:23px;color:var(--cyan);text-shadow:0 2px 8px rgba(0,0,0,.9);display:none}
+#srclock.on{display:block}
+#srclock small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.2em;
+  color:rgba(255,244,214,.55);margin-bottom:2px}
+@keyframes bump{50%{transform:scale(1.22)}}
+#timewrap{flex:1;display:flex;flex-direction:column;gap:5px}
+#timetrack{height:7px;background:rgba(0,0,0,.5);border-radius:4px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,244,214,.16)}
+#timefill{height:100%;width:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--honey),var(--butter));transition:width .1s linear}
+#timefill.low{background:linear-gradient(90deg,#B33,#E5544B)}
+#timefill.gain{animation:gainFlash .85s ease-out}
+@keyframes gainFlash{0%,100%{box-shadow:none}20%{box-shadow:0 0 16px 4px rgba(92,242,234,.95)}}
+#timetext{font-family:"Fredoka",sans-serif;font-size:12px;letter-spacing:.14em;
+  color:rgba(255,244,214,.7);text-align:center}
+#quotabox{min-width:96px;display:flex;flex-direction:column;gap:1px;text-align:right}
+#quota{font-family:"Fredoka",sans-serif;font-weight:700;font-size:26px;color:var(--cream);line-height:1;
+  text-shadow:0 3px 8px rgba(0,0,0,.8)}
+#quota b{color:var(--cream)}
+#quota.met b{color:var(--good)}
+#quota.met{text-shadow:0 0 14px rgba(123,216,106,.6)}
+#quotafill.met{background:var(--good);box-shadow:0 0 10px rgba(123,216,106,.8)}
+#quotatrack{height:5px;margin-top:5px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden}
+#quotafill{height:100%;width:0%;background:var(--good);border-radius:3px;transition:width .2s}
+#combo{position:absolute;top:74px;right:20px;font-family:"Fredoka",sans-serif;font-weight:600;
+  font-size:19px;color:var(--good);text-shadow:0 2px 6px rgba(0,0,0,.8);opacity:0;transition:opacity .2s}
+#combo.on{opacity:1}
+#combo.big{animation:bump .2s ease-out}
+#combo.shielded{opacity:1;color:var(--cyan)}
+#combo.shielded::after{content:' \25C6'}
+
+#banner{position:absolute;left:50%;top:36%;transform:translate(-50%,-50%);z-index:11;
+  pointer-events:none;text-align:center;opacity:0}
+#banner.show{animation:bannerIn 1.9s ease-out}
+#banner b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;
+  font-size:clamp(26px,4.4vw,44px);letter-spacing:.04em;color:var(--butter);
+  text-shadow:0 4px 0 rgba(0,0,0,.5),0 0 26px rgba(255,216,77,.55)}
+#banner span{display:block;margin-top:6px;font-family:"Fredoka",sans-serif;font-size:12.5px;
+  letter-spacing:.2em;color:rgba(255,244,214,.8);text-shadow:0 2px 6px rgba(0,0,0,.9)}
+@keyframes bannerIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+  14%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
+  24%{transform:translate(-50%,-50%) scale(1)}74%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
+
+/* ---------- story card ---------- */
+#story{position:absolute;inset:0;z-index:16;display:none;cursor:pointer}
+#story.on{display:block}
+#storyroom{position:absolute;top:18px;left:22px;font-family:"Fredoka",sans-serif;
+  font-weight:600;font-size:12px;letter-spacing:.16em;color:var(--butter);
+  text-shadow:0 2px 8px rgba(0,0,0,.9)}
+#dialogue{position:absolute;left:22px;right:22px;bottom:22px;
+  background:linear-gradient(180deg,rgba(20,16,12,.9),rgba(12,9,7,.95));
+  border:1px solid rgba(255,216,77,.3);border-radius:12px;padding:16px 20px 18px;
+  backdrop-filter:blur(6px);animation:boxIn .45s cubic-bezier(.2,.9,.3,1) both}
+@keyframes boxIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#speaker{display:inline-block;font-family:"Fredoka",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--butter);
+  padding:2px 9px;border-radius:20px;margin-bottom:9px}
+#line{font-size:clamp(15px,1.75vw,21px);line-height:1.45;font-style:italic;min-height:2.9em}
+#advance{position:absolute;right:18px;bottom:12px;font-family:ui-monospace,monospace;
+  font-size:10px;letter-spacing:.14em;color:rgba(255,244,214,.5);opacity:0;transition:opacity .3s}
+#advance.show{opacity:1;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(4px)}}
+#skipstory{position:absolute;bottom:130px;right:22px;z-index:17}
+
+/* ---------- opening ---------- */
+#intro{position:absolute;inset:0;z-index:24;display:none;cursor:pointer;overflow:auto}
+#intro.on{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(14px,3.4vh,30px);padding:5% 14px;
+}
+#introFade{position:absolute;inset:0;background:#07060A;z-index:3;pointer-events:none;
+  animation:introFade 1.6s ease-out forwards}
+@keyframes introFade{from{opacity:1}to{opacity:0}}
+.descending #bg{animation:descend 6.4s cubic-bezier(.32,.05,.2,1) forwards}
+.descending #mid{animation:descendMid 6.4s cubic-bezier(.32,.05,.2,1) forwards}
+@keyframes descend{0%{transform:scale(2.5) translateY(27%)}100%{transform:scale(1.05) translateY(0)}}
+@keyframes descendMid{0%{transform:scale(3.4) translateY(54%);opacity:0}40%{opacity:1}
+  100%{transform:scale(1.08) translateY(0);opacity:1}}
+#introSky{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(24,18,44,.72) 0%,rgba(24,18,44,.2) 42%,transparent 68%)}
+
+#titleBlock{position:relative;z-index:4;text-align:center;pointer-events:none;flex:none}
+#tGnat{font-family:"Fredoka",sans-serif;font-weight:700;
+  font-size:clamp(38px,8.2vw,96px);line-height:.9;color:var(--butter);
+  letter-spacing:.03em;white-space:nowrap;opacity:0;
+  text-shadow:0 6px 0 rgba(0,0,0,.42),0 0 46px rgba(255,216,77,.5);
+  animation:titleIn 1.5s 1.5s cubic-bezier(.2,1.3,.4,1) forwards}
+#tSwat{font-family:"Fredoka",sans-serif;font-weight:600;
+  font-size:clamp(13px,2.5vw,28px);letter-spacing:.5em;text-indent:.5em;
+  color:var(--cream);margin-top:5px;opacity:0;white-space:nowrap;
+  text-shadow:0 3px 12px rgba(0,0,0,.85);
+  animation:titleIn 1.4s 2.15s cubic-bezier(.2,1.2,.4,1) forwards}
+#tBy{font-family:"Fredoka",sans-serif;font-weight:500;
+  font-size:clamp(9px,1.35vw,13px);letter-spacing:.3em;white-space:nowrap;
+  color:rgba(255,244,214,.72);margin-top:16px;opacity:0;
+  text-shadow:0 2px 10px rgba(0,0,0,.9);
+  animation:byIn 1.8s 3.3s ease-out forwards}
+@keyframes titleIn{
+  0%{opacity:0;transform:scale(.82) translateY(16px);filter:blur(9px)}
+  100%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)}}
+@keyframes byIn{0%{opacity:0;letter-spacing:.55em}100%{opacity:.78;letter-spacing:.3em}}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}}
+
+#introBtns{
+  position:relative;z-index:5;flex:none;
+  display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap;
+  max-width:100%;letter-spacing:normal;
+  opacity:0;animation:fadeUp 1.1s 4.6s ease-out forwards;
+}
+#introBtns.ready{opacity:1;animation:none}
+#introBtns button{
+  font-family:"Fredoka",sans-serif;font-weight:600;
+  font-size:clamp(11.5px,1.35vw,15px);
+  letter-spacing:normal;white-space:nowrap;
+  padding:clamp(8px,1.1vh,12px) clamp(13px,1.7vw,24px);
+  border-radius:30px;cursor:pointer;transition:.14s;flex:none;
+}
+#introBtns button.primary{
+  background:var(--butter);color:var(--ink);border:none;box-shadow:0 4px 0 var(--honey);
+}
+#introBtns button.second{
+  background:rgba(14,11,8,.9);color:var(--cream);
+  border:1.5px solid rgba(255,216,77,.62);box-shadow:0 4px 0 rgba(0,0,0,.45);
+}
+#introBtns button:hover{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.45)}
+#introBtns button.second:hover{background:rgba(255,216,77,.94);color:var(--ink);border-color:var(--butter)}
+#introSkip{position:absolute;right:16px;bottom:14px;z-index:26;opacity:.65;display:none}
+#introSkip.on{display:block}
+
+#howto{position:relative;z-index:5;flex:none;display:none;flex-direction:column;gap:6px;
+  padding:13px 18px;border-radius:13px;background:rgba(12,9,7,.92);
+  border:1px solid rgba(255,216,77,.3);backdrop-filter:blur(6px);
+  max-width:min(94%,440px);letter-spacing:normal}
+#howto.on{display:flex;animation:boxIn .4s ease-out}
+#howto b{font-family:"Fredoka",sans-serif;font-size:10.5px;letter-spacing:.22em;
+  color:var(--butter);font-weight:600}
+#howto .row{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;
+  color:rgba(255,244,214,.88);line-height:1.4}
+#howto .dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:none}
+
+/* ---------- settings tray ---------- */
+#gear{position:absolute;bottom:14px;left:18px;z-index:27;pointer-events:auto;
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(14,11,8,.88);border:1px solid rgba(255,244,214,.3);
+  color:rgba(255,244,214,.82);font-size:16px;line-height:1;cursor:pointer;transition:.16s}
+#gear:hover{border-color:var(--butter);color:var(--butter);background:rgba(255,216,77,.2)}
+#gear.open{background:var(--butter);color:var(--ink);border-color:var(--butter)}
+
+#opts{position:absolute;bottom:62px;left:18px;z-index:26;   /* clears the 36px gear + 12px gap */
+  display:none;flex-direction:column;gap:8px;padding:13px 14px;border-radius:13px;
+  min-width:172px;
+  background:rgba(12,9,7,.95);border:1px solid rgba(255,216,77,.34);
+  box-shadow:0 10px 26px rgba(0,0,0,.55);backdrop-filter:blur(8px)}
+#opts.on{display:flex;animation:boxIn .26s ease-out}
+#opts .ohead{font-family:"Fredoka",sans-serif;font-size:9.5px;letter-spacing:.24em;
+  color:rgba(255,244,214,.5);font-weight:600}
+#opts .btn{width:100%;text-align:center;padding:8px 12px}
+#opts .osep{height:1px;background:rgba(255,244,214,.16);margin:2px 0}
+#opts #titleBtn{border-color:rgba(255,216,77,.45);color:var(--butter)}
+
+/* ---------- finale ---------- *//* ---------- finale ---------- */
+#finale{position:absolute;inset:0;z-index:22;display:none;overflow:hidden}
+#finale.on{display:block}
+#bigswat{position:absolute;width:78%;left:14%;top:-96%;
+  background:url('img/swatter.webp') center/contain no-repeat;
+  aspect-ratio:190/127;transform-origin:38% 30%;filter:drop-shadow(0 20px 30px rgba(0,0,0,.7))}
+#bigswat.drop{animation:swatDrop .42s cubic-bezier(.55,0,.85,.3) forwards}
+@keyframes swatDrop{
+  0%{top:-96%;transform:rotate(-28deg) scale(1.1)}
+  100%{top:6%;transform:rotate(4deg) scale(1)}
+}
+#bigswat.lift{animation:swatLift .8s .35s ease-in forwards}
+@keyframes swatLift{to{top:-96%;transform:rotate(-20deg)}}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#flash.go{animation:flashOut .5s ease-out}
+@keyframes flashOut{0%{opacity:.92}100%{opacity:0}}
+.shake{animation:shakeIt .42s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shakeIt{
+  10%{transform:translate(-9px,4px)}30%{transform:translate(8px,-6px)}
+  50%{transform:translate(-6px,5px)}70%{transform:translate(5px,-3px)}
+  100%{transform:translate(0,0)}
+}
+#ghost{position:absolute;left:50%;top:52%;width:52px;height:64px;margin:-32px 0 0 -26px;
+  background:url('img/gnat.webp') 0 0/400% 100% no-repeat;
+  filter:brightness(3.4) saturate(0) drop-shadow(0 0 12px rgba(255,255,255,.9));
+  opacity:0;pointer-events:none}
+#ghost.rise{animation:flap .3s steps(1) infinite, riseUp 3.4s ease-out forwards}
+@keyframes riseUp{
+  0%{opacity:0;transform:translateY(0) scale(1.4)}
+  16%{opacity:.95}
+  100%{opacity:0;transform:translateY(-190px) scale(.55)}
+}
+#graveWrap{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;padding:22px;opacity:0;
+  background:radial-gradient(ellipse at 50% 46%,rgba(46,40,58,.94),rgba(8,7,12,.98) 74%)}
+#graveWrap.on{animation:graveIn 1.1s ease-out forwards}
+@keyframes graveIn{from{opacity:0}to{opacity:1}}
+#grave{width:min(240px,30vw)}
+#epitaph{font-family:"Fredoka",sans-serif;font-size:13px;letter-spacing:.05em;
+  color:rgba(255,244,214,.66);font-style:italic;max-width:40ch;text-align:center}
+#finalTotal{font-family:"Fredoka",sans-serif;font-weight:700;
+  font-size:clamp(26px,4.6vw,46px);color:var(--butter);letter-spacing:.02em;
+  text-shadow:0 4px 0 rgba(0,0,0,.45),0 0 30px rgba(255,216,77,.4)}
+#finalLabel{font-family:"Fredoka",sans-serif;font-size:10.5px;letter-spacing:.28em;
+  color:rgba(255,244,214,.55)}
+#finalRec{font-family:"Fredoka",sans-serif;font-size:12px;letter-spacing:.14em;color:var(--cyan)}
+#finalStats{display:flex;gap:22px;margin-top:2px}
+
+/* ---------- cards ---------- */
+.card{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;gap:15px;padding:26px;
+  background:radial-gradient(ellipse at 50% 42%,rgba(58,47,30,.93),rgba(10,8,6,.97) 76%);
+  backdrop-filter:blur(3px)}
+.card.hidden{display:none}
+.card h1{font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(28px,5vw,56px);
+  line-height:.95;color:var(--butter);letter-spacing:-.02em;text-shadow:0 5px 0 rgba(0,0,0,.4)}
+.card h1 small{display:block;font-size:.3em;font-weight:500;letter-spacing:.3em;
+  color:rgba(255,244,214,.6);margin-top:12px;text-shadow:none}
+.card p{max-width:46ch;font-size:14.5px;line-height:1.6;color:rgba(255,244,214,.75)}
+.bigbtn{font-family:"Fredoka",sans-serif;font-weight:600;font-size:16px;background:var(--butter);
+  color:var(--ink);border:none;padding:13px 34px;border-radius:30px;cursor:pointer;
+  box-shadow:0 5px 0 var(--honey);transition:.12s}
+.bigbtn:hover{transform:translateY(2px);box-shadow:0 3px 0 var(--honey)}
+.bigbtn:active{transform:translateY(5px);box-shadow:0 0 0 var(--honey)}
+.bigbtn.ghost{background:transparent;color:rgba(255,244,214,.72);box-shadow:none;
+  border:1px solid rgba(255,244,214,.3);font-size:13px;padding:10px 24px}
+.bigbtn.ghost:hover{color:var(--butter);border-color:var(--butter);transform:none}
+#stats{display:flex;gap:24px}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat b{font-family:"Fredoka",sans-serif;font-size:26px;color:var(--cream);font-weight:600}
+.stat span{font-family:"Fredoka",sans-serif;font-size:10px;letter-spacing:.18em;color:rgba(255,244,214,.5)}
+
+/* level select */
+#levels{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:min(100%,640px)}
+.lvl{position:relative;border-radius:11px;padding:13px 11px;cursor:pointer;text-align:left;
+  border:1px solid rgba(255,244,214,.2);background:rgba(255,244,214,.06);transition:.16s;
+  font-family:"Fredoka",sans-serif}
+.lvl:hover{border-color:var(--butter);background:rgba(255,216,77,.14);transform:translateY(-2px)}
+.lvl .num{font-size:10px;letter-spacing:.2em;color:rgba(255,244,214,.5)}
+.lvl .nm{font-size:15px;font-weight:600;color:var(--cream);margin-top:3px}
+.lvl .dif{font-size:10.5px;color:var(--butter);margin-top:4px;letter-spacing:.06em}
+.lvl .bs{font-size:10px;color:rgba(255,244,214,.5);margin-top:5px}
+.lvl.locked{opacity:.34;cursor:not-allowed;filter:grayscale(1)}
+.lvl.locked:hover{transform:none;border-color:rgba(255,244,214,.2);background:rgba(255,244,214,.06)}
+.lvl.locked::after{content:'\1F512';position:absolute;top:11px;right:11px;font-size:13px}
+.lvl.done::after{content:'\2713';position:absolute;top:9px;right:12px;font-size:15px;color:var(--good)}
+
+.btn{font-family:"Fredoka",sans-serif;font-weight:500;font-size:11.5px;
+  background:rgba(255,244,214,.08);border:1px solid rgba(255,244,214,.22);
+  color:rgba(255,244,214,.8);padding:6px 12px;border-radius:20px;cursor:pointer;
+  transition:.16s;pointer-events:auto}
+.btn:hover{background:rgba(255,216,77,.18);border-color:var(--butter);color:var(--butter)}
+.btn.on{background:var(--butter);color:var(--ink);border-color:var(--butter)}
+#quitBtn{position:absolute;bottom:14px;right:20px;z-index:12;display:none}
+#quitBtn.on{display:block}
+
+/* ---------- portrait / phone ---------- */
+@media (orientation:portrait){
+  body{padding:8px}
+  #stage{width:100%;height:calc(100dvh - 16px);max-height:none;aspect-ratio:auto;border-radius:12px}
+  /* art is landscape - let it crop rather than letterbox */
+  #bg{background-size:cover}
+  #mid{background-size:auto 42%;background-position:bottom center}
+
+  #intro.on{justify-content:space-between;padding:9% 12px 5%}
+  #titleBlock{margin-top:6vh}
+  #tGnat{font-size:clamp(40px,15vw,74px)}
+  #tSwat{font-size:clamp(12px,4.2vw,20px);letter-spacing:.42em;text-indent:.42em}
+  #tBy{font-size:10px;letter-spacing:.24em;margin-top:12px}
+  #introBtns{flex-direction:column;width:100%;max-width:290px;gap:8px}
+  #introBtns button{width:100%;font-size:15px;padding:13px 16px}
+  #howto{max-width:100%}
+  #howto .row{font-size:12px}
+
+  #topbar{top:12px;left:12px;right:12px;gap:9px}
+  #score{font-size:21px}#quota{font-size:18px}
+  #combo{top:66px;right:12px;font-size:16px}
+  #srclock{top:66px;left:12px;font-size:18px}
+  #dialogue{left:10px;right:10px;bottom:10px;padding:11px 13px 13px}
+  #line{font-size:15px}
+  #gear{bottom:12px;left:12px}
+  #gear{bottom:12px;left:12px}
+  #opts{bottom:58px;left:12px;min-width:0;width:calc(100% - 24px)}
+  #quitBtn{bottom:12px;right:12px}
+  #levels{grid-template-columns:1fr 1fr;gap:8px}
+  .lvl{padding:10px 9px}
+  .card{padding:18px 14px;gap:11px}
+  .card h1{font-size:clamp(24px,7.5vw,40px)}
+  .card p{font-size:13px}
+  #stats,#finalStats{gap:14px;flex-wrap:wrap;justify-content:center}
+  .stat b{font-size:21px}
+  #grave{width:min(180px,44vw)}
+}
+
+@media (max-width:640px){
+  #swatter{width:137px;height:91px;left:-29.2px;top:-24.0px;transform-origin:29.2px 24.0px}
+  #score{font-size:22px}#scorelabel,#quotalabel{font-size:9px}#quota{font-size:20px}
+  .gnat{width:40px;height:49px}
+  #levels{grid-template-columns:repeat(2,1fr)}
+  #dialogue{left:12px;right:12px;bottom:12px;padding:12px 14px 14px}
+}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="layer" id="bg"></div>
+  <div class="layer" id="mid"></div>
+  <div id="gnats"></div>
+  <div id="vignette"></div>
+  <div id="fx"></div>
+
+  <div id="stunring"></div>
+  <div id="swatWrap"><div id="swatter"></div><div id="hitdot"></div></div>
+
+  <div id="banner"><b></b><span></span></div>
+
+  <div id="hud">
+    <div id="topbar">
+      <div id="scorebox"><div id="scorelabel">SCORE</div><div id="score">0</div>
+        <div id="runline"></div></div>
+      <div id="timewrap">
+        <div id="timetrack"><div id="timefill"></div></div>
+        <div id="timetext">45.0</div>
+      </div>
+      <div id="quotabox">
+        <div id="quotalabel">TARGET</div>
+        <div id="quota"><b>0</b> / 15</div>
+        <div id="quotatrack"><div id="quotafill"></div></div>
+      </div>
+    </div>
+    <div id="srclock"><small>RUN TIME</small><span id="srtime">0.0</span></div>
+    <div id="combo">x1.0</div>
+  </div>
+
+  <div id="story">
+    <div id="storyroom"></div>
+    <div id="dialogue">
+      <span id="speaker">The Gnat</span>
+      <div id="line"></div>
+      <div id="advance">CLICK TO CONTINUE &#9656;</div>
+    </div>
+  </div>
+  <button class="btn" id="skipstory" style="display:none">Skip &#9656;</button>
+
+  <div id="gear" title="Settings">&#9881;</div>
+  <div id="opts">
+    <div class="ohead">SETTINGS</div>
+    <button class="btn on" id="soundBtn">Sound: on</button>
+    <button class="btn" id="hitboxBtn">Big hitbox: off</button>
+    <div class="osep"></div>
+    <button class="btn" id="titleBtn">&#9666; Return to title</button>
+  </div>
+  <button class="btn" id="quitBtn">Quit</button>
+
+  <div id="finale">
+    <div id="ghost"></div>
+    <div id="bigswat"></div>
+    <div id="flash"></div>
+    <div id="graveWrap">
+      <svg id="grave" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="100" cy="196" rx="86" ry="16" fill="#2A2F22"/>
+        <path d="M18 196 Q100 172 182 196 Z" fill="#3A4530"/>
+        <g>
+          <path d="M52 196 V92 a48 48 0 0 1 96 0 V196 Z" fill="#6B6A73"/>
+          <path d="M52 196 V92 a48 48 0 0 1 96 0 V196 Z" fill="none" stroke="#3E3D46" stroke-width="4"/>
+          <path d="M62 190 V94 a38 38 0 0 1 76 0 V190 Z" fill="none" stroke="#54535D" stroke-width="2.5"/>
+          <text x="100" y="118" text-anchor="middle" font-family="Fredoka,sans-serif"
+                font-size="30" font-weight="700" fill="#33323B">R.I.P.</text>
+          <text x="100" y="150" text-anchor="middle" font-family="Fredoka,sans-serif"
+                font-size="24" font-weight="600" fill="#3B3A44">GNAT</text>
+          <text x="100" y="172" text-anchor="middle" font-family="Fredoka,sans-serif"
+                font-size="12" fill="#4A4952">lived 8 days</text>
+        </g>
+        <g transform="translate(150,150)">
+          <ellipse cx="0" cy="30" rx="21" ry="16" fill="#FFD84D"/>
+          <circle cx="9" cy="13" r="12" fill="#FFD84D"/>
+          <path d="M19 12 l11 3 -11 4 Z" fill="#E8A33D"/>
+          <circle cx="12" cy="10" r="2" fill="#2A2420"/>
+          <path d="M-16 26 q6 -7 13 -2" stroke="#E8A33D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <g stroke="#4E5B3C" stroke-width="3" stroke-linecap="round" fill="none">
+          <path d="M34 196 q3 -14 8 -18"/><path d="M168 196 q-3 -12 -7 -16"/>
+        </g>
+      </svg>
+      <div id="epitaph">He made it to the stream room. That was always the plan.</div>
+      <div id="finalLabel">STORY TOTAL</div>
+      <div id="finalTotal">0</div>
+      <div id="finalRec"></div>
+      <div id="finalStats"></div>
+      <button class="bigbtn" id="finalBtn" style="margin-top:6px">Back to levels</button>
+    </div>
+  </div>
+
+  <div id="intro">
+    <div id="introSky"></div>
+    <div id="introFade"></div>
+    <div id="titleBlock">
+      <div id="tGnat">GHA NAT</div>
+      <div id="tSwat">SWATTER</div>
+      <div id="tBy">AN ASIANDIVA__ PRODUCTION</div>
+    </div>
+    <div id="howto">
+      <b>HOW TO PLAY</b>
+      <div class="row"><span class="dot" style="background:#8A8A92"></span>
+        <span>Click the gnats. Miss and your swatter jams for a moment.</span></div>
+      <div class="row"><span class="dot" style="background:var(--good)"></span>
+        <span>Chain hits without missing to build a score multiplier.</span></div>
+      <div class="row"><span class="dot" style="background:var(--cyan)"></span>
+        <span>Cyan gnats add 10 seconds. You will need them.</span></div>
+    </div>
+    <div id="introBtns">
+      <button class="primary" id="playBtn">Story Mode</button>
+      <button class="second" id="srIntroBtn">Speedrun</button>
+      <button class="second" id="levelsBtn">Levels</button>
+      <button class="second" id="howBtn">How to play</button>
+    </div>
+    <button class="btn" id="introSkip">Skip &#9656;</button>
+  </div>
+
+  <div class="card" id="menuCard">
+    <h1>Levels<small>ROOMS YOU HAVE UNLOCKED</small></h1>
+    <p style="margin-top:-4px">Replay any room you have cleared. Beat a room in Story Mode to unlock the next one.</p>
+    <div id="levels"></div>
+    <div id="storyBest" style="font-family:Fredoka,sans-serif;font-size:13px;color:var(--cyan);letter-spacing:.06em"></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">
+      <button class="bigbtn" id="srBtn">Speedrun all 6</button>
+      <span id="srBest" style="font-family:Fredoka,sans-serif;font-size:12.5px;color:var(--cyan)"></span>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="bigbtn ghost" id="backBtn">&#9666; Title</button>
+      <button class="bigbtn ghost" id="resetBtn">Reset progress</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="srCard">
+    <h1>Speedrun<small>ALL SIX ROOMS &middot; ONE CLOCK</small></h1>
+    <p>Every room back to back with its own timer. Hit a room's target and you move on instantly, so clearing fast lowers your time.</p>
+    <div id="srRules" style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:rgba(255,244,214,.8);text-align:left;max-width:42ch">
+      <div>&middot; Miss a target and you retry that room &mdash; the clock keeps running.</div>
+      <div>&middot; Quit part-way and the run does not count.</div>
+      <div>&middot; Story cards are skipped. Cyan gnats pay in kills, not seconds.</div>
+    </div>
+    <div id="srPrev" style="font-family:Fredoka,sans-serif;font-size:13px;color:var(--cyan)"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button class="bigbtn" id="srGo">Start run</button>
+      <button class="bigbtn ghost" id="srBack">&#9666; Title</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="endCard">
+    <h1 id="endTitle">Room clear</h1>
+    <div id="stats">
+      <div class="stat"><b id="fScore">0</b><span>SCORE</span></div>
+      <div class="stat"><b id="fHitsOut">0</b><span>SWATTED</span></div>
+      <div class="stat"><b id="fAcc">0%</b><span>ACCURACY</span></div>
+      <div class="stat"><b id="fCombo">0</b><span>BEST COMBO</span></div>
+    </div>
+    <div id="endNote" style="font-family:Fredoka,sans-serif;font-size:13px;color:var(--butter)"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button class="bigbtn" id="nextBtn">Next room</button>
+      <button class="bigbtn ghost" id="retryBtn">Retry</button>
+      <button class="bigbtn ghost" id="menuBtn">Levels</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ LEVELS ============ */
+const LEVELS=[
+ {n:1,room:"Back Porch",sub:"Dusk",dif:"Super easy",quota:38,time:45,dens:5,
+  types:["normal"],weights:[1],
+  story:"They think the porch light is for them. Cute. I've got a whole house behind that screen door and about four hundred cousins who lack ambition.",
+  bg:"url('img/porch-bg.webp')",mid:"url('img/porch-fg.webp')"},
+ {n:2,room:"Kitchen",sub:"Late night",dif:"Easy",quota:42,time:45,dens:7,
+  types:["normal","fast"],weights:[.70,.30],intro:["FAST GNATS","HARDER TO CATCH \u00b7 WORTH MORE"],
+  story:"Bananas. Left out. Uncovered. Honestly this is less a break-in and more an invitation with a fruit bowl attached.",
+  bg:"url('img/kitchen-bg.webp')",mid:"url('img/kitchen-fg.webp')"},
+ {n:3,room:"Garage",sub:"Trash day",dif:"Easy / medium",quota:50,time:50,dens:9,
+  types:["normal","fast","tiny"],weights:[.48,.22,.30],intro:["TINY GNATS","SMALL TARGETS \u00b7 BIG POINTS"],
+  story:"Whoever lives here burnt a batch of dumplings and threw the whole tray out. The bins go out Tuesday. I go in Monday. Nobody in this family does math.",
+  bg:"url('img/garage-bg.webp')",mid:"url('img/garage-fg.webp')"},
+ {n:4,room:"Bathroom",sub:"Occupied",dif:"Hard",quota:67,time:50,dens:11,
+  types:["normal","fast","tiny","zigzag"],weights:[.45,.18,.17,.20],intro:["ZIGZAGGERS","DO NOT LEAD YOUR SHOT"],
+  story:"Someone's been in here twenty five minutes and counting. That's not a bathroom break, that's a fiber deficiency. I've got time. I live eight days.",
+  bg:"url('img/bathroom-bg.webp')",mid:"url('img/bathroom-fg.webp')"},
+ {n:5,room:"Compost Bin",sub:"Peak conditions",dif:"Harder",quota:100,time:55,dens:13,
+  types:["normal","fast","tiny","zigzag","splitter"],weights:[.40,.15,.15,.12,.18],intro:["SPLITTERS","SWAT ONE \u00b7 GET TWO"],
+  story:"This is the good stuff. This is where legends are made. I'd stay forever, but I heard something upstairs. A voice. Talking to nobody, for four hours, every Saturday.",
+  bg:"url('img/compost-bg.webp')",mid:"url('img/compost-fg.webp')"},
+ {n:6,room:"The Stream Room",sub:"Saturday, 4 hours in",dif:"KILLER MODE",quota:200,time:60,dens:16,
+  types:["normal","fast","tiny","zigzag","splitter"],weights:[.20,.20,.21,.19,.20],intro:["KILLER MODE","ALL OF THEM \u00b7 GOOD LUCK"],
+  story:"Found her. Headset on, duck on the desk, completely unaware. Let's see how the community likes a guest star.",
+  bg:"url('img/streamroom-bg.webp')",mid:"url('img/streamroom-fg.webp')"}
+];
+
+const TYPES={
+  normal:{scale:[.82,1.14],pts:10,dartChance:.26,speed:1,reach:34,wob:[1.0,2.0]},
+  fast:{scale:[.86,1.06],pts:16,dartChance:.58,speed:2.05,reach:48,wob:[1.4,2.6]},
+  tiny:{scale:[.5,.62],pts:22,dartChance:.34,speed:1.35,reach:38,wob:[1.6,3.0]},
+  zigzag:{scale:[.8,1.0],pts:26,dartChance:0,speed:1,reach:0,wob:[.3,.7],zig:true},
+  splitter:{scale:[1.18,1.38],pts:30,dartChance:.16,speed:.8,reach:26,wob:[.7,1.3],splits:2},
+  shard:{scale:[.54,.64],pts:18,dartChance:.32,speed:1.55,reach:36,wob:[1.5,2.7]},
+  bonus:{scale:[.92,1.06],pts:15,dartChance:.52,speed:1.85,reach:46,wob:[1.3,2.4],isBonus:true}
+};
+const BONUS={
+  story:    {kind:'time',  amount:10},  // random spawns: catching them is the run's luck + skill
+  arcade:   {kind:'time',  amount:10},  // endless: extending the run IS the game
+  speedrun: {kind:'quota', pct:.09},    // clock is the score -> pay in kills, scaled to the room
+  unlimited:{kind:'points',amount:80}
+};
+
+const KEY='gnatSwatter.v2';
+const $=id=>document.getElementById(id);
+const stage=$('stage'),bgEl=$('bg'),midEl=$('mid'),gnatBox=$('gnats'),fx=$('fx');
+const swatWrap=$('swatWrap'),swatter=$('swatter'),stunring=$('stunring');
+const scoreEl=$('score'),timeFill=$('timefill'),timeText=$('timetext');
+const quotaEl=$('quota'),quotaFill=$('quotafill'),comboEl=$('combo');
+const hud=$('hud'),storyEl=$('story'),lineEl=$('line'),advance=$('advance');
+const menuCard=$('menuCard'),endCard=$('endCard');
+
+const fmt=s=>{const m=Math.floor(s/60),r=s-m*60;return m?(m+':'+(r<10?'0':'')+r.toFixed(1)):r.toFixed(1);};
+const R=(a,b)=>a+Math.random()*(b-a);
+const CL=(v,a,b)=>v<a?a:v>b?b:v;
+
+let save=JSON.parse(localStorage.getItem(KEY)||'{"unlocked":1,"best":{},"storyBest":0,"srBest":0,"srSplits":{}}');
+const persist=()=>localStorage.setItem(KEY,JSON.stringify(save));
+
+let MODE='story';
+let lvl=null, flyers=[], running=false, lastT=0;
+let timeLeft=0,maxTime=0,score=0,hits=0,swings=0,combo=0,bestCombo=0,quotaHits=0;
+let stunUntil=0,soundOn=true,bigHit=false,shield=false,audio=null;
+let nextBonus=0;
+let typing=false,typeTimer=null;
+let runTotal=0, runStart=-1;   // a 'run' = straight through from the porch
+let runClock=0, srDeaths=0, srSplits={};
+
+/* ---------- audio ---------- */
+function initAudio(){
+  if(audio) return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(AC) audio=new AC();
+  }catch(e){ audio=null; soundOn=false; }   // no audio is fine; a crash is not
+}
+function noise(dur,freq,gv,type){
+  if(!soundOn||!audio)return;
+  const n=audio.sampleRate*dur,buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+  const s=audio.createBufferSource();s.buffer=buf;
+  const f=audio.createBiquadFilter();f.type=type||'lowpass';f.frequency.value=freq;
+  const g=audio.createGain();g.gain.value=gv;
+  g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+dur);
+  s.connect(f).connect(g).connect(audio.destination);s.start();
+}
+function tone(type,f0,f1,dur,gv,delay){
+  if(!soundOn||!audio)return;
+  const t=audio.currentTime+(delay||0);
+  const o=audio.createOscillator(),g=audio.createGain();
+  o.type=type;o.frequency.setValueAtTime(f0,t);
+  o.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(.001,t);
+  g.gain.exponentialRampToValueAtTime(gv,t+.012);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g).connect(audio.destination);o.start(t);o.stop(t+dur+.02);
+}
+const sfxSwat =()=>noise(.09,2600,.16,'highpass');
+const sfxSplat=()=>{noise(.16,520,.34);tone('square',180,60,.14,.16);};
+const sfxMiss =()=>tone('sawtooth',150,70,.17,.1);
+const sfxSplit=()=>{tone('triangle',560,980,.11,.26,0);tone('triangle',700,1140,.11,.26,.07);};
+const sfxTime =()=>{[620,830,1120].forEach((f,i)=>tone('sine',f,f,.3,.2,i*.09));};
+const sfxWin  =()=>{[520,660,780,1040].forEach((f,i)=>tone('sine',f,f,.42,.22,i*.11));};
+const sfxLose =()=>{[420,330,250].forEach((f,i)=>tone('triangle',f,f*.85,.36,.16,i*.14));};
+
+/* ---------- gnats ---------- */
+function spawnGnat(type,atX,atY,burst){
+  type=type||'normal';
+  const T=TYPES[type];
+  const wrap=document.createElement('div');wrap.className='gwrap';
+  const sp=document.createElement('div');
+  sp.className='gnat'+(type==='normal'?'':' '+type);
+  sp.style.animationDelay=(-Math.random()*.3)+'s';
+  wrap.appendChild(sp);gnatBox.appendChild(wrap);
+  const f={el:wrap,sp:sp,alive:true,type:type,T:T,
+    x:(atX!==undefined?atX:R(8,92)),y:(atY!==undefined?atY:R(14,74)),
+    sx:0,sy:0,tx:0,ty:0,t:0,dur:1,pause:0,dir:-1,
+    scale:R(T.scale[0],T.scale[1]),wob:R(0,6.28),wobA:R(T.wob[0],T.wob[1]),
+    px:0,py:0,lastD:0,life:0};
+  f.sx=f.tx=f.x;f.sy=f.ty=f.y;
+  retarget(f);
+  if(burst!==undefined){
+    f.sx=f.x;f.sy=f.y;
+    f.tx=CL(f.x+Math.cos(burst)*27,5,95);
+    f.ty=CL(f.y+Math.sin(burst)*21,8,80);
+    f.dur=.36;f.t=0;f.pause=0;f.heading=burst;
+  }else f.t=Math.random()*f.dur*.7;
+  flyers.push(f);return f;
+}
+function retarget(f){
+  const T=f.T;f.sx=f.x;f.sy=f.y;
+  if(T.zig){
+    if(f.heading===undefined)f.heading=R(0,6.28);
+    f.heading+=R(1.15,2.65)*(Math.random()<.5?-1:1);
+    const leg=R(11,21);
+    let nx=f.x+Math.cos(f.heading)*leg, ny=f.y+Math.sin(f.heading)*leg*.78;
+    if(nx<6||nx>94){f.heading=Math.PI-f.heading;nx=CL(f.x+Math.cos(f.heading)*leg,6,94);}
+    if(ny<9||ny>79){f.heading=-f.heading;ny=CL(f.y+Math.sin(f.heading)*leg*.78,9,79);}
+    f.tx=CL(nx,6,94);f.ty=CL(ny,9,79);
+    f.dur=R(.2,.38);f.t=0;f.pause=0;f.sp.classList.remove('dart');return;
+  }
+  const dart=Math.random()<T.dartChance;
+  const yLo=f.yMin||8, yHi=f.yMax||80;
+  f.tx=CL(f.x+R(-T.reach,T.reach),5,95);
+  f.ty=CL(f.y+R(-T.reach*.76,T.reach*.76),yLo,yHi);
+  const d=Math.hypot(f.tx-f.sx,f.ty-f.sy);
+  f.dur=(dart?Math.max(.18,d*.009):Math.max(.3,d*.023)+R(0,.3))/T.speed;
+  f.t=0;
+  f.pause=Math.random()<(T.speed>1.6?.07:.14)?R(.1,.45):0;
+  f.sp.classList.toggle('dart',dart);
+}
+
+/* ---------- fx ---------- */
+function splatAt(px,py,cls){
+  const s=document.createElement('div');s.className='splat'+(cls?' '+cls:'');
+  s.style.left=px+'px';s.style.top=py+'px';s.style.transform='rotate('+R(0,360)+'deg)';
+  fx.appendChild(s);setTimeout(()=>s.remove(),1700);
+  for(let i=0;i<7;i++){
+    const b=document.createElement('div');b.className='bit';
+    b.style.left=px+'px';b.style.top=py+'px';fx.appendChild(b);
+    const a=R(0,6.28),dist=R(22,60);
+    b.animate([{transform:'translate(0,0) scale(1)',opacity:1},
+      {transform:'translate('+Math.cos(a)*dist+'px,'+(Math.sin(a)*dist+26)+'px) scale(.3)',opacity:0}],
+      {duration:R(400,700),easing:'cubic-bezier(.2,.7,.4,1)'});
+    setTimeout(()=>b.remove(),720);
+  }
+}
+function popAt(px,py,text,miss,extra){
+  const p=document.createElement('div');
+  p.className='pop'+(miss?' miss':'')+(extra?' '+extra:'');
+  p.textContent=text;p.style.left=px+'px';p.style.top=py+'px';
+  fx.appendChild(p);setTimeout(()=>p.remove(),800);
+}
+function fxCircle(cls,px,py,ms){
+  const e=document.createElement('div');e.className=cls;
+  e.style.left=px+'px';e.style.top=py+'px';fx.appendChild(e);
+  setTimeout(()=>e.remove(),ms);
+}
+function banner(t,s){
+  const b=$('banner');b.querySelector('b').textContent=t;b.querySelector('span').textContent=s;
+  b.classList.remove('show');void b.offsetWidth;b.classList.add('show');
+}
+function updateShield(){comboEl.classList.toggle('shielded',shield);}
+function applyBonus(f){
+  const B=BONUS[MODE];
+  const amt = B.pct ? Math.max(3,Math.round(lvl.quota*B.pct)) : B.amount;
+  fxCircle('ring',f.px,f.py,640);
+  if(B.kind==='time'){
+    timeLeft+=amt;popAt(f.px,f.py-34,'+'+amt+'s',false,'time');
+    timeFill.classList.remove('gain');void timeFill.offsetWidth;timeFill.classList.add('gain');
+  }else if(B.kind==='quota'){
+    quotaHits+=amt;popAt(f.px,f.py-34,'+'+amt+' KILLS',false,'time');updateQuota();
+  }else{
+    score+=amt;scoreEl.textContent=score;shield=true;updateShield();
+    popAt(f.px,f.py-34,'+'+amt+' \u00b7 SHIELD',false,'time');
+  }
+  setTimeout(sfxTime,90);
+}
+
+/* ---------- swat ---------- */
+function swatAt(px,py){
+  if(!running)return;
+  const now=performance.now();
+  if(now<stunUntil)return;
+  swings++;
+  swatter.classList.remove('hit');void swatter.offsetWidth;swatter.classList.add('hit');
+  sfxSwat();
+  const radius=(bigHit?52:38);
+  let best=null,bestD=1e9;
+  for(const f of flyers){
+    if(!f.alive)continue;
+    const d=Math.hypot(f.px-px,f.py-py);
+    if(d<radius*Math.max(f.scale,.74)&&d<bestD){best=f;bestD=d;}
+  }
+  if(best){
+    best.alive=false;best.el.remove();
+    flyers=flyers.filter(g=>g!==best);
+    hits++;combo++;bestCombo=Math.max(bestCombo,combo);
+    const mult=Math.min(3,1+(combo-1)*.1);
+    score+=Math.round(best.T.pts*mult);
+    scoreEl.textContent=score;
+    scoreEl.classList.remove('bump');void scoreEl.offsetWidth;scoreEl.classList.add('bump');
+    if(best.T.isBonus) applyBonus(best);
+    else { quotaHits++; updateQuota(); }
+    const isSplit=!!best.T.splits;
+    splatAt(best.px,best.py,isSplit?'purple':'');
+    popAt(best.px,best.py,'+'+Math.round(best.T.pts*mult));
+    sfxSplat();
+    if(isSplit){
+      fxCircle('burst',best.px,best.py,600);
+      popAt(best.px,best.py-30,'SPLIT!',false,'split');
+      const a0=R(0,6.28);
+      for(let k=0;k<best.T.splits;k++) spawnGnat('shard',best.x,best.y,a0+k*(6.283/best.T.splits));
+      setTimeout(sfxSplit,110);
+    }
+    if(combo>1){
+      comboEl.textContent='x'+mult.toFixed(1);
+      comboEl.classList.add('on');
+      comboEl.classList.remove('big');void comboEl.offsetWidth;comboEl.classList.add('big');
+    }
+    if(quotaHits>=lvl.quota){
+      if(MODE==='speedrun'){ finish(); return; }        // leave the instant you hit it
+      if(quotaHits===lvl.quota) banner('TARGET MET','NOW PLAY FOR SCORE');
+    }
+    // the replacement must respect density, and a splitter's shards ARE its replacement
+    if(!isSplit){
+      setTimeout(()=>{ if(running && flyers.length<lvl.dens) spawnGnat(pickType()); },R(280,700));
+    }
+  }else if(shield){
+    shield=false;updateShield();popAt(px,py,'saved',false,'time');
+    stunUntil=now+340;swatWrap.classList.add('stun');
+    setTimeout(()=>swatWrap.classList.remove('stun'),340);sfxMiss();
+  }else{
+    combo=0;comboEl.classList.remove('on');
+    stunUntil=now+340;swatWrap.classList.add('stun');
+    stunring.style.left=px+'px';stunring.style.top=py+'px';
+    stunring.classList.remove('on');void stunring.offsetWidth;stunring.classList.add('on');
+    setTimeout(()=>swatWrap.classList.remove('stun'),340);
+    popAt(px,py,'miss',true);sfxMiss();
+  }
+}
+function pickType(){
+  const t=lvl.types, w=lvl.weights;
+  let r=Math.random(), acc=0;
+  for(let i=0;i<t.length;i++){ acc+=w[i]; if(r<acc) return t[i]; }
+  return t[0];
+}
+function updateQuota(){
+  const met=quotaHits>=lvl.quota;
+  quotaEl.innerHTML='<b>'+quotaHits+'</b> / '+lvl.quota;
+  quotaFill.style.width=Math.min(100,quotaHits/lvl.quota*100)+'%';
+  quotaEl.classList.toggle('met',met);
+  quotaFill.classList.toggle('met',met);
+}
+
+/* ---------- loop ---------- */
+function tick(now){
+  requestAnimationFrame(tick);
+  if(!lastT)lastT=now;
+  let dt=(now-lastT)/1000;lastT=now;
+  if(dt>.1)dt=.1;
+  const SW=gnatBox.clientWidth,SH=gnatBox.clientHeight;
+
+  for(let i=flyers.length-1;i>=0;i--){
+    const f=flyers[i];
+    if(f.expires&&now>f.expires){
+      f.alive=false;f.el.classList.add('leaving');
+      const el=f.el;setTimeout(()=>el.remove(),600);flyers.splice(i,1);
+    }
+  }
+
+  if(running){
+    timeLeft-=dt;
+    if(MODE==='speedrun'){ runClock+=dt; $('srtime').textContent=fmt(runClock); }
+    if(timeLeft<=0){timeLeft=0;finish();}
+    if(timeLeft>maxTime)maxTime=timeLeft;
+    timeFill.style.width=(timeLeft/maxTime*100)+'%';
+    timeFill.classList.toggle('low',timeLeft<10);
+    timeText.textContent=timeLeft.toFixed(1);
+    // random timing on purpose - never know when the cyan one shows up
+    // uncapped on purpose: a hot run full of cyan gnats is the reward
+    if(MODE!=='speedrun' && now>nextBonus){
+      nextBonus=now+R(6000,22000);
+      const b=spawnGnat('bonus'); if(b) b.expires=now+R(4200,5600);
+    }
+    if(flyers.length<lvl.dens&&Math.random()<dt*2.4) spawnGnat(pickType());
+    if(flyers.length>lvl.dens+6){                    // safety net
+      for(let i=flyers.length-1;i>=0 && flyers.length>lvl.dens+6;i--){
+        const f=flyers[i];
+        if(f.type==='shard'){ f.alive=false; f.el.remove(); flyers.splice(i,1); }
+      }
+    }
+  }
+
+  for(const f of flyers){
+    f.life+=dt;
+    if(f.pause>0)f.pause-=dt;
+    else{
+      f.t+=dt;
+      const p=Math.min(1,f.t/f.dur);
+      const e=f.T.zig?p:1-Math.pow(1-p,2.2);
+      f.x=f.sx+(f.tx-f.sx)*e;f.y=f.sy+(f.ty-f.sy)*e;
+      if(p>=1)retarget(f);
+    }
+    f.wob+=dt*14;
+    const wy=Math.sin(f.wob)*f.wobA, wx=Math.cos(f.wob*.7)*f.wobA*.4;
+    if(Math.abs(f.tx-f.sx)>.4)f.dir=(f.tx>f.sx)?-1:1;
+    f.px=(f.x+wx)*SW/100;f.py=(f.y+wy)*SH/100;
+    f.el.style.transform='translate3d('+f.px+'px,'+f.py+'px,0)';
+    if(f.T.zig&&running&&now-(f.lastTrail||0)>52){
+      f.lastTrail=now;fxCircle('ghost',f.px,f.py,360);
+    }
+    if(f.hero){
+      // the storyteller: oversized, and in the last room he closes on the camera
+      if(f.grow) f.scale=1.7+Math.min(1,f.life/15)*2.9;
+      f.sp.style.transform='translate(-50%,-50%) scale('+f.scale+') scaleX('+f.dir+')';
+    }else if(f.dir!==f.lastD){
+      f.sp.style.transform='translate(-50%,-50%) scale('+f.scale+') scaleX('+f.dir+')';
+      f.lastD=f.dir;
+    }
+  }
+}
+
+/* ---------- story ---------- */
+function preloadRoom(i){
+  const L=LEVELS[i]; if(!L) return;
+  [L.bg,L.mid].forEach(u=>{
+    const m=/url\('([^']+)'\)/.exec(u); if(!m) return;
+    const im=new Image(); im.src=m[1];
+  });
+}
+function playStory(L,then){
+  preloadRoom(LEVELS.indexOf(L)+1);
+  storyEl.classList.add('on');
+  $('skipstory').style.display='block';
+  $('storyroom').textContent=L.room.toUpperCase()+' \u00b7 '+L.sub;
+  stage.classList.remove('storying');void stage.offsetWidth;stage.classList.add('storying');
+  gnatBox.innerHTML='';flyers=[];
+  for(let i=0;i<Math.min(6,L.dens);i++) spawnGnat('normal');
+  const hero=spawnGnat('normal');
+  hero.hero=true;
+  hero.sp.classList.add('hero');
+  hero.scale=L.n===6?1.7:2.5;
+  hero.wobA*=.55;                 // steadier than the background swarm
+  hero.T=Object.assign({},TYPES.normal,{speed:.62,reach:26});
+  hero.grow=(L.n===6);            // scene six: straight down the lens
+  hero.yMin=10; hero.yMax=42;          // dialogue box owns the bottom third
+  hero.x=L.n===6?50:R(60,80);
+  hero.y=L.n===6?40:R(20,36);
+  hero.el.style.zIndex=4;
+  retarget(hero);
+  let n=0;typing=true;advance.classList.remove('show');
+  clearInterval(typeTimer);
+  typeTimer=setInterval(()=>{
+    n++;lineEl.textContent=L.story.slice(0,n);
+    if(n>=L.story.length){clearInterval(typeTimer);typing=false;advance.classList.add('show');}
+  },26);
+  const done=()=>{
+    storyEl.classList.remove('on');$('skipstory').style.display='none';
+    stage.classList.remove('storying');
+    storyEl.onclick=null;$('skipstory').onclick=null;
+    then();
+  };
+  storyEl.onclick=()=>{
+    if(typing){clearInterval(typeTimer);lineEl.textContent=L.story;typing=false;advance.classList.add('show');}
+    else done();
+  };
+  $('skipstory').onclick=e=>{e.stopPropagation();clearInterval(typeTimer);done();};
+}
+
+/* ---------- flow ---------- */
+function startLevel(i,continuing){
+  if(!continuing){ runTotal=0; runStart=i; }
+  lvl=LEVELS[i];
+  menuCard.classList.add('hidden');endCard.classList.add('hidden');
+  initAudio();if(audio&&audio.state==='suspended')audio.resume();
+  if(MODE==='speedrun') beginPlay();          // no cutscenes on the clock
+  else playStory(lvl,()=>beginPlay());
+}
+function startSpeedrun(){
+  MODE='speedrun';
+  runClock=0; srDeaths=0; srSplits={};
+  $('srclock').classList.add('on'); $('srtime').textContent='0.0';
+  const L=LEVELS[0];
+  bgEl.style.backgroundImage=L.bg; midEl.style.backgroundImage=L.mid;
+  startLevel(0);
+}
+function beginPlay(){
+  gnatBox.innerHTML='';fx.innerHTML='';flyers=[];lastT=0;
+  timeLeft=lvl.time;maxTime=lvl.time;score=0;hits=0;swings=0;combo=0;bestCombo=0;
+  quotaHits=0;stunUntil=0;shield=false;
+  scoreEl.textContent='0';comboEl.classList.remove('on');
+  quotaEl.classList.remove('met');quotaFill.classList.remove('met');
+  updateShield();updateQuota();
+  nextBonus=performance.now()+R(1500,14000);
+  $('runline').textContent=(MODE==='speedrun')?'':((runTotal>0)?('RUN '+runTotal.toLocaleString()):'');
+  for(let i=0;i<Math.min(4,lvl.dens);i++) spawnGnat(lvl.types[0]);
+  running=true;
+  stage.classList.add('playing');
+  hud.classList.add('on');swatWrap.style.display='block';$('quitBtn').classList.add('on');
+  $('quitBtn').textContent=(MODE==='speedrun')?'Quit run':'Quit to levels';
+  if(lvl.intro) setTimeout(()=>{if(running)banner(lvl.intro[0],lvl.intro[1]);},700);
+}
+function stopPlay(){
+  running=false;stage.classList.remove('playing');
+  hud.classList.remove('on');swatWrap.style.display='none';$('quitBtn').classList.remove('on');
+}
+function finish(){
+  stopPlay();
+  const cleared = quotaHits>=lvl.quota;
+
+  if(MODE==='speedrun'){
+    $('fScore').textContent=score;
+    $('fHitsOut').textContent=quotaHits;
+    $('fAcc').textContent=(swings?Math.round(hits/swings*100):0)+'%';
+    $('fCombo').textContent=bestCombo;
+    if(cleared){
+      srSplits[lvl.n]=runClock; sfxWin();
+      if(lvl.n<6){
+        const L=LEVELS[lvl.n];
+        bgEl.style.backgroundImage=L.bg; midEl.style.backgroundImage=L.mid;
+        $('endTitle').textContent=lvl.room+' cleared';
+        $('endNote').textContent='Split '+fmt(runClock)+'   \u00b7   up next: '+L.room;
+        $('nextBtn').style.display=''; $('nextBtn').textContent='Go \u25b8';
+      }else{
+        const prev=save.srBest||0, rec=(!prev||runClock<prev);
+        if(rec){ save.srBest=runClock; save.srSplits=srSplits; persist(); }
+        $('endTitle').textContent='RUN COMPLETE';
+        $('endNote').textContent=fmt(runClock)+(rec?'   \u00b7   NEW RECORD':'   \u00b7   best '+fmt(prev))+
+          (srDeaths?('   \u00b7   '+srDeaths+' retr'+(srDeaths>1?'ies':'y')):'   \u00b7   no retries');
+        $('nextBtn').style.display='none';
+      }
+    }else{
+      srDeaths++; sfxLose();
+      $('endTitle').textContent='Room failed';
+      $('endNote').textContent='The clock keeps running \u2014 '+fmt(runClock)+
+        '.   Retry, or quit (a quit run does not count).';
+      $('nextBtn').style.display='none';
+    }
+    endCard.classList.remove('hidden');
+    return;
+  }
+
+  const i=LEVELS.indexOf(lvl);
+  const prev=save.best[lvl.n]||0;
+  const isBest=score>prev;
+  if(cleared) runTotal+=score;
+  const fullRun = (runStart===0);
+
+  if(cleared){
+    sfxWin();
+    if(save.unlocked<i+2) save.unlocked=Math.min(6,i+2);
+    if(isBest) save.best[lvl.n]=score;
+    persist();
+    $('endTitle').textContent = lvl.n===6 ? 'You got it.' : 'Room clear';
+    let note = isBest ? 'NEW BEST FOR THIS ROOM'
+                      : 'Best: '+Math.max(prev,score)+'  \u00b7  beat it next run';
+    // any chain of rooms carries a running total
+    if(lvl.n<6 && runStart<5) note += '   \u00b7   RUN TOTAL '+runTotal.toLocaleString();
+    if(lvl.n===6 && runStart<5){
+      if(fullRun){
+        const sb=save.storyBest||0;
+        if(runTotal>sb){ save.storyBest=runTotal; persist(); }
+        note='STORY TOTAL '+runTotal.toLocaleString()+
+             (runTotal>sb?'   \u00b7   NEW RECORD':'   \u00b7   best '+sb.toLocaleString());
+      }else{
+        // only a run from the porch can set the record
+        note='RUN TOTAL '+runTotal.toLocaleString()+
+             '   \u00b7   levels '+(runStart+1)+'\u20136   \u00b7   start at the porch for a story record';
+      }
+    }
+    $('endNote').textContent=note;
+    $('nextBtn').style.display = (lvl.n<6) ? '' : 'none';
+    if(lvl.n===6){ playFinale(fullRun); return; }
+  }else{
+    sfxLose();
+    $('endTitle').textContent='They got away';
+    $('endNote').textContent='Needed '+lvl.quota+' to clear the room. You swatted '+quotaHits+'.'+
+      (runTotal>0?'   \u00b7   run ends here on '+runTotal.toLocaleString():'');
+    $('nextBtn').style.display='none';
+  }
+  $('fScore').textContent=score;
+  $('fHitsOut').textContent=quotaHits;
+  $('fAcc').textContent=(swings?Math.round(hits/swings*100):0)+'%';
+  $('fCombo').textContent=bestCombo;
+  endCard.classList.remove('hidden');
+}
+const LAST_WORDS="Eight days. Not one regret. Honestly, if I had to do it aga\u2014";
+
+function playFinale(fullRun){
+  endCard.classList.add('hidden');
+  hud.classList.remove('on');
+  swatWrap.style.display='none';
+  $('quitBtn').classList.remove('on');
+  stage.classList.remove('playing');
+
+  // stay in the stream room, clear the swarm, leave one very smug gnat
+  gnatBox.innerHTML='';fx.innerHTML='';flyers=[];
+  const g=spawnGnat('normal');
+  g.hero=true; g.sp.classList.add('hero');
+  g.scale=3.6; g.x=50; g.y=44; g.yMin=34; g.yMax=52;
+  g.wobA*=.4; g.T=Object.assign({},TYPES.normal,{speed:.4,reach:9});
+  retarget(g);
+
+  $('finale').classList.add('on');
+  $('graveWrap').classList.remove('on');
+  $('ghost').classList.remove('rise');
+  $('bigswat').classList.remove('drop','lift');
+  storyEl.classList.add('on');
+  $('storyroom').textContent='THE STREAM ROOM · FINALLY';
+  advance.classList.remove('show');
+
+  let n=0;
+  clearInterval(typeTimer);
+  typeTimer=setInterval(()=>{
+    n++; lineEl.textContent=LAST_WORDS.slice(0,n);
+    if(n>=LAST_WORDS.length){ clearInterval(typeTimer); setTimeout(()=>swatDown(g,fullRun), 260); }
+  },30);
+}
+
+function swatDown(g,fullRun){
+  const sw=$('bigswat');
+  sw.classList.add('drop');
+  setTimeout(()=>{
+    // impact
+    $('flash').classList.add('go');
+    stage.classList.add('shake');
+    sfxSplat();
+    const px=g.px||gnatBox.clientWidth/2, py=g.py||gnatBox.clientHeight*0.44;
+    splatAt(px,py); splatAt(px-26,py+12); splatAt(px+22,py-9);
+    g.el.remove(); flyers=[];
+    storyEl.classList.remove('on');
+    setTimeout(()=>{stage.classList.remove('shake');$('flash').classList.remove('go');},520);
+    sw.classList.add('lift');
+    // the soul departs
+    setTimeout(()=>{ $('ghost').classList.add('rise'); sfxTime(); },380);
+    setTimeout(()=>showGrave(fullRun), 1500);
+  },400);
+}
+
+function showGrave(fullRun){
+  const total = fullRun ? runTotal : score;
+  $('finalLabel').textContent = fullRun ? 'STORY TOTAL' : 'ROOM SCORE';
+  $('finalTotal').textContent = total.toLocaleString();
+  const sb=save.storyBest||0;
+  $('finalRec').textContent = fullRun
+      ? ((total>=sb && total>0) ? 'NEW STORY RECORD' : 'Story best: '+sb.toLocaleString())
+      : 'Start at the porch for a story record';
+  $('finalStats').innerHTML =
+    '<div class="stat"><b>'+quotaHits+'</b><span>SWATTED</span></div>'+
+    '<div class="stat"><b>'+(swings?Math.round(hits/swings*100):0)+'%</b><span>ACCURACY</span></div>'+
+    '<div class="stat"><b>'+bestCombo+'</b><span>BEST COMBO</span></div>';
+  $('graveWrap').classList.add('on');
+  sfxWin();
+}
+
+function toMenu(){
+  stopPlay();endCard.classList.add('hidden');
+  $('finale').classList.remove('on');storyEl.classList.remove('on');
+  MODE='story';$('srclock').classList.remove('on');$('nextBtn').textContent='Next room';
+  gnatBox.innerHTML='';fx.innerHTML='';flyers=[];
+  bgEl.style.backgroundImage=LEVELS[0].bg;
+  midEl.style.backgroundImage=LEVELS[0].mid;
+  for(let i=0;i<7;i++) spawnGnat('normal');
+  runTotal=0;runStart=-1;
+  $('intro').classList.remove('on');$('srCard').classList.add('hidden');
+  buildLevels();
+  $('storyBest').textContent = save.storyBest ? ('Story best: '+save.storyBest.toLocaleString()) : '';
+  $('srBest').textContent = save.srBest ? ('best '+fmt(save.srBest)) : '';
+  $('srBtn').onclick=showSpeedrunCard;
+  menuCard.classList.remove('hidden');
+}
+function buildLevels(){
+  const box=$('levels');box.innerHTML='';
+  LEVELS.forEach((L,i)=>{
+    const locked=save.unlocked<L.n;
+    const d=document.createElement('div');
+    d.className='lvl'+(locked?' locked':'')+((save.best[L.n]&&!locked)?' done':'');
+    d.innerHTML='<div class="num">LEVEL '+L.n+'</div><div class="nm">'+L.room+'</div>'+
+      '<div class="dif">'+L.dif+'</div><div class="bs">'+L.quota+' in '+L.time+'s \u00b7 '+
+      (save.best[L.n]?('Best '+save.best[L.n]):(locked?'Locked':'Not cleared'))+'</div>';
+    if(!locked) d.onclick=()=>{
+      bgEl.style.backgroundImage=L.bg;midEl.style.backgroundImage=L.mid;
+      startLevel(i);
+    };
+    box.appendChild(d);
+  });
+}
+
+/* ---------- input ---------- */
+function localPt(e){const r=stage.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+stage.addEventListener('pointermove',e=>{
+  const p=localPt(e);
+  swatWrap.style.transform='translate3d('+p.x+'px,'+p.y+'px,0)';
+  const over=!!e.target.closest('#opts')||!!e.target.closest('#gear')||!!e.target.closest('#quitBtn');
+  swatWrap.classList.toggle('away',over);
+  stage.classList.toggle('overopts',over);
+});
+stage.addEventListener('pointerdown',e=>{
+  if(e.target.closest('button')||e.target.closest('#opts')||e.target.closest('#gear'))return;
+  if(!storyEl.classList.contains('on')){
+    const p=localPt(e);
+    swatWrap.style.transform='translate3d('+p.x+'px,'+p.y+'px,0)';
+    swatAt(p.x,p.y);
+  }
+});
+stage.addEventListener('contextmenu',e=>e.preventDefault());
+
+$('nextBtn').onclick=()=>{
+  const i=LEVELS.indexOf(lvl);
+  if(i<5){const L=LEVELS[i+1];bgEl.style.backgroundImage=L.bg;midEl.style.backgroundImage=L.mid;
+    startLevel(i+1,true);}   // keep the run going
+};
+$('retryBtn').onclick=()=>{
+  const i=LEVELS.indexOf(lvl);
+  if(MODE==='speedrun'){ startLevel(i,true); return; }   // clock never stops
+  runTotal=Math.max(0,runTotal-(quotaHits>=lvl.quota?score:0));
+  startLevel(i, runStart>=0 && i>runStart);
+};
+$('menuBtn').onclick=toMenu;
+$('finalBtn').onclick=toMenu;
+$('quitBtn').onclick=toMenu;
+$('resetBtn').onclick=()=>{
+  save={unlocked:1,best:{},storyBest:0,srBest:0,srSplits:{}};persist();buildLevels();$('storyBest').textContent='';
+};
+$('soundBtn').onclick=e=>{
+  soundOn=!soundOn;initAudio();
+  if(audio&&audio.state==='suspended')audio.resume();
+  e.target.textContent='Sound: '+(soundOn?'on':'off');
+  e.target.classList.toggle('on',soundOn);
+};
+$('hitboxBtn').onclick=e=>{
+  bigHit=!bigHit;
+  e.target.textContent='Big hitbox: '+(bigHit?'on':'off');
+  e.target.classList.toggle('on',bigHit);
+};
+
+/* ---------- opening ---------- */
+let introDone=false;
+function playIntro(){
+  const L=LEVELS[0];
+  bgEl.style.backgroundImage=L.bg; midEl.style.backgroundImage=L.mid;
+  gnatBox.innerHTML=''; flyers=[];
+  menuCard.classList.add('hidden');$('srCard').classList.add('hidden');
+  $('intro').classList.add('on');
+  $('introSkip').classList.add('on');
+  $('howto').classList.remove('on');
+  $('introBtns').classList.remove('ready');
+  stage.classList.remove('descending'); void stage.offsetWidth;
+  stage.classList.add('descending');
+  introDone=false;
+  // the swarm drifts in as the camera settles
+  setTimeout(()=>{ if(!introDone) for(let i=0;i<3;i++) spawnGnat('normal'); },2600);
+  setTimeout(()=>{ if(!introDone) for(let i=0;i<4;i++) spawnGnat('normal'); },4200);
+  setTimeout(()=>{ introDone=true; $('introBtns').classList.add('ready'); $('introSkip').classList.remove('on'); },5800);
+}
+function skipIntro(){
+  if(introDone) return;
+  introDone=true;
+  stage.classList.remove('descending');
+  bgEl.style.animation='none'; midEl.style.animation='none';
+  ['tGnat','tSwat','tBy'].forEach(id=>{const e=$(id);e.style.animation='none';e.style.opacity=id==='tBy'?'.78':'1';e.style.filter='none';e.style.transform='none';});
+  $('introBtns').classList.add('ready');
+  $('introSkip').classList.remove('on');
+  if(!flyers.length) for(let i=0;i<7;i++) spawnGnat('normal');
+}
+function leaveIntro(){
+  $('intro').classList.remove('on');
+  stage.classList.remove('descending');
+  bgEl.style.animation=''; midEl.style.animation='';
+}
+
+$('introSkip').onclick=e=>{e.stopPropagation();skipIntro();};
+$('intro').onclick=e=>{ if(!e.target.closest('button')&&!e.target.closest('#gear')&&!e.target.closest('#opts')) skipIntro(); };
+$('howBtn').onclick=e=>{e.stopPropagation();skipIntro();$('howto').classList.toggle('on');};
+$('playBtn').onclick=e=>{
+  e.stopPropagation();
+  leaveIntro();
+  MODE='story';
+  const start=Math.min(save.unlocked,1)-1;   // always opens on the porch
+  const L=LEVELS[0];
+  bgEl.style.backgroundImage=L.bg; midEl.style.backgroundImage=L.mid;
+  startLevel(0);
+};
+$('levelsBtn').onclick=e=>{e.stopPropagation();leaveIntro();buildLevels();menuCard.classList.remove('hidden');};
+$('srIntroBtn').onclick=e=>{e.stopPropagation();leaveIntro();showSpeedrunCard();};
+function showSpeedrunCard(){
+  menuCard.classList.add('hidden');endCard.classList.add('hidden');
+  $('srPrev').textContent = save.srBest ? ('Your best: '+fmt(save.srBest)) : '';
+  $('srCard').classList.remove('hidden');
+}
+$('srGo').onclick=()=>{ $('srCard').classList.add('hidden'); startSpeedrun(); };
+$('srBack').onclick=()=>{ $('srCard').classList.add('hidden'); playIntro(); };
+$('backBtn').onclick=()=>{menuCard.classList.add('hidden');playIntro();};
+$('gear').onclick=e=>{e.stopPropagation();const o=$('opts').classList.toggle('on');$('gear').classList.toggle('open',o);};
+$('titleBtn').onclick=e=>{
+  e.stopPropagation();
+  $('opts').classList.remove('on');$('gear').classList.remove('open');
+  stopPlay();                       // a speedrun abandoned this way does not count
+  MODE='story';
+  $('srclock').classList.remove('on');
+  $('nextBtn').textContent='Next room';
+  endCard.classList.add('hidden');
+  $('srCard').classList.add('hidden');
+  menuCard.classList.add('hidden');
+  $('finale').classList.remove('on');
+  storyEl.classList.remove('on');
+  runTotal=0;runStart=-1;
+  playIntro();
+};
+stage.addEventListener('pointerdown',e=>{
+  if(!e.target.closest('#opts')&&!e.target.closest('#gear')){$('opts').classList.remove('on');$('gear').classList.remove('open');}
+},true);
+
+buildLevels();
+playIntro();
+$('storyBest').textContent = save.storyBest ? ('Story best: '+save.storyBest.toLocaleString()) : '';
+  $('srBest').textContent = save.srBest ? ('best '+fmt(save.srBest)) : '';
+  $('srBtn').onclick=showSpeedrunCard;
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
