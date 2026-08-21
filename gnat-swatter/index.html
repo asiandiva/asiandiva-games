@@ -799,12 +799,12 @@ function swatAt(px,py){
   swings++;
   swatter.classList.remove('hit');void swatter.offsetWidth;swatter.classList.add('hit');
   sfxSwat();
-  const radius=(bigHit?52:38);
+  const radius=(bigHit?62:47);
   let best=null,bestD=1e9;
   for(const f of flyers){
     if(!f.alive)continue;
     const d=Math.hypot(f.px-px,f.py-py);
-    if(d<radius*Math.max(f.scale,.74)&&d<bestD){best=f;bestD=d;}
+    if(d<radius*Math.max(f.scale,.80)&&d<bestD){best=f;bestD=d;}
   }
   if(best){
     best.alive=false;best.el.remove();
@@ -894,7 +894,7 @@ function tick(now){
     // random timing on purpose - never know when the cyan one shows up
     // uncapped on purpose: a hot run full of cyan gnats is the reward
     if(MODE!=='speedrun' && now>nextBonus){
-      nextBonus=now+R(6000,22000);
+      nextBonus=now+R(4500,15000);
       const b=spawnGnat('bonus'); if(b) b.expires=now+R(4200,5600);
     }
     if(flyers.length<lvl.dens&&Math.random()<dt*2.4) spawnGnat(pickType());
@@ -938,10 +938,7 @@ function tick(now){
 /* ---------- story ---------- */
 function preloadRoom(i){
   const L=LEVELS[i]; if(!L) return;
-  [L.bg,L.mid].forEach(u=>{
-    const m=/url\('([^']+)'\)/.exec(u); if(!m) return;
-    const im=new Image(); im.src=m[1];
-  });
+  [L.bg,L.mid].forEach(u=>{const m=/url\('([^']+)'\)/.exec(u); if(m){const im=new Image(); im.src=m[1];}});
 }
 function playStory(L,then){
   preloadRoom(LEVELS.indexOf(L)+1);
@@ -1006,7 +1003,7 @@ function beginPlay(){
   scoreEl.textContent='0';comboEl.classList.remove('on');
   quotaEl.classList.remove('met');quotaFill.classList.remove('met');
   updateShield();updateQuota();
-  nextBonus=performance.now()+R(1500,14000);
+  nextBonus=performance.now()+R(1200,9000);
   $('runline').textContent=(MODE==='speedrun')?'':((runTotal>0)?('RUN '+runTotal.toLocaleString()):'');
   for(let i=0;i<Math.min(4,lvl.dens);i++) spawnGnat(lvl.types[0]);
   running=true;
