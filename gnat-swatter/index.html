@@ -347,8 +347,8 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
   box-shadow:0 5px 0 var(--honey);transition:.12s}
 .bigbtn:hover{transform:translateY(2px);box-shadow:0 3px 0 var(--honey)}
 .bigbtn:active{transform:translateY(5px);box-shadow:0 0 0 var(--honey)}
-.bigbtn.ghost{background:transparent;color:rgba(255,244,214,.72);box-shadow:none;
-  border:1px solid rgba(255,244,214,.3);font-size:13px;padding:10px 24px}
+.bigbtn.ghost{background:rgba(255,244,214,.1);color:var(--cream);box-shadow:none;
+  border:1.5px solid rgba(255,244,214,.42);font-size:13px;padding:10px 24px}
 .bigbtn.ghost:hover{color:var(--butter);border-color:var(--butter);transform:none}
 #stats{display:flex;gap:24px}
 .stat{display:flex;flex-direction:column;gap:3px}
@@ -1016,6 +1016,12 @@ function stopPlay(){
   running=false;stage.classList.remove('playing');
   hud.classList.remove('on');swatWrap.style.display='none';$('quitBtn').classList.remove('on');
 }
+function primaryAction(which){
+  // whichever button matters most becomes the solid one
+  const next=$('nextBtn'), retry=$('retryBtn');
+  next.classList.toggle('ghost', which!=='next');
+  retry.classList.toggle('ghost', which!=='retry');
+}
 function finish(){
   stopPlay();
   const cleared = quotaHits>=lvl.quota;
@@ -1033,6 +1039,8 @@ function finish(){
         $('endTitle').textContent=lvl.room+' cleared';
         $('endNote').textContent='Split '+fmt(runClock)+'   \u00b7   up next: '+L.room;
         $('nextBtn').style.display=''; $('nextBtn').textContent='Go \u25b8';
+        $('retryBtn').textContent='Retry room';
+        primaryAction('next');
       }else{
         const prev=save.srBest||0, rec=(!prev||runClock<prev);
         if(rec){ save.srBest=runClock; save.srSplits=srSplits; persist(); }
@@ -1040,6 +1048,8 @@ function finish(){
         $('endNote').textContent=fmt(runClock)+(rec?'   \u00b7   NEW RECORD':'   \u00b7   best '+fmt(prev))+
           (srDeaths?('   \u00b7   '+srDeaths+' retr'+(srDeaths>1?'ies':'y')):'   \u00b7   no retries');
         $('nextBtn').style.display='none';
+        $('retryBtn').textContent='Run again';
+        primaryAction('retry');
       }
     }else{
       srDeaths++; sfxLose();
@@ -1047,6 +1057,8 @@ function finish(){
       $('endNote').textContent='The clock keeps running \u2014 '+fmt(runClock)+
         '.   Retry, or quit (a quit run does not count).';
       $('nextBtn').style.display='none';
+      $('retryBtn').textContent='Retry room';
+      primaryAction('retry');
     }
     endCard.classList.remove('hidden');
     return;
@@ -1082,6 +1094,8 @@ function finish(){
     }
     $('endNote').textContent=note;
     $('nextBtn').style.display = (lvl.n<6) ? '' : 'none';
+    $('retryBtn').textContent='Retry room';
+    primaryAction(lvl.n<6 ? 'next' : 'retry');
     if(lvl.n===6){ playFinale(fullRun); return; }
   }else{
     sfxLose();
@@ -1089,6 +1103,8 @@ function finish(){
     $('endNote').textContent='Needed '+lvl.quota+' to clear the room. You swatted '+quotaHits+'.'+
       (runTotal>0?'   \u00b7   run ends here on '+runTotal.toLocaleString():'');
     $('nextBtn').style.display='none';
+    $('retryBtn').textContent='Try again';
+    primaryAction('retry');
   }
   $('fScore').textContent=score;
   $('fHitsOut').textContent=quotaHits;
