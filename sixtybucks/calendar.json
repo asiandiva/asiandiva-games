@@ -830,5 +830,229 @@
    "name": "Lies of P",
    "price": 59.99
   }
+ ],
+ "2026-08-30": [
+  {
+   "id": 8870,
+   "name": "BioShock Infinite",
+   "price": 29.99
+  },
+  {
+   "id": 214490,
+   "name": "Alien: Isolation",
+   "price": 39.99
+  },
+  {
+   "id": 227300,
+   "name": "Euro Truck Simulator 2",
+   "price": 19.99
+  },
+  {
+   "id": 244210,
+   "name": "Assetto Corsa",
+   "price": 19.99
+  },
+  {
+   "id": 246620,
+   "name": "Plague Inc: Evolved",
+   "price": 14.99
+  },
+  {
+   "id": 262060,
+   "name": "Darkest Dungeon",
+   "price": 24.99
+  }
+ ],
+ "2026-08-31": [
+  {
+   "id": 269210,
+   "name": "Hero Siege",
+   "price": 7.99
+  },
+  {
+   "id": 289070,
+   "name": "Sid Meier’s Civilization VI",
+   "price": 59.99
+  },
+  {
+   "id": 431240,
+   "name": "Golf With Your Friends",
+   "price": 14.99
+  },
+  {
+   "id": 703080,
+   "name": "Planet Zoo",
+   "price": 44.99
+  },
+  {
+   "id": 753640,
+   "name": "Outer Wilds",
+   "price": 24.99
+  },
+  {
+   "id": 1167630,
+   "name": "Teardown",
+   "price": 29.99
+  }
+ ],
+ "2026-09-01": [
+  {
+   "id": 1171690,
+   "name": "Wayfinder",
+   "price": 24.99
+  },
+  {
+   "id": 1206560,
+   "name": "WorldBox - God Simulator",
+   "price": 19.99
+  },
+  {
+   "id": 1237320,
+   "name": "Sonic Frontiers",
+   "price": 39.99
+  },
+  {
+   "id": 1250410,
+   "name": "Microsoft Flight Simulator (2020) 40th Anniversary Edition",
+   "price": 59.99
+  },
+  {
+   "id": 1332010,
+   "name": "Stray",
+   "price": 29.99
+  },
+  {
+   "id": 1336490,
+   "name": "Against the Storm",
+   "price": 29.99
+  }
+ ],
+ "2026-09-02": [
+  {
+   "id": 1574580,
+   "name": "Strange Horticulture",
+   "price": 15.99
+  },
+  {
+   "id": 1611600,
+   "name": "WARNO",
+   "price": 39.99
+  },
+  {
+   "id": 1672970,
+   "name": "Minecraft Dungeons",
+   "price": 19.99
+  },
+  {
+   "id": 1761390,
+   "name": "Hatsune Miku: Project DIVA Mega Mix+",
+   "price": 39.39
+  },
+  {
+   "id": 1868140,
+   "name": "DAVE THE DIVER",
+   "price": 19.99
+  },
+  {
+   "id": 1888930,
+   "name": "The Last of Us Part I",
+   "price": 59.99
+  }
+ ],
+ "2026-09-03": [
+  {
+   "id": 1940340,
+   "name": "Darkest Dungeon II",
+   "price": 39.99
+  },
+  {
+   "id": 2071280,
+   "name": "Ravenswatch",
+   "price": 24.99
+  },
+  {
+   "id": 2163330,
+   "name": "Yet Another Zombie Survivors",
+   "price": 14.99
+  },
+  {
+   "id": 2322010,
+   "name": "God of War Ragnarök",
+   "price": 59.99
+  },
+  {
+   "id": 2432860,
+   "name": "MENACE",
+   "price": 39.99
+  },
+  {
+   "id": 2436940,
+   "name": "Sephiria",
+   "price": 14.99
+  }
+ ],
+ "2026-09-04": [
+  {
+   "id": 2688950,
+   "name": "Planet Coaster 2",
+   "price": 49.99
+  },
+  {
+   "id": 2950790,
+   "name": "IRON NEST: Heavy Turret Simulator",
+   "price": 19.99
+  },
+  {
+   "id": 3228590,
+   "name": "Deadzone: Rogue",
+   "price": 24.99
+  },
+  {
+   "id": 1676840,
+   "name": "For The King II",
+   "price": 24.99
+  },
+  {
+   "id": 1824220,
+   "name": "Chivalry 2",
+   "price": 39.99
+  },
+  {
+   "id": 1966720,
+   "name": "Lethal Company",
+   "price": 9.99
+  }
+ ],
+ "2026-09-05": [
+  {
+   "id": 1971650,
+   "name": "OCTOPATH TRAVELER II",
+   "price": 59.99
+  },
+  {
+   "id": 2062430,
+   "name": "BALL x PIT",
+   "price": 14.99
+  },
+  {
+   "id": 2138720,
+   "name": "REMATCH",
+   "price": 49.99
+  },
+  {
+   "id": 2141730,
+   "name": "Backrooms: Escape Together",
+   "price": 9.99
+  },
+  {
+   "id": 2231380,
+   "name": "Tom Clancy's Ghost Recon Breakpoint",
+   "price": 59.99
+  },
+  {
+   "id": 2379780,
+   "name": "Balatro",
+   "price": 14.99
+  }
  ]
 }
