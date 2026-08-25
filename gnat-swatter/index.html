@@ -264,6 +264,11 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
 #howto .dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:none}
 
 /* ---------- settings tray ---------- */
+#pauseTag{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:11;
+  display:none;font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(22px,3.6vw,40px);
+  letter-spacing:.28em;color:var(--cream);text-shadow:0 4px 18px rgba(0,0,0,.95);
+  background:rgba(10,8,6,.55);padding:12px 26px;border-radius:14px;backdrop-filter:blur(3px)}
+#pauseTag.on{display:block}
 #gear{position:absolute;bottom:14px;left:18px;z-index:27;pointer-events:auto;
   width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   background:rgba(14,11,8,.88);border:1px solid rgba(255,244,214,.3);
@@ -439,6 +444,7 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
   <div id="swatWrap"><div id="swatter"></div><div id="hitdot"></div></div>
 
   <div id="banner"><b></b><span></span></div>
+  <div id="pauseTag">PAUSED</div>
 
   <div id="hud">
     <div id="topbar">
@@ -654,48 +660,47 @@ const persist=()=>localStorage.setItem(KEY,JSON.stringify(save));
 let MODE='story';
 let lvl=null, flyers=[], running=false, lastT=0;
 let timeLeft=0,maxTime=0,score=0,hits=0,swings=0,combo=0,bestCombo=0,quotaHits=0;
-let stunUntil=0,soundOn=true,bigHit=false,shield=false,audio=null;
+let stunUntil=0,soundOn=true,bigHit=false,shield=false;
 let nextBonus=0;
-let typing=false,typeTimer=null;
+// warm the samples on the very first interaction
+document.addEventListener('pointerdown',()=>initAudio(),{once:true});
+let typing=false,typeTimer=null,paused=false;
 let runTotal=0, runStart=-1;   // a 'run' = straight through from the porch
 let runClock=0, srDeaths=0, srSplits={};
 
 /* ---------- audio ---------- */
+const SFX={swat:'audio/swat.mp3',splat:'audio/splat.mp3',miss:'audio/miss.mp3',
+           split:'audio/split.mp3',bonus:'audio/bonus.mp3',roomclear:'audio/roomclear.mp3'};
+const VOL={swat:.35,splat:.7,miss:.5,split:.75,bonus:.8,roomclear:.85};
+const POOL={}, POOL_N=5;   // several copies each so rapid swats never cut each other off
+let poolReady=false;
 function initAudio(){
-  if(audio) return;
+  if(poolReady) return;
+  poolReady=true;
   try{
-    const AC=window.AudioContext||window.webkitAudioContext;
-    if(AC) audio=new AC();
-  }catch(e){ audio=null; soundOn=false; }   // no audio is fine; a crash is not
+    for(const k in SFX){
+      POOL[k]={i:0,a:[]};
+      for(let n=0;n<POOL_N;n++){
+        const a=new Audio(SFX[k]);
+        a.preload='auto'; a.volume=VOL[k];
+        POOL[k].a.push(a);
+      }
+    }
+  }catch(e){ poolReady=false; soundOn=false; }
 }
-function noise(dur,freq,gv,type){
-  if(!soundOn||!audio)return;
-  const n=audio.sampleRate*dur,buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);
-  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
-  const s=audio.createBufferSource();s.buffer=buf;
-  const f=audio.createBiquadFilter();f.type=type||'lowpass';f.frequency.value=freq;
-  const g=audio.createGain();g.gain.value=gv;
-  g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+dur);
-  s.connect(f).connect(g).connect(audio.destination);s.start();
+function play(k){
+  if(!soundOn||!POOL[k]) return;
+  const p=POOL[k];
+  const a=p.a[p.i]; p.i=(p.i+1)%POOL_N;
+  try{ a.currentTime=0; const r=a.play(); if(r&&r.catch) r.catch(()=>{}); }catch(e){}
 }
-function tone(type,f0,f1,dur,gv,delay){
-  if(!soundOn||!audio)return;
-  const t=audio.currentTime+(delay||0);
-  const o=audio.createOscillator(),g=audio.createGain();
-  o.type=type;o.frequency.setValueAtTime(f0,t);
-  o.frequency.exponentialRampToValueAtTime(f1,t+dur);
-  g.gain.setValueAtTime(.001,t);
-  g.gain.exponentialRampToValueAtTime(gv,t+.012);
-  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  o.connect(g).connect(audio.destination);o.start(t);o.stop(t+dur+.02);
-}
-const sfxSwat =()=>noise(.09,2600,.16,'highpass');
-const sfxSplat=()=>{noise(.16,520,.34);tone('square',180,60,.14,.16);};
-const sfxMiss =()=>tone('sawtooth',150,70,.17,.1);
-const sfxSplit=()=>{tone('triangle',560,980,.11,.26,0);tone('triangle',700,1140,.11,.26,.07);};
-const sfxTime =()=>{[620,830,1120].forEach((f,i)=>tone('sine',f,f,.3,.2,i*.09));};
-const sfxWin  =()=>{[520,660,780,1040].forEach((f,i)=>tone('sine',f,f,.42,.22,i*.11));};
-const sfxLose =()=>{[420,330,250].forEach((f,i)=>tone('triangle',f,f*.85,.36,.16,i*.14));};
+const sfxSwat =()=>play('swat');
+const sfxSplat=()=>play('splat');
+const sfxMiss =()=>play('miss');
+const sfxSplit=()=>play('split');
+const sfxTime =()=>play('bonus');
+const sfxWin  =()=>play('roomclear');
+const sfxLose =()=>play('miss');
 
 /* ---------- gnats ---------- */
 function spawnGnat(type,atX,atY,burst){
@@ -793,7 +798,7 @@ function applyBonus(f){
 
 /* ---------- swat ---------- */
 function swatAt(px,py){
-  if(!running)return;
+  if(!running||paused)return;
   const now=performance.now();
   if(now<stunUntil)return;
   swings++;
@@ -879,6 +884,7 @@ function tick(now){
   if(!lastT)lastT=now;
   let dt=(now-lastT)/1000;lastT=now;
   if(dt>.1)dt=.1;
+  if(paused&&running) return;      // gear open: clock, gnats and spawns all hold
   const SW=gnatBox.clientWidth,SH=gnatBox.clientHeight;
 
   for(let i=flyers.length-1;i>=0;i--){
@@ -991,7 +997,7 @@ function startLevel(i,continuing){
   if(!continuing){ runTotal=0; runStart=i; }
   lvl=LEVELS[i];
   menuCard.classList.add('hidden');endCard.classList.add('hidden');
-  initAudio();if(audio&&audio.state==='suspended')audio.resume();
+  initAudio();
   if(MODE==='speedrun') beginPlay();          // no cutscenes on the clock
   else playStory(lvl,()=>beginPlay());
 }
@@ -1013,7 +1019,7 @@ function beginPlay(){
   nextBonus=performance.now()+R(1200,9000);
   $('runline').textContent=(MODE==='speedrun')?'':((runTotal>0)?('RUN '+runTotal.toLocaleString()):'');
   for(let i=0;i<Math.round(liveDensity()*.6);i++) spawnGnat(lvl.types[0]);
-  running=true;
+  running=true;paused=false;
   stage.classList.add('playing');
   hud.classList.add('on');swatWrap.style.display='block';$('quitBtn').classList.add('on');
   $('quitBtn').textContent=(MODE==='speedrun')?'Quit run':'Quit to levels';
@@ -1259,7 +1265,6 @@ $('resetBtn').onclick=()=>{
 };
 $('soundBtn').onclick=e=>{
   soundOn=!soundOn;initAudio();
-  if(audio&&audio.state==='suspended')audio.resume();
   e.target.textContent='Sound: '+(soundOn?'on':'off');
   e.target.classList.toggle('on',soundOn);
 };
@@ -1326,10 +1331,22 @@ function showSpeedrunCard(){
 $('srGo').onclick=()=>{ $('srCard').classList.add('hidden'); startSpeedrun(); };
 $('srBack').onclick=()=>{ $('srCard').classList.add('hidden'); playIntro(); };
 $('backBtn').onclick=()=>{menuCard.classList.add('hidden');playIntro();};
-$('gear').onclick=e=>{e.stopPropagation();const o=$('opts').classList.toggle('on');$('gear').classList.toggle('open',o);};
+function setPaused(p){
+  paused=p;
+  if(!running) return;
+  stage.classList.toggle('playing',!p);
+  swatWrap.style.display=p?'none':'block';
+  $('pauseTag').classList.toggle('on',p);
+}
+$('gear').onclick=e=>{
+  e.stopPropagation();
+  const o=$('opts').classList.toggle('on');
+  $('gear').classList.toggle('open',o);
+  setPaused(o);
+};
 $('titleBtn').onclick=e=>{
   e.stopPropagation();
-  $('opts').classList.remove('on');$('gear').classList.remove('open');
+  $('opts').classList.remove('on');$('gear').classList.remove('open');paused=false;
   stopPlay();                       // a speedrun abandoned this way does not count
   MODE='story';
   $('srclock').classList.remove('on');
@@ -1343,7 +1360,7 @@ $('titleBtn').onclick=e=>{
   playIntro();
 };
 stage.addEventListener('pointerdown',e=>{
-  if(!e.target.closest('#opts')&&!e.target.closest('#gear')){$('opts').classList.remove('on');$('gear').classList.remove('open');}
+  if(!e.target.closest('#opts')&&!e.target.closest('#gear')){$('opts').classList.remove('on');$('gear').classList.remove('open');setPaused(false);}
 },true);
 
 buildLevels();
