@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eggs Ever After — apartment test</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage">
+  <div class="room" id="room">
+
+    <img class="layer bg" src="room/apartment-bg.webp" alt="A cozy studio apartment">
+
+    <div class="layer pet">
+      <div class="duck-slot" id="slot">
+        <div class="contact"></div>
+        <img id="duck" class="duck mood-neutral" src="sprites/duck-toddler-neutral.png" alt="Your duck">
+      </div>
+    </div>
+
+    <img class="layer fg" src="room/apartment-fg.webp" alt="">
+
+    <div class="layer tint" id="tint"></div>
+
+    <p class="missing" id="missing">Duck sprites not found. Put the four PNGs in a <code>sprites/</code> folder next to this file.</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="group">
+    <span class="glabel">Mood</span>
+    <button data-mood="neutral" class="on">neutral</button>
+    <button data-mood="happy">happy</button>
+    <button data-mood="sad">sad</button>
+    <button data-mood="sleeping">sleeping</button>
+  </div>
+  <div class="group">
+    <span class="glabel">Time</span>
+    <button data-time="dawn">dawn</button>
+    <button data-time="day" class="on">day</button>
+    <button data-time="dusk">dusk</button>
+    <button data-time="night">night</button>
+  </div>
+  <p class="hint">Click the duck.</p>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
