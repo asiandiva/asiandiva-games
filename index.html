@@ -74,6 +74,10 @@
   a.card.daily .meta h2::after{
     content:"daily";background:var(--honey);
   }
+  /* a game that just went up gets flagged for a while */
+  a.card.fresh .meta h2::after{
+    content:"new";background:var(--rose);color:var(--ink);
+  }
 
   footer{
     margin-top:66px;padding-top:28px;
@@ -110,6 +114,17 @@
   </header>
 
   <div class="grid">
+
+    <a class="card fresh" href="/gnat-swatter">
+      <div class="art" style="background:#D8CBF7">
+        <img class="whole" src="/gnat-swatter.png" width="760" height="475" loading="lazy"
+             alt="A yellow flyswatter beside five cartoon gnats in different colours">
+      </div>
+      <div class="meta">
+        <h2>Gha Nat Swatter</h2>
+        <p>Six rooms, one very confident gnat. Can you swat it before it reaches the stream room or not?</p>
+      </div>
+    </a>
 
     <a class="card daily" href="/smarter-than-diva">
       <div class="art" style="background:#C2E3CC">
