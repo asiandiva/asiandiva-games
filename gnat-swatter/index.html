@@ -15,7 +15,7 @@ html,body{height:100%;overflow:hidden}
 body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(--cream);
   display:flex;align-items:center;justify-content:center;padding:16px;-webkit-user-select:none;user-select:none}
 
-#stage{position:relative;width:min(100%,1100px);aspect-ratio:16/9;max-height:calc(100vh - 32px);
+#stage{position:relative;width:min(100%,1700px);aspect-ratio:16/9;max-height:calc(100vh - 32px);
   background:#000;border-radius:14px;overflow:hidden;
   box-shadow:0 24px 70px rgba(0,0,0,.7),0 0 0 1px rgba(255,216,77,.14);touch-action:manipulation}
 #stage.playing{cursor:none}
@@ -593,27 +593,27 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
 <script>
 /* ============ LEVELS ============ */
 const LEVELS=[
- {n:1,room:"Back Porch",sub:"Dusk",dif:"Super easy",quota:38,time:45,dens:8,
+ {n:1,room:"Back Porch",sub:"Dusk",dif:"Super easy",quota:38,time:45,dens:12,
   types:["normal"],weights:[1],
   story:"They think the porch light is for them. Cute. I've got a whole house behind that screen door and about four hundred cousins who lack ambition.",
   bg:"url('img/porch-bg.webp')",mid:"url('img/porch-fg.webp')"},
- {n:2,room:"Kitchen",sub:"Late night",dif:"Easy",quota:42,time:45,dens:11,
+ {n:2,room:"Kitchen",sub:"Late night",dif:"Easy",quota:42,time:45,dens:16,
   types:["normal","fast"],weights:[.70,.30],intro:["FAST GNATS","HARDER TO CATCH \u00b7 WORTH MORE"],
   story:"Bananas. Left out. Uncovered. Honestly this is less a break-in and more an invitation with a fruit bowl attached.",
   bg:"url('img/kitchen-bg.webp')",mid:"url('img/kitchen-fg.webp')"},
- {n:3,room:"Garage",sub:"Trash day",dif:"Easy / medium",quota:50,time:50,dens:14,
+ {n:3,room:"Garage",sub:"Trash day",dif:"Easy / medium",quota:50,time:50,dens:20,
   types:["normal","fast","tiny"],weights:[.48,.22,.30],intro:["TINY GNATS","SMALL TARGETS \u00b7 BIG POINTS"],
   story:"Whoever lives here burnt a batch of dumplings and threw the whole tray out. The bins go out Tuesday. I go in Monday. Nobody in this family does math.",
   bg:"url('img/garage-bg.webp')",mid:"url('img/garage-fg.webp')"},
- {n:4,room:"Bathroom",sub:"Occupied",dif:"Hard",quota:67,time:50,dens:17,
+ {n:4,room:"Bathroom",sub:"Occupied",dif:"Hard",quota:67,time:50,dens:25,
   types:["normal","fast","tiny","zigzag"],weights:[.45,.18,.17,.20],intro:["ZIGZAGGERS","DO NOT LEAD YOUR SHOT"],
   story:"Someone's been in here twenty five minutes and counting. That's not a bathroom break, that's a fiber deficiency. I've got time. I live eight days.",
   bg:"url('img/bathroom-bg.webp')",mid:"url('img/bathroom-fg.webp')"},
- {n:5,room:"Compost Bin",sub:"Peak conditions",dif:"Harder",quota:100,time:55,dens:21,
+ {n:5,room:"Compost Bin",sub:"Peak conditions",dif:"Harder",quota:100,time:55,dens:30,
   types:["normal","fast","tiny","zigzag","splitter"],weights:[.40,.15,.15,.12,.18],intro:["SPLITTERS","SWAT ONE \u00b7 GET TWO"],
   story:"This is the good stuff. This is where legends are made. I'd stay forever, but I heard something upstairs. A voice. Talking to nobody, for four hours, every Saturday.",
   bg:"url('img/compost-bg.webp')",mid:"url('img/compost-fg.webp')"},
- {n:6,room:"The Stream Room",sub:"Saturday, 4 hours in",dif:"KILLER MODE",quota:200,time:60,dens:26,
+ {n:6,room:"The Stream Room",sub:"Saturday, 4 hours in",dif:"KILLER MODE",quota:200,time:60,dens:36,
   types:["normal","fast","tiny","zigzag","splitter"],weights:[.20,.20,.21,.19,.20],intro:["KILLER MODE","ALL OF THEM \u00b7 GOOD LUCK"],
   story:"Found her. Headset on, duck on the desk, completely unaware. Let's see how the community likes a guest star.",
   bg:"url('img/streamroom-bg.webp')",mid:"url('img/streamroom-fg.webp')"}
@@ -838,7 +838,7 @@ function swatAt(px,py){
     }
     // the replacement must respect density, and a splitter's shards ARE its replacement
     if(!isSplit){
-      setTimeout(()=>{ if(running && flyers.length<lvl.dens) spawnGnat(pickType()); },R(280,700));
+      setTimeout(()=>{ if(running && flyers.length<liveDensity()) spawnGnat(pickType()); },R(200,520));
     }
   }else if(shield){
     shield=false;updateShield();popAt(px,py,'saved',false,'time');
@@ -852,6 +852,12 @@ function swatAt(px,py){
     setTimeout(()=>swatWrap.classList.remove('stun'),340);
     popAt(px,py,'miss',true);sfxMiss();
   }
+}
+function liveDensity(){
+  const w=gnatBox.clientWidth||1100, hgt=gnatBox.clientHeight||619;
+  // gnats per screenful: a 1700px frame is ~2.4x the area of the 1100px reference
+  const scale=Math.min(1.85, Math.max(.5, (w*hgt)/(1100*619)));
+  return Math.max(4, Math.round(lvl.dens*scale));
 }
 function pickType(){
   const t=lvl.types, w=lvl.weights;
@@ -897,9 +903,10 @@ function tick(now){
       nextBonus=now+R(4500,15000);
       const b=spawnGnat('bonus'); if(b) b.expires=now+R(4200,5600);
     }
-    if(flyers.length<lvl.dens&&Math.random()<dt*2.4) spawnGnat(pickType());
-    if(flyers.length>lvl.dens+6){                    // safety net
-      for(let i=flyers.length-1;i>=0 && flyers.length>lvl.dens+6;i--){
+    const dens=liveDensity();
+    if(flyers.length<dens&&Math.random()<dt*3.1) spawnGnat(pickType());
+    if(flyers.length>dens+7){                    // safety net
+      for(let i=flyers.length-1;i>=0 && flyers.length>dens+7;i--){
         const f=flyers[i];
         if(f.type==='shard'){ f.alive=false; f.el.remove(); flyers.splice(i,1); }
       }
@@ -1005,7 +1012,7 @@ function beginPlay(){
   updateShield();updateQuota();
   nextBonus=performance.now()+R(1200,9000);
   $('runline').textContent=(MODE==='speedrun')?'':((runTotal>0)?('RUN '+runTotal.toLocaleString()):'');
-  for(let i=0;i<Math.min(4,lvl.dens);i++) spawnGnat(lvl.types[0]);
+  for(let i=0;i<Math.round(liveDensity()*.6);i++) spawnGnat(lvl.types[0]);
   running=true;
   stage.classList.add('playing');
   hud.classList.add('on');swatWrap.style.display='block';$('quitBtn').classList.add('on');
