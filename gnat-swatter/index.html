@@ -252,16 +252,32 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
 #introSkip{position:absolute;right:16px;bottom:14px;z-index:26;opacity:.65;display:none}
 #introSkip.on{display:block}
 
-#howto{position:relative;z-index:5;flex:none;display:none;flex-direction:column;gap:6px;
-  padding:13px 18px;border-radius:13px;background:rgba(12,9,7,.92);
-  border:1px solid rgba(255,216,77,.3);backdrop-filter:blur(6px);
-  max-width:min(94%,440px);letter-spacing:normal}
-#howto.on{display:flex;animation:boxIn .4s ease-out}
-#howto b{font-family:"Fredoka",sans-serif;font-size:10.5px;letter-spacing:.22em;
-  color:var(--butter);font-weight:600}
-#howto .row{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;
-  color:rgba(255,244,214,.88);line-height:1.4}
-#howto .dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:none}
+
+/* ---------- menu modal ---------- */
+#scrim{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(8,6,10,.72);backdrop-filter:blur(4px)}
+#scrim.open{display:flex}
+#modal{background:#171310;border:2px solid rgba(255,216,77,.5);border-radius:16px;
+  max-width:460px;width:100%;padding:16px 18px 20px;max-height:86%;overflow-y:auto;
+  box-shadow:0 22px 50px rgba(0,0,0,.6)}
+.mtabs{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.mtab{font-family:"Fredoka",sans-serif;font-size:12.5px;font-weight:600;padding:7px 15px;
+  border:2px solid rgba(255,216,77,.5);border-radius:100px;background:transparent;
+  color:var(--cream);cursor:pointer;transition:.15s}
+.mtab.on{background:var(--butter);color:var(--ink);border-color:var(--butter)}
+.mclose{margin-left:auto;background:none;border:none;font-size:21px;line-height:1;
+  color:rgba(255,244,214,.7);cursor:pointer;padding:3px 6px}
+.mclose:hover{color:var(--butter)}
+.mpanel{display:none;font-size:14px;line-height:1.6;color:rgba(255,244,214,.9)}
+.mpanel.on{display:block}
+.mpanel p{margin-bottom:11px}
+.mpanel ol{margin:0 0 11px 18px}
+.mpanel li{margin-bottom:6px}
+.mpanel a{color:var(--cream);text-decoration:underline;text-decoration-color:var(--butter);
+  text-decoration-thickness:2px;text-underline-offset:3px}
+.mpanel a:hover{color:var(--butter)}
+.mnote{font-size:12px;line-height:1.55;color:rgba(255,244,214,.5);margin-top:14px}
+.mdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
 /* ---------- settings tray ---------- */
 #pauseTag{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:11;
@@ -287,6 +303,7 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
 #opts .btn{width:100%;text-align:center;padding:8px 12px}
 #opts .osep{height:1px;background:rgba(255,244,214,.16);margin:2px 0}
 #opts #titleBtn{border-color:rgba(255,216,77,.45);color:var(--butter)}
+#opts #hubBtn{border-color:rgba(92,242,234,.45);color:var(--cyan)}
 
 /* ---------- finale ---------- *//* ---------- finale ---------- */
 #finale{position:absolute;inset:0;z-index:22;display:none;overflow:hidden}
@@ -399,9 +416,7 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
   #tBy{font-size:10px;letter-spacing:.24em;margin-top:12px}
   #introBtns{flex-direction:column;width:100%;max-width:290px;gap:8px}
   #introBtns button{width:100%;font-size:15px;padding:13px 16px}
-  #howto{max-width:100%}
-  #howto .row{font-size:12px}
-
+    
   #topbar{top:12px;left:12px;right:12px;gap:9px}
   #score{font-size:21px}#quota{font-size:18px}
   #combo{top:66px;right:12px;font-size:16px}
@@ -474,13 +489,44 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
   </div>
   <button class="btn" id="skipstory" style="display:none">Skip &#9656;</button>
 
+  <div id="scrim">
+    <div id="modal" role="dialog" aria-modal="true" aria-label="About this game">
+      <div class="mtabs">
+        <button class="mtab on" id="tab-how" data-panel="how">How to play</button>
+        <button class="mtab" id="tab-about" data-panel="about">About</button>
+        <button class="mclose" id="mclose" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="mpanel on" id="panel-how">
+        <ol>
+          <li>Click the gnats. Miss and your swatter jams for a moment, so aim before you swing.</li>
+          <li>Chain hits without missing to build a score multiplier, up to 3x.</li>
+          <li>Hit the room's target before the clock runs out to unlock the next room.</li>
+          <li>Six rooms, each one grimier than the last. It ends in the stream room.</li>
+        </ol>
+        <p><span class="mdot" style="background:#5CF2EA"></span>Cyan gnats add 10 seconds. You will need them.</p>
+        <p><span class="mdot" style="background:#C878FF"></span>Splitters turn into two smaller gnats when you swat them.</p>
+        <p><span class="mdot" style="background:#6EF582"></span>Zigzaggers change direction constantly. Don't lead your shot.</p>
+      </div>
+
+      <div class="mpanel" id="panel-about">
+        <p>Gha Nat Swatter was made by <a href="https://www.twitch.tv/asiandiva__" target="_blank" rel="noopener">asiandiva__</a>, instead of sleeping, for the Diva Squad.</p>
+        <p>More things to play at <a href="https://asiandiva.games" target="_blank" rel="noopener">asiandiva.games</a>. Come say hi on <a href="https://www.twitch.tv/asiandiva__" target="_blank" rel="noopener">Twitch</a> or <a href="https://www.youtube.com/@asiandiva__" target="_blank" rel="noopener">YouTube</a>.</p>
+        <p>Join the <a href="https://discord.gg/jWfufVzBw9" target="_blank" rel="noopener">Discord</a> to report a bug.</p>
+        <p class="mnote">No accounts, no sign in. Your best scores and unlocked rooms are kept on your own device, and nothing is sent anywhere.</p>
+      </div>
+    </div>
+  </div>
+
   <div id="gear" title="Settings">&#9881;</div>
   <div id="opts">
     <div class="ohead">SETTINGS</div>
     <button class="btn on" id="soundBtn">Sound: on</button>
     <button class="btn" id="hitboxBtn">Big hitbox: off</button>
     <div class="osep"></div>
+    <button class="btn" id="menuInfoBtn">How to play &middot; About</button>
     <button class="btn" id="titleBtn">&#9666; Return to title</button>
+    <a class="btn" id="hubBtn" href="https://asiandiva.games" style="text-decoration:none;display:block">asiandiva.games &#8599;</a>
   </div>
   <button class="btn" id="quitBtn">Quit</button>
 
@@ -531,20 +577,11 @@ body{background:var(--ink);font-family:"Nunito",system-ui,sans-serif;color:var(-
       <div id="tSwat">SWATTER</div>
       <div id="tBy">AN ASIANDIVA__ PRODUCTION</div>
     </div>
-    <div id="howto">
-      <b>HOW TO PLAY</b>
-      <div class="row"><span class="dot" style="background:#8A8A92"></span>
-        <span>Click the gnats. Miss and your swatter jams for a moment.</span></div>
-      <div class="row"><span class="dot" style="background:var(--good)"></span>
-        <span>Chain hits without missing to build a score multiplier.</span></div>
-      <div class="row"><span class="dot" style="background:var(--cyan)"></span>
-        <span>Cyan gnats add 10 seconds. You will need them.</span></div>
-    </div>
     <div id="introBtns">
       <button class="primary" id="playBtn">Story Mode</button>
       <button class="second" id="srIntroBtn">Speedrun</button>
       <button class="second" id="levelsBtn">Levels</button>
-      <button class="second" id="howBtn">How to play</button>
+      <button class="second" id="howBtn">Menu</button>
     </div>
     <button class="btn" id="introSkip">Skip &#9656;</button>
   </div>
@@ -1283,7 +1320,6 @@ function playIntro(){
   menuCard.classList.add('hidden');$('srCard').classList.add('hidden');
   $('intro').classList.add('on');
   $('introSkip').classList.add('on');
-  $('howto').classList.remove('on');
   $('introBtns').classList.remove('ready');
   stage.classList.remove('descending'); void stage.offsetWidth;
   stage.classList.add('descending');
@@ -1311,7 +1347,31 @@ function leaveIntro(){
 
 $('introSkip').onclick=e=>{e.stopPropagation();skipIntro();};
 $('intro').onclick=e=>{ if(!e.target.closest('button')&&!e.target.closest('#gear')&&!e.target.closest('#opts')) skipIntro(); };
-$('howBtn').onclick=e=>{e.stopPropagation();skipIntro();$('howto').classList.toggle('on');};
+function openModal(tab){
+  setPaused(true);
+  $('scrim').classList.add('open');
+  showPanel(tab||'how');
+}
+function closeModal(){
+  $('scrim').classList.remove('open');
+  if(!$('opts').classList.contains('on')) setPaused(false);
+}
+function showPanel(name){
+  ['how','about'].forEach(p=>{
+    $('panel-'+p).classList.toggle('on',p===name);
+    $('tab-'+p).classList.toggle('on',p===name);
+  });
+}
+$('tab-how').onclick=e=>{e.stopPropagation();showPanel('how');};
+$('tab-about').onclick=e=>{e.stopPropagation();showPanel('about');};
+$('mclose').onclick=e=>{e.stopPropagation();closeModal();};
+$('scrim').onclick=e=>{ if(e.target===$('scrim')) closeModal(); };
+$('howBtn').onclick=e=>{e.stopPropagation();skipIntro();openModal('how');};
+$('menuInfoBtn').onclick=e=>{
+  e.stopPropagation();
+  $('opts').classList.remove('on');$('gear').classList.remove('open');
+  openModal('how');
+};
 $('playBtn').onclick=e=>{
   e.stopPropagation();
   leaveIntro();
