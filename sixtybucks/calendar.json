@@ -1054,5 +1054,229 @@
    "name": "Balatro",
    "price": 14.99
   }
+ ],
+ "2026-09-06": [
+  {
+   "id": 12210,
+   "name": "Grand Theft Auto IV: The Complete Edition",
+   "price": 19.99
+  },
+  {
+   "id": 288470,
+   "name": "Fable Anniversary",
+   "price": 34.99
+  },
+  {
+   "id": 356190,
+   "name": "Middle-earth: Shadow of War",
+   "price": 49.99
+  },
+  {
+   "id": 374320,
+   "name": "DARK SOULS III",
+   "price": 59.99
+  },
+  {
+   "id": 391540,
+   "name": "Undertale",
+   "price": 9.99
+  },
+  {
+   "id": 552500,
+   "name": "Warhammer: Vermintide 2",
+   "price": 29.99
+  }
+ ],
+ "2026-09-07": [
+  {
+   "id": 570940,
+   "name": "DARK SOULS: REMASTERED",
+   "price": 39.99
+  },
+  {
+   "id": 633230,
+   "name": "NARUTO TO BORUTO: SHINOBI STRIKER",
+   "price": 19.99
+  },
+  {
+   "id": 870780,
+   "name": "CONTROL Ultimate Edition",
+   "price": 39.99
+  },
+  {
+   "id": 934700,
+   "name": "Dead Island 2",
+   "price": 49.99
+  },
+  {
+   "id": 990080,
+   "name": "Hogwarts Legacy",
+   "price": 59.99
+  },
+  {
+   "id": 1113120,
+   "name": "IXION",
+   "price": 34.99
+  }
+ ],
+ "2026-09-08": [
+  {
+   "id": 1145350,
+   "name": "Hades II",
+   "price": 29.99
+  },
+  {
+   "id": 1290000,
+   "name": "PowerWash Simulator",
+   "price": 24.99
+  },
+  {
+   "id": 1331550,
+   "name": "Big Ambitions",
+   "price": 25.99
+  },
+  {
+   "id": 1551360,
+   "name": "Forza Horizon 5",
+   "price": 59.99
+  },
+  {
+   "id": 1569580,
+   "name": "Blue Prince",
+   "price": 29.99
+  },
+  {
+   "id": 1794680,
+   "name": "Vampire Survivors",
+   "price": 4.99
+  }
+ ],
+ "2026-09-09": [
+  {
+   "id": 1812450,
+   "name": "Bellwright",
+   "price": 29.99
+  },
+  {
+   "id": 2113850,
+   "name": "Spirit City: Lofi Sessions",
+   "price": 11.99
+  },
+  {
+   "id": 2440510,
+   "name": "Forza Motorsport",
+   "price": 69.99
+  },
+  {
+   "id": 2552430,
+   "name": "KINGDOM HEARTS -HD 1.5+2.5 ReMIX-",
+   "price": 49.99
+  },
+  {
+   "id": 2567870,
+   "name": "Chained Together",
+   "price": 4.99
+  },
+  {
+   "id": 2584270,
+   "name": "Mortal Shell II",
+   "price": 49.99
+  }
+ ],
+ "2026-09-10": [
+  {
+   "id": 2634950,
+   "name": "Tokyo Xtreme Racer",
+   "price": 49.99
+  },
+  {
+   "id": 2680010,
+   "name": "The First Berserker: Khazan",
+   "price": 59.99
+  },
+  {
+   "id": 4001890,
+   "name": "How to Fish",
+   "price": 7.99
+  },
+  {
+   "id": 2406770,
+   "name": "Bodycam",
+   "price": 33.32
+  },
+  {
+   "id": 2416450,
+   "name": "MOUSE: P.I. For Hire",
+   "price": 29.99
+  },
+  {
+   "id": 2456740,
+   "name": "inZOI",
+   "price": 39.99
+  }
+ ],
+ "2026-09-11": [
+  {
+   "id": 2622380,
+   "name": "ELDEN RING NIGHTREIGN",
+   "price": 39.99
+  },
+  {
+   "id": 2651280,
+   "name": "Marvel's Spider-Man 2",
+   "price": 59.99
+  },
+  {
+   "id": 2661300,
+   "name": "Grounded 2",
+   "price": 29.99
+  },
+  {
+   "id": 2668510,
+   "name": "Red Dead Redemption",
+   "price": 49.99
+  },
+  {
+   "id": 2677660,
+   "name": "Indiana Jones and the Great Circle",
+   "price": 69.99
+  },
+  {
+   "id": 2806050,
+   "name": "Halo: Campaign Evolved",
+   "price": 49.99
+  }
+ ],
+ "2026-09-12": [
+  {
+   "id": 2807960,
+   "name": "Battlefield 6",
+   "price": 69.99
+  },
+  {
+   "id": 2868840,
+   "name": "Slay the Spire 2",
+   "price": 24.99
+  },
+  {
+   "id": 2909400,
+   "name": "FINAL FANTASY VII REBIRTH",
+   "price": 49.99
+  },
+  {
+   "id": 2958130,
+   "name": "Jurassic World Evolution 3",
+   "price": 59.99
+  },
+  {
+   "id": 2968420,
+   "name": "PowerWash Simulator 2",
+   "price": 24.99
+  },
+  {
+   "id": 3008130,
+   "name": "Dying Light: The Beast",
+   "price": 59.99
+  }
  ]
 }
