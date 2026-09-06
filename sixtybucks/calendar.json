@@ -1278,5 +1278,229 @@
    "name": "Dying Light: The Beast",
    "price": 59.99
   }
+ ],
+ "2026-09-13": [
+  {
+   "id": 8930,
+   "name": "Sid Meier's Civilization V",
+   "price": 29.99
+  },
+  {
+   "id": 10090,
+   "name": "Call of Duty: World at War",
+   "price": 19.99
+  },
+  {
+   "id": 10180,
+   "name": "Call of Duty: Modern Warfare 2 (2009)",
+   "price": 19.99
+  },
+  {
+   "id": 42680,
+   "name": "Call of Duty: Modern Warfare 3 (2011)",
+   "price": 39.99
+  },
+  {
+   "id": 204360,
+   "name": "Castle Crashers",
+   "price": 14.99
+  },
+  {
+   "id": 209160,
+   "name": "Call of Duty: Ghosts",
+   "price": 39.99
+  }
+ ],
+ "2026-09-14": [
+  {
+   "id": 209650,
+   "name": "Call of Duty: Advanced Warfare - Gold Edition",
+   "price": 39.99
+  },
+  {
+   "id": 264710,
+   "name": "Subnautica",
+   "price": 29.99
+  },
+  {
+   "id": 287700,
+   "name": "METAL GEAR SOLID V: THE PHANTOM PAIN",
+   "price": 29.99
+  },
+  {
+   "id": 292730,
+   "name": "Call of Duty: Infinite Warfare",
+   "price": 59.99
+  },
+  {
+   "id": 305620,
+   "name": "The Long Dark",
+   "price": 19.99
+  },
+  {
+   "id": 312520,
+   "name": "Rain World",
+   "price": 24.99
+  }
+ ],
+ "2026-09-15": [
+  {
+   "id": 322330,
+   "name": "Don't Starve Together",
+   "price": 14.99
+  },
+  {
+   "id": 361420,
+   "name": "ASTRONEER",
+   "price": 29.99
+  },
+  {
+   "id": 476600,
+   "name": "Call of Duty: WWII",
+   "price": 59.99
+  },
+  {
+   "id": 529340,
+   "name": "Victoria 3",
+   "price": 49.99
+  },
+  {
+   "id": 581320,
+   "name": "Insurgency: Sandstorm",
+   "price": 29.99
+  },
+  {
+   "id": 752590,
+   "name": "A Plague Tale: Innocence",
+   "price": 39.99
+  }
+ ],
+ "2026-09-16": [
+  {
+   "id": 780310,
+   "name": "The Riftbreaker",
+   "price": 29.99
+  },
+  {
+   "id": 1062090,
+   "name": "Timberborn",
+   "price": 34.99
+  },
+  {
+   "id": 1065310,
+   "name": "Evil West",
+   "price": 49.99
+  },
+  {
+   "id": 1114150,
+   "name": "CarX Street",
+   "price": 19.99
+  },
+  {
+   "id": 1129580,
+   "name": "Medieval Dynasty",
+   "price": 34.99
+  },
+  {
+   "id": 1182900,
+   "name": "A Plague Tale: Requiem",
+   "price": 49.99
+  }
+ ],
+ "2026-09-17": [
+  {
+   "id": 1272080,
+   "name": "PAYDAY 3",
+   "price": 29.99
+  },
+  {
+   "id": 1458140,
+   "name": "Pacific Drive",
+   "price": 29.99
+  },
+  {
+   "id": 1549970,
+   "name": "Aliens: Fireteam Elite",
+   "price": 29.99
+  },
+  {
+   "id": 1604270,
+   "name": "Broken Arrow",
+   "price": 49.99
+  },
+  {
+   "id": 1621690,
+   "name": "Core Keeper",
+   "price": 19.99
+  },
+  {
+   "id": 1657630,
+   "name": "Slime Rancher 2",
+   "price": 29.99
+  }
+ ],
+ "2026-09-18": [
+  {
+   "id": 1783560,
+   "name": "The Last Caretaker",
+   "price": 34.99
+  },
+  {
+   "id": 1985810,
+   "name": "Call of Duty: Black Ops Cold War",
+   "price": 59.99
+  },
+  {
+   "id": 2000950,
+   "name": "Call of Duty: Modern Warfare",
+   "price": 59.99
+  },
+  {
+   "id": 2005010,
+   "name": "Warhammer 40,000: Boltgun",
+   "price": 21.99
+  },
+  {
+   "id": 2075800,
+   "name": "STAR WARS Zero Company",
+   "price": 49.99
+  },
+  {
+   "id": 2104890,
+   "name": "RoadCraft",
+   "price": 39.99
+  }
+ ],
+ "2026-09-19": [
+  {
+   "id": 2162800,
+   "name": "shapez 2 - Factory",
+   "price": 29.99
+  },
+  {
+   "id": 2670630,
+   "name": "Supermarket Simulator",
+   "price": 19.99
+  },
+  {
+   "id": 2933130,
+   "name": "The Lord of the Rings: Return to Moria",
+   "price": 29.99
+  },
+  {
+   "id": 3059520,
+   "name": "F1 25",
+   "price": 49.99
+  },
+  {
+   "id": 3079210,
+   "name": "Hell Let Loose: Vietnam",
+   "price": 39.99
+  },
+  {
+   "id": 3105440,
+   "name": "Heroes of Might and Magic: Olden Era",
+   "price": 39.99
+  }
  ]
 }
