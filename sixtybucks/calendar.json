@@ -1502,5 +1502,229 @@
    "name": "Heroes of Might and Magic: Olden Era",
    "price": 39.99
   }
+ ],
+ "2026-09-20": [
+  {
+   "id": 49520,
+   "name": "Borderlands 2",
+   "price": 19.99
+  },
+  {
+   "id": 107410,
+   "name": "Arma 3",
+   "price": 29.99
+  },
+  {
+   "id": 212680,
+   "name": "FTL: Faster Than Light",
+   "price": 9.99
+  },
+  {
+   "id": 238090,
+   "name": "Sniper Elite 3",
+   "price": 29.99
+  },
+  {
+   "id": 312660,
+   "name": "Sniper Elite 4",
+   "price": 59.99
+  },
+  {
+   "id": 548430,
+   "name": "Deep Rock Galactic",
+   "price": 29.99
+  }
+ ],
+ "2026-09-21": [
+  {
+   "id": 582010,
+   "name": "Monster Hunter: World",
+   "price": 29.99
+  },
+  {
+   "id": 588650,
+   "name": "Dead Cells",
+   "price": 24.99
+  },
+  {
+   "id": 613100,
+   "name": "House Flipper",
+   "price": 24.99
+  },
+  {
+   "id": 805550,
+   "name": "Assetto Corsa Competizione",
+   "price": 39.99
+  },
+  {
+   "id": 883710,
+   "name": "Resident Evil 2",
+   "price": 39.99
+  },
+  {
+   "id": 952060,
+   "name": "Resident Evil 3",
+   "price": 39.99
+  }
+ ],
+ "2026-09-22": [
+  {
+   "id": 976310,
+   "name": "Mortal Kombat 11",
+   "price": 49.99
+  },
+  {
+   "id": 1029690,
+   "name": "Sniper Elite 5",
+   "price": 49.99
+  },
+  {
+   "id": 1196590,
+   "name": "Resident Evil Village",
+   "price": 39.99
+  },
+  {
+   "id": 1432860,
+   "name": "Sun Haven",
+   "price": 24.99
+  },
+  {
+   "id": 1446780,
+   "name": "MONSTER HUNTER RISE",
+   "price": 39.99
+  },
+  {
+   "id": 1527950,
+   "name": "Wartales",
+   "price": 34.99
+  }
+ ],
+ "2026-09-23": [
+  {
+   "id": 1588550,
+   "name": "Cairn",
+   "price": 29.99
+  },
+  {
+   "id": 1629520,
+   "name": "A Little to the Left",
+   "price": 14.99
+  },
+  {
+   "id": 1850570,
+   "name": "DEATH STRANDING DIRECTOR'S CUT",
+   "price": 39.99
+  },
+  {
+   "id": 1867240,
+   "name": "WARDOGS",
+   "price": 39.99
+  },
+  {
+   "id": 1971870,
+   "name": "Mortal Kombat 1",
+   "price": 49.99
+  },
+  {
+   "id": 2050650,
+   "name": "Resident Evil 4",
+   "price": 39.99
+  }
+ ],
+ "2026-09-24": [
+  {
+   "id": 2277560,
+   "name": "WUCHANG: Fallen Feathers",
+   "price": 49.99
+  },
+  {
+   "id": 2840770,
+   "name": "Avatar: Frontiers of Pandora",
+   "price": 29.99
+  },
+  {
+   "id": 3280350,
+   "name": "DEATH STRANDING 2: ON THE BEACH",
+   "price": 69.99
+  },
+  {
+   "id": 3017860,
+   "name": "DOOM: The Dark Ages",
+   "price": 69.99
+  },
+  {
+   "id": 3041230,
+   "name": "Windrose",
+   "price": 29.99
+  },
+  {
+   "id": 3065800,
+   "name": "Marathon",
+   "price": 39.99
+  }
+ ],
+ "2026-09-25": [
+  {
+   "id": 3070070,
+   "name": "TCG Card Shop Simulator",
+   "price": 19.99
+  },
+  {
+   "id": 3124540,
+   "name": "Far Far West",
+   "price": 19.99
+  },
+  {
+   "id": 3164500,
+   "name": "Schedule I",
+   "price": 19.99
+  },
+  {
+   "id": 3241660,
+   "name": "R.E.P.O.",
+   "price": 9.99
+  },
+  {
+   "id": 3265700,
+   "name": "Vampire Crawlers: The Turbo Wildcard from Vampire Survivors",
+   "price": 9.99
+  },
+  {
+   "id": 3293260,
+   "name": "Waterpark Simulator",
+   "price": 12.99
+  }
+ ],
+ "2026-09-26": [
+  {
+   "id": 3321460,
+   "name": "Crimson Desert Enhanced",
+   "price": 69.99
+  },
+  {
+   "id": 3357650,
+   "name": "PRAGMATA",
+   "price": 59.99
+  },
+  {
+   "id": 3404260,
+   "name": "Dead as Disco",
+   "price": 24.99
+  },
+  {
+   "id": 3405340,
+   "name": "Megabonk",
+   "price": 9.99
+  },
+  {
+   "id": 3405690,
+   "name": "EA SPORTS FC 26",
+   "price": 69.99
+  },
+  {
+   "id": 3472040,
+   "name": "NBA 2K26",
+   "price": 69.99
+  }
  ]
 }
