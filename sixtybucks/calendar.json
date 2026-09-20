@@ -1,68 +1,4 @@
 {
- "2026-08-04": [
-  {
-   "id": 4000,
-   "name": "Garry's Mod",
-   "price": 9.99
-  },
-  {
-   "id": 105600,
-   "name": "Terraria",
-   "price": 9.99
-  },
-  {
-   "id": 108600,
-   "name": "Project Zomboid",
-   "price": 24.99
-  },
-  {
-   "id": 202970,
-   "name": "Call of Duty: Black Ops II",
-   "price": 39.99
-  },
-  {
-   "id": 219990,
-   "name": "Grim Dawn",
-   "price": 24.99
-  },
-  {
-   "id": 220200,
-   "name": "Kerbal Space Program",
-   "price": 39.99
-  }
- ],
- "2026-08-05": [
-  {
-   "id": 250900,
-   "name": "The Binding of Isaac: Rebirth",
-   "price": 14.99
-  },
-  {
-   "id": 251570,
-   "name": "7 Days to Die",
-   "price": 44.99
-  },
-  {
-   "id": 261550,
-   "name": "Mount & Blade II: Bannerlord",
-   "price": 49.99
-  },
-  {
-   "id": 270880,
-   "name": "American Truck Simulator",
-   "price": 19.99
-  },
-  {
-   "id": 281990,
-   "name": "Stellaris",
-   "price": 49.99
-  },
-  {
-   "id": 284160,
-   "name": "BeamNG.drive",
-   "price": 24.99
-  }
- ],
  "2026-08-06": [
   {
    "id": 286160,
@@ -1725,6 +1661,230 @@
    "id": 3472040,
    "name": "NBA 2K26",
    "price": 69.99
+  }
+ ],
+ "2026-09-27": [
+  {
+   "id": 21690,
+   "name": "Resident Evil 5",
+   "price": 19.99
+  },
+  {
+   "id": 213670,
+   "name": "South Park: The Stick of Truth",
+   "price": 29.99
+  },
+  {
+   "id": 220240,
+   "name": "Far Cry 3",
+   "price": 19.99
+  },
+  {
+   "id": 239140,
+   "name": "Dying Light",
+   "price": 24.99
+  },
+  {
+   "id": 243470,
+   "name": "Watch_Dogs",
+   "price": 19.99
+  },
+  {
+   "id": 244850,
+   "name": "Space Engineers",
+   "price": 19.99
+  }
+ ],
+ "2026-09-28": [
+  {
+   "id": 289650,
+   "name": "Assassin's Creed Unity",
+   "price": 29.99
+  },
+  {
+   "id": 298110,
+   "name": "Far Cry 4",
+   "price": 29.99
+  },
+  {
+   "id": 359870,
+   "name": "FINAL FANTASY X/X-2 HD Remaster",
+   "price": 29.99
+  },
+  {
+   "id": 365590,
+   "name": "Tom Clancy’s The Division",
+   "price": 29.99
+  },
+  {
+   "id": 368500,
+   "name": "Assassin's Creed Syndicate",
+   "price": 29.99
+  },
+  {
+   "id": 371660,
+   "name": "Far Cry Primal",
+   "price": 29.99
+  }
+ ],
+ "2026-09-29": [
+  {
+   "id": 373420,
+   "name": "Divinity: Original Sin - Enhanced Edition",
+   "price": 39.99
+  },
+  {
+   "id": 447040,
+   "name": "Watch_Dogs 2",
+   "price": 49.99
+  },
+  {
+   "id": 460920,
+   "name": "Steep",
+   "price": 29.99
+  },
+  {
+   "id": 546560,
+   "name": "Half-Life: Alyx",
+   "price": 59.99
+  },
+  {
+   "id": 585420,
+   "name": "Trailmakers",
+   "price": 24.99
+  },
+  {
+   "id": 629730,
+   "name": "Blade and Sorcery",
+   "price": 29.99
+  }
+ ],
+ "2026-09-30": [
+  {
+   "id": 637650,
+   "name": "FINAL FANTASY XV WINDOWS EDITION",
+   "price": 34.99
+  },
+  {
+   "id": 911400,
+   "name": "Assassin's Creed III Remastered",
+   "price": 39.99
+  },
+  {
+   "id": 916440,
+   "name": "Anno 1800",
+   "price": 59.99
+  },
+  {
+   "id": 939960,
+   "name": "Far Cry New Dawn",
+   "price": 39.99
+  },
+  {
+   "id": 1244090,
+   "name": "Sea of Stars: Sunset Edition",
+   "price": 34.99
+  },
+  {
+   "id": 1260320,
+   "name": "Party Animals",
+   "price": 19.99
+  }
+ ],
+ "2026-10-01": [
+  {
+   "id": 1547000,
+   "name": "Grand Theft Auto: San Andreas – The Definitive Edition",
+   "price": 59.99
+  },
+  {
+   "id": 1592190,
+   "name": "BONELAB",
+   "price": 39.99
+  },
+  {
+   "id": 1757300,
+   "name": "Jump Space",
+   "price": 19.99
+  },
+  {
+   "id": 1774580,
+   "name": "STAR WARS Jedi: Survivor",
+   "price": 69.99
+  },
+  {
+   "id": 1984270,
+   "name": "Digimon Story Time Stranger",
+   "price": 69.99
+  },
+  {
+   "id": 2290180,
+   "name": "Riders Republic",
+   "price": 39.99
+  }
+ ],
+ "2026-10-02": [
+  {
+   "id": 2444750,
+   "name": "Shape of Dreams",
+   "price": 24.99
+  },
+  {
+   "id": 2638890,
+   "name": "Onimusha: Way of the Sword",
+   "price": 69.99
+  },
+  {
+   "id": 2698940,
+   "name": "The Crew Motorfest",
+   "price": 69.99
+  },
+  {
+   "id": 3035570,
+   "name": "Assassin's Creed Mirage",
+   "price": 49.99
+  },
+  {
+   "id": 3159330,
+   "name": "Assassin’s Creed Shadows",
+   "price": 69.99
+  },
+  {
+   "id": 3274580,
+   "name": "Anno 117: Pax Romana",
+   "price": 59.99
+  }
+ ],
+ "2026-10-03": [
+  {
+   "id": 3722330,
+   "name": "Shift At Midnight",
+   "price": 9.99
+  },
+  {
+   "id": 4421010,
+   "name": "Bills Must Be Paid",
+   "price": 6.99
+  },
+  {
+   "id": 4000,
+   "name": "Garry's Mod",
+   "price": 9.99
+  },
+  {
+   "id": 105600,
+   "name": "Terraria",
+   "price": 9.99
+  },
+  {
+   "id": 108600,
+   "name": "Project Zomboid",
+   "price": 24.99
+  },
+  {
+   "id": 202970,
+   "name": "Call of Duty: Black Ops II",
+   "price": 39.99
   }
  ]
 }

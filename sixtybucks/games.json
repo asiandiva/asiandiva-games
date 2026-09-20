@@ -3,15 +3,15 @@
   "id": 550,
   "name": "Left 4 Dead 2",
   "price": 9.99,
-  "reviews": 814122,
-  "checked": "2026-08-30"
+  "reviews": 816806,
+  "checked": "2026-09-20"
  },
  {
   "id": 4000,
   "name": "Garry's Mod",
   "price": 9.99,
-  "reviews": 1090063,
-  "checked": "2026-08-30"
+  "reviews": 1093821,
+  "checked": "2026-09-20"
  },
  {
   "id": 8870,
@@ -45,15 +45,22 @@
   "id": 12210,
   "name": "Grand Theft Auto IV: The Complete Edition",
   "price": 19.99,
-  "reviews": 179462,
-  "checked": "2026-08-30"
+  "reviews": 180924,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 21690,
+  "name": "Resident Evil 5",
+  "price": 19.99,
+  "reviews": 48650,
+  "checked": "2026-09-20"
  },
  {
   "id": 22320,
   "name": "The Elder Scrolls III: Morrowind Game of the Year Edition",
   "price": 14.99,
-  "reviews": 22259,
-  "checked": "2026-08-30"
+  "reviews": 22322,
+  "checked": "2026-09-20"
  },
  {
   "id": 22370,
@@ -154,6 +161,13 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 213670,
+  "name": "South Park: The Stick of Truth",
+  "price": 29.99,
+  "reviews": 60792,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 214490,
   "name": "Alien: Isolation",
   "price": 39.99,
@@ -189,6 +203,13 @@
   "checked": "2026-09-06"
  },
  {
+  "id": 220240,
+  "name": "Far Cry 3",
+  "price": 19.99,
+  "reviews": 122806,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 227300,
   "name": "Euro Truck Simulator 2",
   "price": 19.99,
@@ -210,11 +231,32 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 239140,
+  "name": "Dying Light",
+  "price": 24.99,
+  "reviews": 378328,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 243470,
+  "name": "Watch_Dogs",
+  "price": 19.99,
+  "reviews": 49295,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 244210,
   "name": "Assetto Corsa",
   "price": 19.99,
   "reviews": 135949,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 244850,
+  "name": "Space Engineers",
+  "price": 19.99,
+  "reviews": 102623,
+  "checked": "2026-09-20"
  },
  {
   "id": 246620,
@@ -329,6 +371,13 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 289650,
+  "name": "Assassin's Creed Unity",
+  "price": 29.99,
+  "reviews": 79158,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 292000,
   "name": "No More Room in Hell 2",
   "price": 29.99,
@@ -348,6 +397,13 @@
   "price": 34.99,
   "reviews": 208532,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 298110,
+  "name": "Far Cry 4",
+  "price": 29.99,
+  "reviews": 68564,
+  "checked": "2026-09-20"
  },
  {
   "id": 304390,
@@ -413,6 +469,13 @@
   "checked": "2026-08-30"
  },
  {
+  "id": 359870,
+  "name": "FINAL FANTASY X/X-2 HD Remaster",
+  "price": 29.99,
+  "reviews": 19870,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 361420,
   "name": "ASTRONEER",
   "price": 29.99,
@@ -427,6 +490,13 @@
   "checked": "2026-09-06"
  },
  {
+  "id": 365590,
+  "name": "Tom Clancy’s The Division",
+  "price": 29.99,
+  "reviews": 77021,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 368260,
   "name": "Marvel's Midnight Suns",
   "price": 59.99,
@@ -434,11 +504,32 @@
   "checked": "2026-09-06"
  },
  {
+  "id": 368500,
+  "name": "Assassin's Creed Syndicate",
+  "price": 29.99,
+  "reviews": 31103,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 371660,
+  "name": "Far Cry Primal",
+  "price": 29.99,
+  "reviews": 38837,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 371970,
   "name": "Barony",
   "price": 19.99,
   "reviews": 12701,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 373420,
+  "name": "Divinity: Original Sin - Enhanced Edition",
+  "price": 39.99,
+  "reviews": 27518,
+  "checked": "2026-09-20"
  },
  {
   "id": 374320,
@@ -539,6 +630,20 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 447040,
+  "name": "Watch_Dogs 2",
+  "price": 49.99,
+  "reviews": 95512,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 460920,
+  "name": "Steep",
+  "price": 29.99,
+  "reviews": 30671,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 476600,
   "name": "Call of Duty: WWII",
   "price": 59.99,
@@ -563,15 +668,15 @@
   "id": 524220,
   "name": "NieR:Automata",
   "price": 39.99,
-  "reviews": 114744,
-  "checked": "2026-08-23"
+  "reviews": 115144,
+  "checked": "2026-09-20"
  },
  {
   "id": 526870,
   "name": "Satisfactory",
   "price": 39.99,
-  "reviews": 233983,
-  "checked": "2026-08-23"
+  "reviews": 235112,
+  "checked": "2026-09-20"
  },
  {
   "id": 529340,
@@ -584,8 +689,15 @@
   "id": 534380,
   "name": "Dying Light 2 Stay Human: Reloaded Edition",
   "price": 59.99,
-  "reviews": 164377,
-  "checked": "2026-08-23"
+  "reviews": 165020,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 546560,
+  "name": "Half-Life: Alyx",
+  "price": 59.99,
+  "reviews": 93079,
+  "checked": "2026-09-20"
  },
  {
   "id": 548430,
@@ -612,8 +724,8 @@
   "id": 553850,
   "name": "HELLDIVERS 2",
   "price": 39.99,
-  "reviews": 835642,
-  "checked": "2026-08-23"
+  "reviews": 839141,
+  "checked": "2026-09-20"
  },
  {
   "id": 570940,
@@ -644,6 +756,13 @@
   "checked": "2026-09-06"
  },
  {
+  "id": 585420,
+  "name": "Trailmakers",
+  "price": 24.99,
+  "reviews": 33524,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 588650,
   "name": "Dead Cells",
   "price": 24.99,
@@ -661,15 +780,15 @@
   "id": 594650,
   "name": "Hunt: Showdown 1896",
   "price": 29.99,
-  "reviews": 212070,
-  "checked": "2026-08-23"
+  "reviews": 213140,
+  "checked": "2026-09-20"
  },
  {
   "id": 602960,
   "name": "Barotrauma",
   "price": 34.99,
-  "reviews": 61578,
-  "checked": "2026-08-23"
+  "reviews": 61968,
+  "checked": "2026-09-20"
  },
  {
   "id": 613100,
@@ -679,11 +798,18 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 629730,
+  "name": "Blade and Sorcery",
+  "price": 29.99,
+  "reviews": 59102,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 632360,
   "name": "Risk of Rain 2",
   "price": 24.99,
-  "reviews": 239162,
-  "checked": "2026-08-23"
+  "reviews": 240076,
+  "checked": "2026-09-20"
  },
  {
   "id": 633230,
@@ -693,18 +819,25 @@
   "checked": "2026-08-30"
  },
  {
+  "id": 637650,
+  "name": "FINAL FANTASY XV WINDOWS EDITION",
+  "price": 34.99,
+  "reviews": 44961,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 648800,
   "name": "Raft",
   "price": 19.99,
-  "reviews": 322358,
-  "checked": "2026-08-23"
+  "reviews": 323587,
+  "checked": "2026-09-20"
  },
  {
   "id": 686810,
   "name": "Hell Let Loose",
   "price": 49.99,
-  "reviews": 99396,
-  "checked": "2026-08-23"
+  "reviews": 99650,
+  "checked": "2026-09-20"
  },
  {
   "id": 699130,
@@ -717,8 +850,8 @@
   "id": 703080,
   "name": "Planet Zoo",
   "price": 44.99,
-  "reviews": 80895,
-  "checked": "2026-08-23"
+  "reviews": 81214,
+  "checked": "2026-09-20"
  },
  {
   "id": 728880,
@@ -731,8 +864,8 @@
   "id": 739630,
   "name": "Phasmophobia",
   "price": 19.99,
-  "reviews": 682426,
-  "checked": "2026-08-23"
+  "reviews": 684189,
+  "checked": "2026-09-20"
  },
  {
   "id": 752590,
@@ -745,8 +878,8 @@
   "id": 753640,
   "name": "Outer Wilds",
   "price": 24.99,
-  "reviews": 88578,
-  "checked": "2026-08-23"
+  "reviews": 89629,
+  "checked": "2026-09-20"
  },
  {
   "id": 779340,
@@ -766,15 +899,15 @@
   "id": 782330,
   "name": "DOOM Eternal",
   "price": 29.99,
-  "reviews": 189654,
-  "checked": "2026-08-23"
+  "reviews": 190045,
+  "checked": "2026-09-20"
  },
  {
   "id": 784080,
   "name": "MechWarrior 5: Mercenaries",
   "price": 29.99,
-  "reviews": 13198,
-  "checked": "2026-08-23"
+  "reviews": 13357,
+  "checked": "2026-09-20"
  },
  {
   "id": 805550,
@@ -787,8 +920,8 @@
   "id": 813780,
   "name": "Age of Empires II: Definitive Edition",
   "price": 34.99,
-  "reviews": 158369,
-  "checked": "2026-08-23"
+  "reviews": 159014,
+  "checked": "2026-09-20"
  },
  {
   "id": 870780,
@@ -801,8 +934,8 @@
   "id": 881020,
   "name": "Granblue Fantasy: Relink",
   "price": 39.99,
-  "reviews": 40938,
-  "checked": "2026-08-23"
+  "reviews": 41241,
+  "checked": "2026-09-20"
  },
  {
   "id": 883710,
@@ -815,22 +948,36 @@
   "id": 892970,
   "name": "Valheim",
   "price": 29.99,
-  "reviews": 457662,
-  "checked": "2026-08-23"
+  "reviews": 466348,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 911400,
+  "name": "Assassin's Creed III Remastered",
+  "price": 39.99,
+  "reviews": 14668,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 916440,
+  "name": "Anno 1800",
+  "price": 59.99,
+  "reviews": 29884,
+  "checked": "2026-09-20"
  },
  {
   "id": 920210,
   "name": "LEGO Star Wars: The Skywalker Saga",
   "price": 49.99,
-  "reviews": 38260,
-  "checked": "2026-08-23"
+  "reviews": 38293,
+  "checked": "2026-09-20"
  },
  {
   "id": 921570,
   "name": "OCTOPATH TRAVELER",
   "price": 59.99,
-  "reviews": 13810,
-  "checked": "2026-08-23"
+  "reviews": 13937,
+  "checked": "2026-09-20"
  },
  {
   "id": 933110,
@@ -847,18 +994,25 @@
   "checked": "2026-08-30"
  },
  {
+  "id": 939960,
+  "name": "Far Cry New Dawn",
+  "price": 39.99,
+  "reviews": 32181,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 945360,
   "name": "Among Us",
   "price": 4.99,
-  "reviews": 655931,
-  "checked": "2026-08-23"
+  "reviews": 659279,
+  "checked": "2026-09-20"
  },
  {
   "id": 949230,
   "name": "Cities: Skylines II",
   "price": 49.99,
-  "reviews": 63606,
-  "checked": "2026-08-23"
+  "reviews": 64309,
+  "checked": "2026-09-20"
  },
  {
   "id": 952060,
@@ -871,8 +1025,8 @@
   "id": 960090,
   "name": "Bloons TD 6",
   "price": 13.99,
-  "reviews": 348707,
-  "checked": "2026-08-23"
+  "reviews": 349999,
+  "checked": "2026-09-20"
  },
  {
   "id": 962130,
@@ -892,15 +1046,15 @@
   "id": 976730,
   "name": "Halo: The Master Chief Collection",
   "price": 39.99,
-  "reviews": 238973,
-  "checked": "2026-08-23"
+  "reviews": 239674,
+  "checked": "2026-09-20"
  },
  {
   "id": 979690,
   "name": "The Ascent",
   "price": 29.99,
-  "reviews": 19133,
-  "checked": "2026-08-23"
+  "reviews": 19244,
+  "checked": "2026-09-20"
  },
  {
   "id": 990080,
@@ -920,8 +1074,8 @@
   "id": 1056960,
   "name": "Wolfenstein: Youngblood",
   "price": 19.99,
-  "reviews": 12640,
-  "checked": "2026-08-23"
+  "reviews": 12708,
+  "checked": "2026-09-20"
  },
  {
   "id": 1062090,
@@ -941,8 +1095,8 @@
   "id": 1097840,
   "name": "Gears 5",
   "price": 29.99,
-  "reviews": 20999,
-  "checked": "2026-08-23"
+  "reviews": 21223,
+  "checked": "2026-09-20"
  },
  {
   "id": 1113120,
@@ -962,8 +1116,8 @@
   "id": 1118520,
   "name": "Paralives",
   "price": 39.99,
-  "reviews": 19673,
-  "checked": "2026-08-23"
+  "reviews": 20171,
+  "checked": "2026-09-20"
  },
  {
   "id": 1129580,
@@ -976,8 +1130,8 @@
   "id": 1142710,
   "name": "Total War: WARHAMMER III",
   "price": 59.99,
-  "reviews": 103791,
-  "checked": "2026-08-23"
+  "reviews": 104922,
+  "checked": "2026-09-20"
  },
  {
   "id": 1145350,
@@ -990,50 +1144,50 @@
   "id": 1149460,
   "name": "ICARUS",
   "price": 34.99,
-  "reviews": 54931,
-  "checked": "2026-08-23"
+  "reviews": 55960,
+  "checked": "2026-09-20"
  },
  {
   "id": 1167630,
   "name": "Teardown",
   "price": 29.99,
-  "reviews": 125571,
-  "checked": "2026-08-23"
+  "reviews": 126692,
+  "checked": "2026-09-20"
  },
  {
   "id": 1169040,
   "name": "Necesse",
   "price": 14.99,
-  "reviews": 24168,
-  "checked": "2026-08-23"
+  "reviews": 24454,
+  "checked": "2026-09-20"
  },
  {
   "id": 1171690,
   "name": "Wayfinder",
   "price": 24.99,
-  "reviews": 24931,
-  "checked": "2026-08-23"
+  "reviews": 25105,
+  "checked": "2026-09-20"
  },
  {
   "id": 1172620,
   "name": "Sea of Thieves: 2026 Edition",
   "price": 39.99,
-  "reviews": 321717,
-  "checked": "2026-08-23"
+  "reviews": 322227,
+  "checked": "2026-09-20"
  },
  {
   "id": 1172710,
   "name": "Dune: Awakening",
   "price": 49.99,
-  "reviews": 66576,
-  "checked": "2026-08-23"
+  "reviews": 67098,
+  "checked": "2026-09-20"
  },
  {
   "id": 1174180,
   "name": "Red Dead Redemption 2",
   "price": 59.99,
-  "reviews": 837208,
-  "checked": "2026-08-23"
+  "reviews": 847210,
+  "checked": "2026-09-20"
  },
  {
   "id": 1182900,
@@ -1053,8 +1207,8 @@
   "id": 1190970,
   "name": "House Flipper 2",
   "price": 39.99,
-  "reviews": 16361,
-  "checked": "2026-08-23"
+  "reviews": 16556,
+  "checked": "2026-09-20"
  },
  {
   "id": 1196590,
@@ -1074,8 +1228,8 @@
   "id": 1206560,
   "name": "WorldBox - God Simulator",
   "price": 19.99,
-  "reviews": 50670,
-  "checked": "2026-08-23"
+  "reviews": 51129,
+  "checked": "2026-09-20"
  },
  {
   "id": 1217060,
@@ -1109,8 +1263,15 @@
   "id": 1237320,
   "name": "Sonic Frontiers",
   "price": 39.99,
-  "reviews": 22568,
-  "checked": "2026-08-23"
+  "reviews": 22712,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 1244090,
+  "name": "Sea of Stars: Sunset Edition",
+  "price": 34.99,
+  "reviews": 12084,
+  "checked": "2026-09-20"
  },
  {
   "id": 1245620,
@@ -1123,8 +1284,15 @@
   "id": 1250410,
   "name": "Microsoft Flight Simulator (2020) 40th Anniversary Edition",
   "price": 59.99,
-  "reviews": 69707,
-  "checked": "2026-08-23"
+  "reviews": 70102,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 1260320,
+  "name": "Party Animals",
+  "price": 19.99,
+  "reviews": 57822,
+  "checked": "2026-09-20"
  },
  {
   "id": 1272080,
@@ -1193,15 +1361,15 @@
   "id": 1332010,
   "name": "Stray",
   "price": 29.99,
-  "reviews": 156471,
-  "checked": "2026-08-23"
+  "reviews": 157660,
+  "checked": "2026-09-20"
  },
  {
   "id": 1336490,
   "name": "Against the Storm",
   "price": 29.99,
-  "reviews": 33027,
-  "checked": "2026-08-23"
+  "reviews": 33309,
+  "checked": "2026-09-20"
  },
  {
   "id": 1353230,
@@ -1323,6 +1491,13 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 1547000,
+  "name": "Grand Theft Auto: San Andreas – The Definitive Edition",
+  "price": 59.99,
+  "reviews": 15687,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 1549970,
   "name": "Aliens: Fireteam Elite",
   "price": 29.99,
@@ -1354,8 +1529,8 @@
   "id": 1574580,
   "name": "Strange Horticulture",
   "price": 15.99,
-  "reviews": 14715,
-  "checked": "2026-08-23"
+  "reviews": 14878,
+  "checked": "2026-09-20"
  },
  {
   "id": 1588550,
@@ -1363,6 +1538,13 @@
   "price": 29.99,
   "reviews": 18172,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 1592190,
+  "name": "BONELAB",
+  "price": 39.99,
+  "reviews": 18705,
+  "checked": "2026-09-20"
  },
  {
   "id": 1604270,
@@ -1375,8 +1557,8 @@
   "id": 1611600,
   "name": "WARNO",
   "price": 39.99,
-  "reviews": 14385,
-  "checked": "2026-08-23"
+  "reviews": 14512,
+  "checked": "2026-09-20"
  },
  {
   "id": 1617400,
@@ -1452,8 +1634,8 @@
   "id": 1672970,
   "name": "Minecraft Dungeons",
   "price": 19.99,
-  "reviews": 17336,
-  "checked": "2026-08-23"
+  "reviews": 17985,
+  "checked": "2026-09-20"
  },
  {
   "id": 1676840,
@@ -1477,11 +1659,25 @@
   "checked": "2026-09-06"
  },
  {
+  "id": 1757300,
+  "name": "Jump Space",
+  "price": 19.99,
+  "reviews": 10845,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 1761390,
   "name": "Hatsune Miku: Project DIVA Mega Mix+",
   "price": 39.39,
-  "reviews": 19328,
-  "checked": "2026-08-23"
+  "reviews": 19520,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 1774580,
+  "name": "STAR WARS Jedi: Survivor",
+  "price": 69.99,
+  "reviews": 80045,
+  "checked": "2026-09-20"
  },
  {
   "id": 1778820,
@@ -1585,8 +1781,8 @@
   "id": 1868140,
   "name": "DAVE THE DIVER",
   "price": 19.99,
-  "reviews": 141347,
-  "checked": "2026-08-23"
+  "reviews": 142762,
+  "checked": "2026-09-20"
  },
  {
   "id": 1874880,
@@ -1599,15 +1795,15 @@
   "id": 1888930,
   "name": "The Last of Us Part I",
   "price": 59.99,
-  "reviews": 64717,
-  "checked": "2026-08-23"
+  "reviews": 65311,
+  "checked": "2026-09-20"
  },
  {
   "id": 1940340,
   "name": "Darkest Dungeon II",
   "price": 39.99,
-  "reviews": 24010,
-  "checked": "2026-08-23"
+  "reviews": 24268,
+  "checked": "2026-09-20"
  },
  {
   "id": 1943950,
@@ -1643,6 +1839,13 @@
   "price": 49.99,
   "reviews": 34141,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 1984270,
+  "name": "Digimon Story Time Stranger",
+  "price": 69.99,
+  "reviews": 15874,
+  "checked": "2026-09-20"
  },
  {
   "id": 1985810,
@@ -1690,8 +1893,8 @@
   "id": 2071280,
   "name": "Ravenswatch",
   "price": 24.99,
-  "reviews": 16714,
-  "checked": "2026-08-23"
+  "reviews": 16927,
+  "checked": "2026-09-20"
  },
  {
   "id": 2075800,
@@ -1746,8 +1949,8 @@
   "id": 2163330,
   "name": "Yet Another Zombie Survivors",
   "price": 14.99,
-  "reviews": 12888,
-  "checked": "2026-08-23"
+  "reviews": 14180,
+  "checked": "2026-09-20"
  },
  {
   "id": 2183900,
@@ -1799,6 +2002,13 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 2290180,
+  "name": "Riders Republic",
+  "price": 39.99,
+  "reviews": 30556,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 2300320,
   "name": "Farming Simulator 25",
   "price": 29.99,
@@ -1809,8 +2019,8 @@
   "id": 2322010,
   "name": "God of War Ragnarök",
   "price": 59.99,
-  "reviews": 32094,
-  "checked": "2026-08-23"
+  "reviews": 32542,
+  "checked": "2026-09-20"
  },
  {
   "id": 2344520,
@@ -1872,15 +2082,15 @@
   "id": 2432860,
   "name": "MENACE",
   "price": 39.99,
-  "reviews": 11895,
-  "checked": "2026-08-23"
+  "reviews": 12307,
+  "checked": "2026-09-20"
  },
  {
   "id": 2436940,
   "name": "Sephiria",
-  "price": 14.99,
-  "reviews": 10001,
-  "checked": "2026-08-23"
+  "price": 17.99,
+  "reviews": 11706,
+  "checked": "2026-09-20"
  },
  {
   "id": 2440510,
@@ -1888,6 +2098,13 @@
   "price": 69.99,
   "reviews": 12054,
   "checked": "2026-08-30"
+ },
+ {
+  "id": 2444750,
+  "name": "Shape of Dreams",
+  "price": 24.99,
+  "reviews": 15891,
+  "checked": "2026-09-20"
  },
  {
   "id": 2456740,
@@ -1974,6 +2191,13 @@
   "checked": "2026-08-30"
  },
  {
+  "id": 2638890,
+  "name": "Onimusha: Way of the Sword",
+  "price": 69.99,
+  "reviews": 12314,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 2651280,
   "name": "Marvel's Spider-Man 2",
   "price": 59.99,
@@ -2018,9 +2242,16 @@
  {
   "id": 2688950,
   "name": "Planet Coaster 2",
-  "price": 49.99,
-  "reviews": 12801,
-  "checked": "2026-08-23"
+  "price": 64.99,
+  "reviews": 13071,
+  "checked": "2026-09-20"
+ },
+ {
+  "id": 2698940,
+  "name": "The Crew Motorfest",
+  "price": 69.99,
+  "reviews": 24298,
+  "checked": "2026-09-20"
  },
  {
   "id": 2806050,
@@ -2075,8 +2306,8 @@
   "id": 2950790,
   "name": "IRON NEST: Heavy Turret Simulator",
   "price": 19.99,
-  "reviews": 11657,
-  "checked": "2026-08-23"
+  "reviews": 13411,
+  "checked": "2026-09-20"
  },
  {
   "id": 2958130,
@@ -2105,6 +2336,13 @@
   "price": 69.99,
   "reviews": 32159,
   "checked": "2026-09-13"
+ },
+ {
+  "id": 3035570,
+  "name": "Assassin's Creed Mirage",
+  "price": 49.99,
+  "reviews": 11635,
+  "checked": "2026-09-20"
  },
  {
   "id": 3041230,
@@ -2156,6 +2394,13 @@
   "checked": "2026-08-30"
  },
  {
+  "id": 3159330,
+  "name": "Assassin’s Creed Shadows",
+  "price": 69.99,
+  "reviews": 35037,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 3164500,
   "name": "Schedule I",
   "price": 19.99,
@@ -2173,8 +2418,8 @@
   "id": 3228590,
   "name": "Deadzone: Rogue",
   "price": 24.99,
-  "reviews": 14677,
-  "checked": "2026-08-23"
+  "reviews": 15062,
+  "checked": "2026-09-20"
  },
  {
   "id": 3241660,
@@ -2189,6 +2434,13 @@
   "price": 9.99,
   "reviews": 18387,
   "checked": "2026-09-06"
+ },
+ {
+  "id": 3274580,
+  "name": "Anno 117: Pax Romana",
+  "price": 59.99,
+  "reviews": 12176,
+  "checked": "2026-09-20"
  },
  {
   "id": 3280350,
@@ -2275,6 +2527,13 @@
   "checked": "2026-09-13"
  },
  {
+  "id": 3722330,
+  "name": "Shift At Midnight",
+  "price": 9.99,
+  "reviews": 10268,
+  "checked": "2026-09-20"
+ },
+ {
   "id": 3751950,
   "name": "Assassin's Creed Black Flag Resynced",
   "price": 59.99,
@@ -2336,6 +2595,13 @@
   "price": 69.99,
   "reviews": 13872,
   "checked": "2026-09-06"
+ },
+ {
+  "id": 4421010,
+  "name": "Bills Must Be Paid",
+  "price": 6.99,
+  "reviews": 10291,
+  "checked": "2026-09-20"
  },
  {
   "id": 4570720,
