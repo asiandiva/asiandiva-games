@@ -1,228 +1,4 @@
 {
- "2026-08-13": [
-  {
-   "id": 1364780,
-   "name": "Street Fighter 6",
-   "price": 39.99
-  },
-  {
-   "id": 1374490,
-   "name": "RuneScape: Dragonwilds",
-   "price": 29.99
-  },
-  {
-   "id": 1401590,
-   "name": "Disney Dreamlight Valley",
-   "price": 39.99
-  },
-  {
-   "id": 1462040,
-   "name": "FINAL FANTASY VII REMAKE INTERGRADE",
-   "price": 39.99
-  },
-  {
-   "id": 1623730,
-   "name": "Palworld",
-   "price": 29.99
-  },
-  {
-   "id": 1659040,
-   "name": "HITMAN World of Assassination",
-   "price": 29.99
-  }
- ],
- "2026-08-14": [
-  {
-   "id": 1671210,
-   "name": "DELTARUNE",
-   "price": 24.99
-  },
-  {
-   "id": 1681430,
-   "name": "RoboCop: Rogue City",
-   "price": 39.99
-  },
-  {
-   "id": 1790600,
-   "name": "DRAGON BALL: Sparking! ZERO",
-   "price": 49.99
-  },
-  {
-   "id": 1808500,
-   "name": "ARC Raiders",
-   "price": 39.99
-  },
-  {
-   "id": 1817070,
-   "name": "Marvel’s Spider-Man Remastered",
-   "price": 59.99
-  },
-  {
-   "id": 1817190,
-   "name": "Marvel’s Spider-Man: Miles Morales",
-   "price": 49.99
-  }
- ],
- "2026-08-15": [
-  {
-   "id": 1846380,
-   "name": "Need for Speed Unbound",
-   "price": 69.99
-  },
-  {
-   "id": 1874880,
-   "name": "Arma Reforger",
-   "price": 39.99
-  },
-  {
-   "id": 1943950,
-   "name": "Escape the Backrooms",
-   "price": 9.99
-  },
-  {
-   "id": 1962700,
-   "name": "Subnautica 2",
-   "price": 29.99
-  },
-  {
-   "id": 2001120,
-   "name": "Split Fiction",
-   "price": 49.99
-  },
-  {
-   "id": 2142790,
-   "name": "Fields of Mistria",
-   "price": 13.99
-  }
- ],
- "2026-08-16": [
-  {
-   "id": 2183900,
-   "name": "Warhammer 40,000: Space Marine 2",
-   "price": 59.99
-  },
-  {
-   "id": 2186680,
-   "name": "Warhammer 40,000: Rogue Trader",
-   "price": 49.99
-  },
-  {
-   "id": 2221490,
-   "name": "Tom Clancy’s The Division 2",
-   "price": 29.99
-  },
-  {
-   "id": 2246340,
-   "name": "Monster Hunter Wilds",
-   "price": 39.99
-  },
-  {
-   "id": 2300320,
-   "name": "Farming Simulator 25",
-   "price": 29.99
-  },
-  {
-   "id": 2344520,
-   "name": "Diablo IV",
-   "price": 49.99
-  }
- ],
- "2026-08-17": [
-  {
-   "id": 2397300,
-   "name": "Half Sword",
-   "price": 24.99
-  },
-  {
-   "id": 2399420,
-   "name": "Le Mans Ultimate",
-   "price": 39.99
-  },
-  {
-   "id": 2457220,
-   "name": "Avowed",
-   "price": 49.99
-  },
-  {
-   "id": 2483190,
-   "name": "Forza Horizon 6",
-   "price": 69.99
-  },
-  {
-   "id": 2537590,
-   "name": "Microsoft Flight Simulator 2024",
-   "price": 69.99
-  },
-  {
-   "id": 2623190,
-   "name": "The Elder Scrolls IV: Oblivion Remastered",
-   "price": 49.99
-  }
- ],
- "2026-08-18": [
-  {
-   "id": 550,
-   "name": "Left 4 Dead 2",
-   "price": 9.99
-  },
-  {
-   "id": 22320,
-   "name": "The Elder Scrolls III: Morrowind Game of the Year Edition",
-   "price": 14.99
-  },
-  {
-   "id": 22370,
-   "name": "Fallout 3: Game of the Year Edition",
-   "price": 19.99
-  },
-  {
-   "id": 22380,
-   "name": "Fallout: New Vegas",
-   "price": 9.99
-  },
-  {
-   "id": 42700,
-   "name": "Call of Duty: Black Ops",
-   "price": 39.99
-  },
-  {
-   "id": 205100,
-   "name": "Dishonored",
-   "price": 9.99
-  }
- ],
- "2026-08-19": [
-  {
-   "id": 218620,
-   "name": "PAYDAY 2",
-   "price": 9.99
-  },
-  {
-   "id": 236850,
-   "name": "Europa Universalis IV",
-   "price": 49.99
-  },
-  {
-   "id": 255710,
-   "name": "Cities: Skylines",
-   "price": 29.99
-  },
-  {
-   "id": 350080,
-   "name": "Wolfenstein: The Old Blood",
-   "price": 19.99
-  },
-  {
-   "id": 379720,
-   "name": "DOOM",
-   "price": 19.99
-  },
-  {
-   "id": 393380,
-   "name": "Squad",
-   "price": 39.99
-  }
- ],
  "2026-08-20": [
   {
    "id": 427410,
@@ -1885,6 +1661,230 @@
    "id": 1149460,
    "name": "ICARUS",
    "price": 34.99
+  }
+ ],
+ "2026-10-11": [
+  {
+   "id": 17410,
+   "name": "Mirror's Edge",
+   "price": 19.99
+  },
+  {
+   "id": 208650,
+   "name": "Batman: Arkham Knight",
+   "price": 19.99
+  },
+  {
+   "id": 221040,
+   "name": "Resident Evil 6",
+   "price": 19.99
+  },
+  {
+   "id": 268910,
+   "name": "Cuphead",
+   "price": 19.99
+  },
+  {
+   "id": 400750,
+   "name": "Call to Arms - Gates of Hell: Ostfront",
+   "price": 34.99
+  },
+  {
+   "id": 412020,
+   "name": "Metro Exodus",
+   "price": 29.99
+  }
+ ],
+ "2026-10-12": [
+  {
+   "id": 620980,
+   "name": "Beat Saber",
+   "price": 19.99
+  },
+  {
+   "id": 673880,
+   "name": "Warhammer 40,000: Mechanicus",
+   "price": 29.99
+  },
+  {
+   "id": 701160,
+   "name": "Kingdom Two Crowns",
+   "price": 19.99
+  },
+  {
+   "id": 747660,
+   "name": "Five Nights at Freddy's: Security Breach",
+   "price": 39.99
+  },
+  {
+   "id": 814380,
+   "name": "Sekiro: Shadows Die Twice - GOTY Edition",
+   "price": 59.99
+  },
+  {
+   "id": 835960,
+   "name": "The Talos Principle 2",
+   "price": 29.99
+  }
+ ],
+ "2026-10-13": [
+  {
+   "id": 894020,
+   "name": "Death's Door",
+   "price": 19.99
+  },
+  {
+   "id": 899770,
+   "name": "Last Epoch",
+   "price": 34.99
+  },
+  {
+   "id": 1057090,
+   "name": "Ori and the Will of the Wisps",
+   "price": 29.99
+  },
+  {
+   "id": 1066890,
+   "name": "Automobilista 2",
+   "price": 39.99
+  },
+  {
+   "id": 1084160,
+   "name": "Jagged Alliance 3",
+   "price": 44.99
+  },
+  {
+   "id": 1096530,
+   "name": "Solasta: Crown of the Magister",
+   "price": 29.99
+  }
+ ],
+ "2026-10-14": [
+  {
+   "id": 1145360,
+   "name": "Hades",
+   "price": 24.99
+  },
+  {
+   "id": 1233570,
+   "name": "Mirror's Edge Catalyst",
+   "price": 19.99
+  },
+  {
+   "id": 1237970,
+   "name": "Titanfall 2",
+   "price": 29.99
+  },
+  {
+   "id": 1259420,
+   "name": "Days Gone",
+   "price": 39.99
+  },
+  {
+   "id": 1273400,
+   "name": "Construction Simulator",
+   "price": 24.99
+  },
+  {
+   "id": 1384160,
+   "name": "GUILTY GEAR -STRIVE-",
+   "price": 39.99
+  }
+ ],
+ "2026-10-15": [
+  {
+   "id": 1466060,
+   "name": "Tainted Grail: The Fall of Avalon",
+   "price": 44.99
+  },
+  {
+   "id": 1593500,
+   "name": "God of War",
+   "price": 49.99
+  },
+  {
+   "id": 1599600,
+   "name": "PlateUp!",
+   "price": 19.99
+  },
+  {
+   "id": 1604030,
+   "name": "V Rising",
+   "price": 34.99
+  },
+  {
+   "id": 1659420,
+   "name": "UNCHARTED: Legacy of Thieves Collection",
+   "price": 49.99
+  },
+  {
+   "id": 1693980,
+   "name": "Dead Space",
+   "price": 59.99
+  }
+ ],
+ "2026-10-16": [
+  {
+   "id": 1809540,
+   "name": "Nine Sols",
+   "price": 29.99
+  },
+  {
+   "id": 1895880,
+   "name": "Ratchet & Clank: Rift Apart",
+   "price": 59.99
+  },
+  {
+   "id": 1934680,
+   "name": "Age of Mythology: Retold",
+   "price": 29.99
+  },
+  {
+   "id": 2198150,
+   "name": "Tiny Glade",
+   "price": 14.99
+  },
+  {
+   "id": 2420110,
+   "name": "Horizon Forbidden West Complete Edition",
+   "price": 59.99
+  },
+  {
+   "id": 3419520,
+   "name": "Quarantine Zone: The Last Check",
+   "price": 19.99
+  }
+ ],
+ "2026-10-17": [
+  {
+   "id": 3552140,
+   "name": "Retro Rewind - Video Store Simulator",
+   "price": 19.9
+  },
+  {
+   "id": 550,
+   "name": "Left 4 Dead 2",
+   "price": 9.99
+  },
+  {
+   "id": 22320,
+   "name": "The Elder Scrolls III: Morrowind Game of the Year Edition",
+   "price": 14.99
+  },
+  {
+   "id": 22370,
+   "name": "Fallout 3: Game of the Year Edition",
+   "price": 19.99
+  },
+  {
+   "id": 22380,
+   "name": "Fallout: New Vegas",
+   "price": 9.99
+  },
+  {
+   "id": 42700,
+   "name": "Call of Duty: Black Ops",
+   "price": 39.99
   }
  ]
 }
