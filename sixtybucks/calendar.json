@@ -1,228 +1,4 @@
 {
- "2026-08-20": [
-  {
-   "id": 427410,
-   "name": "Abiotic Factor",
-   "price": 34.99
-  },
-  {
-   "id": 480490,
-   "name": "Prey",
-   "price": 29.99
-  },
-  {
-   "id": 602960,
-   "name": "Barotrauma",
-   "price": 34.99
-  },
-  {
-   "id": 648800,
-   "name": "Raft",
-   "price": 19.99
-  },
-  {
-   "id": 686810,
-   "name": "Hell Let Loose",
-   "price": 49.99
-  },
-  {
-   "id": 782330,
-   "name": "DOOM Eternal",
-   "price": 29.99
-  }
- ],
- "2026-08-21": [
-  {
-   "id": 813780,
-   "name": "Age of Empires II: Definitive Edition",
-   "price": 34.99
-  },
-  {
-   "id": 892970,
-   "name": "Valheim",
-   "price": 29.99
-  },
-  {
-   "id": 920210,
-   "name": "LEGO Star Wars: The Skywalker Saga",
-   "price": 49.99
-  },
-  {
-   "id": 945360,
-   "name": "Among Us",
-   "price": 4.99
-  },
-  {
-   "id": 960090,
-   "name": "Bloons TD 6",
-   "price": 13.99
-  },
-  {
-   "id": 1056960,
-   "name": "Wolfenstein: Youngblood",
-   "price": 19.99
-  }
- ],
- "2026-08-22": [
-  {
-   "id": 1172710,
-   "name": "Dune: Awakening",
-   "price": 49.99
-  },
-  {
-   "id": 1190970,
-   "name": "House Flipper 2",
-   "price": 39.99
-  },
-  {
-   "id": 1203620,
-   "name": "Enshrouded",
-   "price": 29.99
-  },
-  {
-   "id": 1217060,
-   "name": "Gunfire Reborn",
-   "price": 19.99
-  },
-  {
-   "id": 1282100,
-   "name": "REMNANT II",
-   "price": 49.99
-  },
-  {
-   "id": 1284190,
-   "name": "The Planet Crafter",
-   "price": 23.99
-  }
- ],
- "2026-08-23": [
-  {
-   "id": 214950,
-   "name": "Total War: ROME II - Emperor Edition",
-   "price": 59.99
-  },
-  {
-   "id": 275850,
-   "name": "No Man's Sky",
-   "price": 59.99
-  },
-  {
-   "id": 292000,
-   "name": "No More Room in Hell 2",
-   "price": 29.99
-  },
-  {
-   "id": 364360,
-   "name": "Total War: WARHAMMER",
-   "price": 59.99
-  },
-  {
-   "id": 368260,
-   "name": "Marvel's Midnight Suns",
-   "price": 79.99
-  },
-  {
-   "id": 552520,
-   "name": "Far Cry 5",
-   "price": 59.99
-  }
- ],
- "2026-08-24": [
-  {
-   "id": 582160,
-   "name": "Assassin's Creed Origins",
-   "price": 59.99
-  },
-  {
-   "id": 594570,
-   "name": "Total War: WARHAMMER II",
-   "price": 59.99
-  },
-  {
-   "id": 699130,
-   "name": "World War Z",
-   "price": 29.99
-  },
-  {
-   "id": 728880,
-   "name": "Overcooked! 2",
-   "price": 24.99
-  },
-  {
-   "id": 779340,
-   "name": "Total War: THREE KINGDOMS",
-   "price": 39.99
-  },
-  {
-   "id": 933110,
-   "name": "Age of Empires III: Definitive Edition",
-   "price": 34.99
-  }
- ],
- "2026-08-25": [
-  {
-   "id": 962130,
-   "name": "Grounded",
-   "price": 39.99
-  },
-  {
-   "id": 1190000,
-   "name": "Car Mechanic Simulator 2021",
-   "price": 24.99
-  },
-  {
-   "id": 1222140,
-   "name": "Detroit: Become Human",
-   "price": 39.99
-  },
-  {
-   "id": 1363080,
-   "name": "Manor Lords",
-   "price": 39.99
-  },
-  {
-   "id": 1449690,
-   "name": "The Walking Dead: The Telltale Definitive Series",
-   "price": 49.99
-  },
-  {
-   "id": 1465360,
-   "name": "SnowRunner",
-   "price": 29.99
-  }
- ],
- "2026-08-26": [
-  {
-   "id": 1478500,
-   "name": "Big Walk",
-   "price": 19.99
-  },
-  {
-   "id": 1501750,
-   "name": "Lords of the Fallen",
-   "price": 29.99
-  },
-  {
-   "id": 1562430,
-   "name": "DREDGE",
-   "price": 24.99
-  },
-  {
-   "id": 1643320,
-   "name": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
-   "price": 59.99
-  },
-  {
-   "id": 1669000,
-   "name": "Age of Wonders 4",
-   "price": 49.99
-  },
-  {
-   "id": 1703340,
-   "name": "The Stanley Parable: Ultra Deluxe",
-   "price": 24.99
-  }
- ],
  "2026-08-27": [
   {
    "id": 1778820,
@@ -1884,6 +1660,230 @@
   {
    "id": 42700,
    "name": "Call of Duty: Black Ops",
+   "price": 39.99
+  }
+ ],
+ "2026-10-18": [
+  {
+   "id": 285900,
+   "name": "Gang Beasts",
+   "price": 19.99
+  },
+  {
+   "id": 322170,
+   "name": "Geometry Dash",
+   "price": 4.99
+  },
+  {
+   "id": 367520,
+   "name": "Hollow Knight",
+   "price": 14.99
+  },
+  {
+   "id": 457140,
+   "name": "Oxygen Not Included",
+   "price": 24.99
+  },
+  {
+   "id": 508440,
+   "name": "Totally Accurate Battle Simulator",
+   "price": 19.99
+  },
+  {
+   "id": 535930,
+   "name": "Two Point Hospital",
+   "price": 29.99
+  }
+ ],
+ "2026-10-19": [
+  {
+   "id": 655500,
+   "name": "MX Bikes",
+   "price": 34.99
+  },
+  {
+   "id": 690830,
+   "name": "Foundation",
+   "price": 34.99
+  },
+  {
+   "id": 880940,
+   "name": "Pummel Party",
+   "price": 14.99
+  },
+  {
+   "id": 1030300,
+   "name": "Hollow Knight: Silksong",
+   "price": 19.99
+  },
+  {
+   "id": 1144200,
+   "name": "Ready or Not",
+   "price": 49.99
+  },
+  {
+   "id": 1486920,
+   "name": "Tempest Rising",
+   "price": 54.99
+  }
+ ],
+ "2026-10-20": [
+  {
+   "id": 2138710,
+   "name": "Sifu",
+   "price": 39.99
+  },
+  {
+   "id": 2168680,
+   "name": "Nuclear Option",
+   "price": 19.99
+  },
+  {
+   "id": 2288340,
+   "name": "ACE COMBAT 8: WINGS OF THEVE",
+   "price": 69.99
+  },
+  {
+   "id": 2881650,
+   "name": "Content Warning",
+   "price": 7.99
+  },
+  {
+   "id": 3669870,
+   "name": "CONTROL Resonant",
+   "price": 59.99
+  },
+  {
+   "id": 3812600,
+   "name": "ReStory: Chill Electronics Repairs",
+   "price": 19.99
+  }
+ ],
+ "2026-10-21": [
+  {
+   "id": 4019220,
+   "name": "Dressmaker",
+   "price": 14.99
+  },
+  {
+   "id": 205100,
+   "name": "Dishonored",
+   "price": 9.99
+  },
+  {
+   "id": 214950,
+   "name": "Total War: ROME II - Emperor Edition",
+   "price": 59.99
+  },
+  {
+   "id": 218620,
+   "name": "PAYDAY 2",
+   "price": 9.99
+  },
+  {
+   "id": 236850,
+   "name": "Europa Universalis IV",
+   "price": 49.99
+  },
+  {
+   "id": 255710,
+   "name": "Cities: Skylines",
+   "price": 29.99
+  }
+ ],
+ "2026-10-22": [
+  {
+   "id": 275850,
+   "name": "No Man's Sky",
+   "price": 59.99
+  },
+  {
+   "id": 292000,
+   "name": "No More Room in Hell 2",
+   "price": 29.99
+  },
+  {
+   "id": 350080,
+   "name": "Wolfenstein: The Old Blood",
+   "price": 19.99
+  },
+  {
+   "id": 364360,
+   "name": "Total War: WARHAMMER",
+   "price": 59.99
+  },
+  {
+   "id": 368260,
+   "name": "Marvel's Midnight Suns",
+   "price": 59.99
+  },
+  {
+   "id": 379720,
+   "name": "DOOM",
+   "price": 19.99
+  }
+ ],
+ "2026-10-23": [
+  {
+   "id": 393380,
+   "name": "Squad",
+   "price": 39.99
+  },
+  {
+   "id": 427410,
+   "name": "Abiotic Factor",
+   "price": 34.99
+  },
+  {
+   "id": 480490,
+   "name": "Prey",
+   "price": 29.99
+  },
+  {
+   "id": 552520,
+   "name": "Far Cry 5",
+   "price": 59.99
+  },
+  {
+   "id": 582160,
+   "name": "Assassin's Creed Origins",
+   "price": 59.99
+  },
+  {
+   "id": 594570,
+   "name": "Total War: WARHAMMER II",
+   "price": 59.99
+  }
+ ],
+ "2026-10-24": [
+  {
+   "id": 602960,
+   "name": "Barotrauma",
+   "price": 34.99
+  },
+  {
+   "id": 648800,
+   "name": "Raft",
+   "price": 19.99
+  },
+  {
+   "id": 686810,
+   "name": "Hell Let Loose",
+   "price": 49.99
+  },
+  {
+   "id": 699130,
+   "name": "World War Z",
+   "price": 29.99
+  },
+  {
+   "id": 728880,
+   "name": "Overcooked! 2",
+   "price": 24.99
+  },
+  {
+   "id": 779340,
+   "name": "Total War: THREE KINGDOMS",
    "price": 39.99
   }
  ]
