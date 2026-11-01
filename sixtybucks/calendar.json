@@ -1,228 +1,4 @@
 {
- "2026-09-10": [
-  {
-   "id": 2634950,
-   "name": "Tokyo Xtreme Racer",
-   "price": 49.99
-  },
-  {
-   "id": 2680010,
-   "name": "The First Berserker: Khazan",
-   "price": 59.99
-  },
-  {
-   "id": 4001890,
-   "name": "How to Fish",
-   "price": 7.99
-  },
-  {
-   "id": 2406770,
-   "name": "Bodycam",
-   "price": 33.32
-  },
-  {
-   "id": 2416450,
-   "name": "MOUSE: P.I. For Hire",
-   "price": 29.99
-  },
-  {
-   "id": 2456740,
-   "name": "inZOI",
-   "price": 39.99
-  }
- ],
- "2026-09-11": [
-  {
-   "id": 2622380,
-   "name": "ELDEN RING NIGHTREIGN",
-   "price": 39.99
-  },
-  {
-   "id": 2651280,
-   "name": "Marvel's Spider-Man 2",
-   "price": 59.99
-  },
-  {
-   "id": 2661300,
-   "name": "Grounded 2",
-   "price": 29.99
-  },
-  {
-   "id": 2668510,
-   "name": "Red Dead Redemption",
-   "price": 49.99
-  },
-  {
-   "id": 2677660,
-   "name": "Indiana Jones and the Great Circle",
-   "price": 69.99
-  },
-  {
-   "id": 2806050,
-   "name": "Halo: Campaign Evolved",
-   "price": 49.99
-  }
- ],
- "2026-09-12": [
-  {
-   "id": 2807960,
-   "name": "Battlefield 6",
-   "price": 69.99
-  },
-  {
-   "id": 2868840,
-   "name": "Slay the Spire 2",
-   "price": 24.99
-  },
-  {
-   "id": 2909400,
-   "name": "FINAL FANTASY VII REBIRTH",
-   "price": 49.99
-  },
-  {
-   "id": 2958130,
-   "name": "Jurassic World Evolution 3",
-   "price": 59.99
-  },
-  {
-   "id": 2968420,
-   "name": "PowerWash Simulator 2",
-   "price": 24.99
-  },
-  {
-   "id": 3008130,
-   "name": "Dying Light: The Beast",
-   "price": 59.99
-  }
- ],
- "2026-09-13": [
-  {
-   "id": 8930,
-   "name": "Sid Meier's Civilization V",
-   "price": 29.99
-  },
-  {
-   "id": 10090,
-   "name": "Call of Duty: World at War",
-   "price": 19.99
-  },
-  {
-   "id": 10180,
-   "name": "Call of Duty: Modern Warfare 2 (2009)",
-   "price": 19.99
-  },
-  {
-   "id": 42680,
-   "name": "Call of Duty: Modern Warfare 3 (2011)",
-   "price": 39.99
-  },
-  {
-   "id": 204360,
-   "name": "Castle Crashers",
-   "price": 14.99
-  },
-  {
-   "id": 209160,
-   "name": "Call of Duty: Ghosts",
-   "price": 39.99
-  }
- ],
- "2026-09-14": [
-  {
-   "id": 209650,
-   "name": "Call of Duty: Advanced Warfare - Gold Edition",
-   "price": 39.99
-  },
-  {
-   "id": 264710,
-   "name": "Subnautica",
-   "price": 29.99
-  },
-  {
-   "id": 287700,
-   "name": "METAL GEAR SOLID V: THE PHANTOM PAIN",
-   "price": 29.99
-  },
-  {
-   "id": 292730,
-   "name": "Call of Duty: Infinite Warfare",
-   "price": 59.99
-  },
-  {
-   "id": 305620,
-   "name": "The Long Dark",
-   "price": 19.99
-  },
-  {
-   "id": 312520,
-   "name": "Rain World",
-   "price": 24.99
-  }
- ],
- "2026-09-15": [
-  {
-   "id": 322330,
-   "name": "Don't Starve Together",
-   "price": 14.99
-  },
-  {
-   "id": 361420,
-   "name": "ASTRONEER",
-   "price": 29.99
-  },
-  {
-   "id": 476600,
-   "name": "Call of Duty: WWII",
-   "price": 59.99
-  },
-  {
-   "id": 529340,
-   "name": "Victoria 3",
-   "price": 49.99
-  },
-  {
-   "id": 581320,
-   "name": "Insurgency: Sandstorm",
-   "price": 29.99
-  },
-  {
-   "id": 752590,
-   "name": "A Plague Tale: Innocence",
-   "price": 39.99
-  }
- ],
- "2026-09-16": [
-  {
-   "id": 780310,
-   "name": "The Riftbreaker",
-   "price": 29.99
-  },
-  {
-   "id": 1062090,
-   "name": "Timberborn",
-   "price": 34.99
-  },
-  {
-   "id": 1065310,
-   "name": "Evil West",
-   "price": 49.99
-  },
-  {
-   "id": 1114150,
-   "name": "CarX Street",
-   "price": 19.99
-  },
-  {
-   "id": 1129580,
-   "name": "Medieval Dynasty",
-   "price": 34.99
-  },
-  {
-   "id": 1182900,
-   "name": "A Plague Tale: Requiem",
-   "price": 49.99
-  }
- ],
  "2026-09-17": [
   {
    "id": 1272080,
@@ -1884,6 +1660,230 @@
   {
    "id": 1361210,
    "name": "Warhammer 40,000: Darktide",
+   "price": 39.99
+  }
+ ],
+ "2026-11-08": [
+  {
+   "id": 1262350,
+   "name": "SIGNALIS",
+   "price": 19.99
+  },
+  {
+   "id": 1302240,
+   "name": "Labyrinthine",
+   "price": 9.99
+  },
+  {
+   "id": 1324780,
+   "name": "Easy Red 2",
+   "price": 8.99
+  },
+  {
+   "id": 1929610,
+   "name": "Demonologist",
+   "price": 19.99
+  },
+  {
+   "id": 2527500,
+   "name": "MiSide",
+   "price": 14.99
+  },
+  {
+   "id": 2747330,
+   "name": "Species: Unknown",
+   "price": 9.99
+  }
+ ],
+ "2026-11-09": [
+  {
+   "id": 3450310,
+   "name": "Europa Universalis V",
+   "price": 59.99
+  },
+  {
+   "id": 4080220,
+   "name": "EA SPORTS FC 27",
+   "price": 69.99
+  },
+  {
+   "id": 4115450,
+   "name": "Phantom Blade Zero",
+   "price": 59.99
+  },
+  {
+   "id": 4358690,
+   "name": "Graveyard Keeper 2",
+   "price": 24.99
+  },
+  {
+   "id": 4435490,
+   "name": "Call of Duty: Modern Warfare 4",
+   "price": 69.99
+  },
+  {
+   "id": 8930,
+   "name": "Sid Meier's Civilization V",
+   "price": 29.99
+  }
+ ],
+ "2026-11-10": [
+  {
+   "id": 10090,
+   "name": "Call of Duty: World at War",
+   "price": 19.99
+  },
+  {
+   "id": 10180,
+   "name": "Call of Duty: Modern Warfare 2 (2009)",
+   "price": 19.99
+  },
+  {
+   "id": 42680,
+   "name": "Call of Duty: Modern Warfare 3 (2011)",
+   "price": 39.99
+  },
+  {
+   "id": 204360,
+   "name": "Castle Crashers",
+   "price": 14.99
+  },
+  {
+   "id": 209160,
+   "name": "Call of Duty: Ghosts",
+   "price": 39.99
+  },
+  {
+   "id": 209650,
+   "name": "Call of Duty: Advanced Warfare - Gold Edition",
+   "price": 39.99
+  }
+ ],
+ "2026-11-11": [
+  {
+   "id": 264710,
+   "name": "Subnautica",
+   "price": 29.99
+  },
+  {
+   "id": 287700,
+   "name": "METAL GEAR SOLID V: THE PHANTOM PAIN",
+   "price": 29.99
+  },
+  {
+   "id": 292730,
+   "name": "Call of Duty: Infinite Warfare",
+   "price": 59.99
+  },
+  {
+   "id": 305620,
+   "name": "The Long Dark",
+   "price": 19.99
+  },
+  {
+   "id": 312520,
+   "name": "Rain World",
+   "price": 24.99
+  },
+  {
+   "id": 322330,
+   "name": "Don't Starve Together",
+   "price": 14.99
+  }
+ ],
+ "2026-11-12": [
+  {
+   "id": 361420,
+   "name": "ASTRONEER",
+   "price": 29.99
+  },
+  {
+   "id": 476600,
+   "name": "Call of Duty: WWII",
+   "price": 59.99
+  },
+  {
+   "id": 529340,
+   "name": "Victoria 3",
+   "price": 49.99
+  },
+  {
+   "id": 581320,
+   "name": "Insurgency: Sandstorm",
+   "price": 29.99
+  },
+  {
+   "id": 752590,
+   "name": "A Plague Tale: Innocence",
+   "price": 39.99
+  },
+  {
+   "id": 780310,
+   "name": "The Riftbreaker",
+   "price": 29.99
+  }
+ ],
+ "2026-11-13": [
+  {
+   "id": 1062090,
+   "name": "Timberborn",
+   "price": 34.99
+  },
+  {
+   "id": 1065310,
+   "name": "Evil West",
+   "price": 49.99
+  },
+  {
+   "id": 1114150,
+   "name": "CarX Street",
+   "price": 19.99
+  },
+  {
+   "id": 1129580,
+   "name": "Medieval Dynasty",
+   "price": 34.99
+  },
+  {
+   "id": 1182900,
+   "name": "A Plague Tale: Requiem",
+   "price": 49.99
+  },
+  {
+   "id": 1363080,
+   "name": "Manor Lords",
+   "price": 39.99
+  }
+ ],
+ "2026-11-14": [
+  {
+   "id": 1364780,
+   "name": "Street Fighter 6",
+   "price": 39.99
+  },
+  {
+   "id": 1374490,
+   "name": "RuneScape: Dragonwilds",
+   "price": 29.99
+  },
+  {
+   "id": 1401590,
+   "name": "Disney Dreamlight Valley",
+   "price": 39.99
+  },
+  {
+   "id": 1426210,
+   "name": "It Takes Two",
+   "price": 39.99
+  },
+  {
+   "id": 1449690,
+   "name": "The Walking Dead: The Telltale Definitive Series",
+   "price": 49.99
+  },
+  {
+   "id": 1462040,
+   "name": "FINAL FANTASY VII REMAKE INTERGRADE",
    "price": 39.99
   }
  ]
