@@ -1,228 +1,4 @@
 {
- "2026-09-17": [
-  {
-   "id": 1272080,
-   "name": "PAYDAY 3",
-   "price": 29.99
-  },
-  {
-   "id": 1458140,
-   "name": "Pacific Drive",
-   "price": 29.99
-  },
-  {
-   "id": 1549970,
-   "name": "Aliens: Fireteam Elite",
-   "price": 29.99
-  },
-  {
-   "id": 1604270,
-   "name": "Broken Arrow",
-   "price": 49.99
-  },
-  {
-   "id": 1621690,
-   "name": "Core Keeper",
-   "price": 19.99
-  },
-  {
-   "id": 1657630,
-   "name": "Slime Rancher 2",
-   "price": 29.99
-  }
- ],
- "2026-09-18": [
-  {
-   "id": 1783560,
-   "name": "The Last Caretaker",
-   "price": 34.99
-  },
-  {
-   "id": 1985810,
-   "name": "Call of Duty: Black Ops Cold War",
-   "price": 59.99
-  },
-  {
-   "id": 2000950,
-   "name": "Call of Duty: Modern Warfare",
-   "price": 59.99
-  },
-  {
-   "id": 2005010,
-   "name": "Warhammer 40,000: Boltgun",
-   "price": 21.99
-  },
-  {
-   "id": 2075800,
-   "name": "STAR WARS Zero Company",
-   "price": 49.99
-  },
-  {
-   "id": 2104890,
-   "name": "RoadCraft",
-   "price": 39.99
-  }
- ],
- "2026-09-19": [
-  {
-   "id": 2162800,
-   "name": "shapez 2 - Factory",
-   "price": 29.99
-  },
-  {
-   "id": 2670630,
-   "name": "Supermarket Simulator",
-   "price": 19.99
-  },
-  {
-   "id": 2933130,
-   "name": "The Lord of the Rings: Return to Moria",
-   "price": 29.99
-  },
-  {
-   "id": 3059520,
-   "name": "F1 25",
-   "price": 49.99
-  },
-  {
-   "id": 3079210,
-   "name": "Hell Let Loose: Vietnam",
-   "price": 39.99
-  },
-  {
-   "id": 3105440,
-   "name": "Heroes of Might and Magic: Olden Era",
-   "price": 39.99
-  }
- ],
- "2026-09-20": [
-  {
-   "id": 49520,
-   "name": "Borderlands 2",
-   "price": 19.99
-  },
-  {
-   "id": 107410,
-   "name": "Arma 3",
-   "price": 29.99
-  },
-  {
-   "id": 212680,
-   "name": "FTL: Faster Than Light",
-   "price": 9.99
-  },
-  {
-   "id": 238090,
-   "name": "Sniper Elite 3",
-   "price": 29.99
-  },
-  {
-   "id": 312660,
-   "name": "Sniper Elite 4",
-   "price": 59.99
-  },
-  {
-   "id": 548430,
-   "name": "Deep Rock Galactic",
-   "price": 29.99
-  }
- ],
- "2026-09-21": [
-  {
-   "id": 582010,
-   "name": "Monster Hunter: World",
-   "price": 29.99
-  },
-  {
-   "id": 588650,
-   "name": "Dead Cells",
-   "price": 24.99
-  },
-  {
-   "id": 613100,
-   "name": "House Flipper",
-   "price": 24.99
-  },
-  {
-   "id": 805550,
-   "name": "Assetto Corsa Competizione",
-   "price": 39.99
-  },
-  {
-   "id": 883710,
-   "name": "Resident Evil 2",
-   "price": 39.99
-  },
-  {
-   "id": 952060,
-   "name": "Resident Evil 3",
-   "price": 39.99
-  }
- ],
- "2026-09-22": [
-  {
-   "id": 976310,
-   "name": "Mortal Kombat 11",
-   "price": 49.99
-  },
-  {
-   "id": 1029690,
-   "name": "Sniper Elite 5",
-   "price": 49.99
-  },
-  {
-   "id": 1196590,
-   "name": "Resident Evil Village",
-   "price": 39.99
-  },
-  {
-   "id": 1432860,
-   "name": "Sun Haven",
-   "price": 24.99
-  },
-  {
-   "id": 1446780,
-   "name": "MONSTER HUNTER RISE",
-   "price": 39.99
-  },
-  {
-   "id": 1527950,
-   "name": "Wartales",
-   "price": 34.99
-  }
- ],
- "2026-09-23": [
-  {
-   "id": 1588550,
-   "name": "Cairn",
-   "price": 29.99
-  },
-  {
-   "id": 1629520,
-   "name": "A Little to the Left",
-   "price": 14.99
-  },
-  {
-   "id": 1850570,
-   "name": "DEATH STRANDING DIRECTOR'S CUT",
-   "price": 39.99
-  },
-  {
-   "id": 1867240,
-   "name": "WARDOGS",
-   "price": 39.99
-  },
-  {
-   "id": 1971870,
-   "name": "Mortal Kombat 1",
-   "price": 49.99
-  },
-  {
-   "id": 2050650,
-   "name": "Resident Evil 4",
-   "price": 39.99
-  }
- ],
  "2026-09-24": [
   {
    "id": 2277560,
@@ -1885,6 +1661,230 @@
    "id": 1462040,
    "name": "FINAL FANTASY VII REMAKE INTERGRADE",
    "price": 39.99
+  }
+ ],
+ "2026-11-15": [
+  {
+   "id": 261640,
+   "name": "Borderlands: The Pre-Sequel",
+   "price": 39.99
+  },
+  {
+   "id": 553420,
+   "name": "TUNIC",
+   "price": 29.99
+  },
+  {
+   "id": 1092790,
+   "name": "Inscryption",
+   "price": 19.99
+  },
+  {
+   "id": 1372110,
+   "name": "JoJo's Bizarre Adventure: All-Star Battle R",
+   "price": 49.99
+  },
+  {
+   "id": 1601570,
+   "name": "The Alters",
+   "price": 34.99
+  },
+  {
+   "id": 1677280,
+   "name": "Company of Heroes 3",
+   "price": 59.99
+  }
+ ],
+ "2026-11-16": [
+  {
+   "id": 1942280,
+   "name": "Brotato",
+   "price": 4.99
+  },
+  {
+   "id": 4348910,
+   "name": "Probably Stolen - Cyberpunk Shopkeeper Sim",
+   "price": 19.99
+  },
+  {
+   "id": 49520,
+   "name": "Borderlands 2",
+   "price": 19.99
+  },
+  {
+   "id": 107410,
+   "name": "Arma 3",
+   "price": 29.99
+  },
+  {
+   "id": 212680,
+   "name": "FTL: Faster Than Light",
+   "price": 9.99
+  },
+  {
+   "id": 238090,
+   "name": "Sniper Elite 3",
+   "price": 29.99
+  }
+ ],
+ "2026-11-17": [
+  {
+   "id": 312660,
+   "name": "Sniper Elite 4",
+   "price": 59.99
+  },
+  {
+   "id": 548430,
+   "name": "Deep Rock Galactic",
+   "price": 29.99
+  },
+  {
+   "id": 582010,
+   "name": "Monster Hunter: World",
+   "price": 29.99
+  },
+  {
+   "id": 588650,
+   "name": "Dead Cells",
+   "price": 24.99
+  },
+  {
+   "id": 613100,
+   "name": "House Flipper",
+   "price": 24.99
+  },
+  {
+   "id": 805550,
+   "name": "Assetto Corsa Competizione",
+   "price": 39.99
+  }
+ ],
+ "2026-11-18": [
+  {
+   "id": 883710,
+   "name": "Resident Evil 2",
+   "price": 39.99
+  },
+  {
+   "id": 952060,
+   "name": "Resident Evil 3",
+   "price": 39.99
+  },
+  {
+   "id": 976310,
+   "name": "Mortal Kombat 11",
+   "price": 49.99
+  },
+  {
+   "id": 1029690,
+   "name": "Sniper Elite 5",
+   "price": 49.99
+  },
+  {
+   "id": 1196590,
+   "name": "Resident Evil Village",
+   "price": 39.99
+  },
+  {
+   "id": 1272080,
+   "name": "PAYDAY 3",
+   "price": 29.99
+  }
+ ],
+ "2026-11-19": [
+  {
+   "id": 1432860,
+   "name": "Sun Haven",
+   "price": 24.99
+  },
+  {
+   "id": 1446780,
+   "name": "MONSTER HUNTER RISE",
+   "price": 39.99
+  },
+  {
+   "id": 1458140,
+   "name": "Pacific Drive",
+   "price": 44.99
+  },
+  {
+   "id": 1465360,
+   "name": "SnowRunner",
+   "price": 29.99
+  },
+  {
+   "id": 1466860,
+   "name": "Age of Empires IV: Anniversary Edition",
+   "price": 39.99
+  },
+  {
+   "id": 1478500,
+   "name": "Big Walk",
+   "price": 19.99
+  }
+ ],
+ "2026-11-20": [
+  {
+   "id": 1501750,
+   "name": "Lords of the Fallen",
+   "price": 29.99
+  },
+  {
+   "id": 1527950,
+   "name": "Wartales",
+   "price": 34.99
+  },
+  {
+   "id": 1549970,
+   "name": "Aliens: Fireteam Elite",
+   "price": 29.99
+  },
+  {
+   "id": 1551360,
+   "name": "Forza Horizon 5",
+   "price": 59.99
+  },
+  {
+   "id": 1562430,
+   "name": "DREDGE",
+   "price": 26.99
+  },
+  {
+   "id": 1569580,
+   "name": "Blue Prince",
+   "price": 29.99
+  }
+ ],
+ "2026-11-21": [
+  {
+   "id": 1574580,
+   "name": "Strange Horticulture",
+   "price": 15.99
+  },
+  {
+   "id": 1588550,
+   "name": "Cairn",
+   "price": 29.99
+  },
+  {
+   "id": 1604270,
+   "name": "Broken Arrow",
+   "price": 49.99
+  },
+  {
+   "id": 1611600,
+   "name": "WARNO",
+   "price": 39.99
+  },
+  {
+   "id": 1617400,
+   "name": "The Bazaar",
+   "price": 19.99
+  },
+  {
+   "id": 1621690,
+   "name": "Core Keeper",
+   "price": 19.99
   }
  ]
 }
