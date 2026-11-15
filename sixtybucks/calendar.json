@@ -1,228 +1,4 @@
 {
- "2026-09-24": [
-  {
-   "id": 2277560,
-   "name": "WUCHANG: Fallen Feathers",
-   "price": 49.99
-  },
-  {
-   "id": 2840770,
-   "name": "Avatar: Frontiers of Pandora",
-   "price": 29.99
-  },
-  {
-   "id": 3280350,
-   "name": "DEATH STRANDING 2: ON THE BEACH",
-   "price": 69.99
-  },
-  {
-   "id": 3017860,
-   "name": "DOOM: The Dark Ages",
-   "price": 69.99
-  },
-  {
-   "id": 3041230,
-   "name": "Windrose",
-   "price": 29.99
-  },
-  {
-   "id": 3065800,
-   "name": "Marathon",
-   "price": 39.99
-  }
- ],
- "2026-09-25": [
-  {
-   "id": 3070070,
-   "name": "TCG Card Shop Simulator",
-   "price": 19.99
-  },
-  {
-   "id": 3124540,
-   "name": "Far Far West",
-   "price": 19.99
-  },
-  {
-   "id": 3164500,
-   "name": "Schedule I",
-   "price": 19.99
-  },
-  {
-   "id": 3241660,
-   "name": "R.E.P.O.",
-   "price": 9.99
-  },
-  {
-   "id": 3265700,
-   "name": "Vampire Crawlers: The Turbo Wildcard from Vampire Survivors",
-   "price": 9.99
-  },
-  {
-   "id": 3293260,
-   "name": "Waterpark Simulator",
-   "price": 12.99
-  }
- ],
- "2026-09-26": [
-  {
-   "id": 3321460,
-   "name": "Crimson Desert Enhanced",
-   "price": 69.99
-  },
-  {
-   "id": 3357650,
-   "name": "PRAGMATA",
-   "price": 59.99
-  },
-  {
-   "id": 3404260,
-   "name": "Dead as Disco",
-   "price": 24.99
-  },
-  {
-   "id": 3405340,
-   "name": "Megabonk",
-   "price": 9.99
-  },
-  {
-   "id": 3405690,
-   "name": "EA SPORTS FC 26",
-   "price": 69.99
-  },
-  {
-   "id": 3472040,
-   "name": "NBA 2K26",
-   "price": 69.99
-  }
- ],
- "2026-09-27": [
-  {
-   "id": 21690,
-   "name": "Resident Evil 5",
-   "price": 19.99
-  },
-  {
-   "id": 213670,
-   "name": "South Park: The Stick of Truth",
-   "price": 29.99
-  },
-  {
-   "id": 220240,
-   "name": "Far Cry 3",
-   "price": 19.99
-  },
-  {
-   "id": 239140,
-   "name": "Dying Light",
-   "price": 24.99
-  },
-  {
-   "id": 243470,
-   "name": "Watch_Dogs",
-   "price": 19.99
-  },
-  {
-   "id": 244850,
-   "name": "Space Engineers",
-   "price": 19.99
-  }
- ],
- "2026-09-28": [
-  {
-   "id": 289650,
-   "name": "Assassin's Creed Unity",
-   "price": 29.99
-  },
-  {
-   "id": 298110,
-   "name": "Far Cry 4",
-   "price": 29.99
-  },
-  {
-   "id": 359870,
-   "name": "FINAL FANTASY X/X-2 HD Remaster",
-   "price": 29.99
-  },
-  {
-   "id": 365590,
-   "name": "Tom Clancy’s The Division",
-   "price": 29.99
-  },
-  {
-   "id": 368500,
-   "name": "Assassin's Creed Syndicate",
-   "price": 29.99
-  },
-  {
-   "id": 371660,
-   "name": "Far Cry Primal",
-   "price": 29.99
-  }
- ],
- "2026-09-29": [
-  {
-   "id": 373420,
-   "name": "Divinity: Original Sin - Enhanced Edition",
-   "price": 39.99
-  },
-  {
-   "id": 447040,
-   "name": "Watch_Dogs 2",
-   "price": 49.99
-  },
-  {
-   "id": 460920,
-   "name": "Steep",
-   "price": 29.99
-  },
-  {
-   "id": 546560,
-   "name": "Half-Life: Alyx",
-   "price": 59.99
-  },
-  {
-   "id": 585420,
-   "name": "Trailmakers",
-   "price": 24.99
-  },
-  {
-   "id": 629730,
-   "name": "Blade and Sorcery",
-   "price": 29.99
-  }
- ],
- "2026-09-30": [
-  {
-   "id": 637650,
-   "name": "FINAL FANTASY XV WINDOWS EDITION",
-   "price": 34.99
-  },
-  {
-   "id": 911400,
-   "name": "Assassin's Creed III Remastered",
-   "price": 39.99
-  },
-  {
-   "id": 916440,
-   "name": "Anno 1800",
-   "price": 59.99
-  },
-  {
-   "id": 939960,
-   "name": "Far Cry New Dawn",
-   "price": 39.99
-  },
-  {
-   "id": 1244090,
-   "name": "Sea of Stars: Sunset Edition",
-   "price": 34.99
-  },
-  {
-   "id": 1260320,
-   "name": "Party Animals",
-   "price": 19.99
-  }
- ],
  "2026-10-01": [
   {
    "id": 1547000,
@@ -1885,6 +1661,230 @@
    "id": 1621690,
    "name": "Core Keeper",
    "price": 19.99
+  }
+ ],
+ "2026-11-22": [
+  {
+   "id": 469600,
+   "name": "Legion TD 2 - Multiplayer Tower Defense",
+   "price": 24.99
+  },
+  {
+   "id": 1029780,
+   "name": "Going Medieval",
+   "price": 29.99
+  },
+  {
+   "id": 1043810,
+   "name": "Tactical Breach Wizards",
+   "price": 19.99
+  },
+  {
+   "id": 1128920,
+   "name": "EVERSPACE 2",
+   "price": 49.99
+  },
+  {
+   "id": 1158160,
+   "name": "Coral Island",
+   "price": 29.99
+  },
+  {
+   "id": 1272320,
+   "name": "Diplomacy is Not an Option",
+   "price": 29.99
+  }
+ ],
+ "2026-11-23": [
+  {
+   "id": 1525700,
+   "name": "Tavern Master",
+   "price": 14.99
+  },
+  {
+   "id": 2239150,
+   "name": "Thronefall",
+   "price": 12.99
+  },
+  {
+   "id": 2605790,
+   "name": "Deep Rock Galactic: Rogue Core",
+   "price": 29.99
+  },
+  {
+   "id": 2784470,
+   "name": "9 Kings",
+   "price": 19.99
+  },
+  {
+   "id": 21690,
+   "name": "Resident Evil 5",
+   "price": 19.99
+  },
+  {
+   "id": 213670,
+   "name": "South Park: The Stick of Truth",
+   "price": 29.99
+  }
+ ],
+ "2026-11-24": [
+  {
+   "id": 220240,
+   "name": "Far Cry 3",
+   "price": 19.99
+  },
+  {
+   "id": 239140,
+   "name": "Dying Light",
+   "price": 24.99
+  },
+  {
+   "id": 243470,
+   "name": "Watch_Dogs",
+   "price": 19.99
+  },
+  {
+   "id": 244850,
+   "name": "Space Engineers",
+   "price": 19.99
+  },
+  {
+   "id": 289650,
+   "name": "Assassin's Creed Unity",
+   "price": 29.99
+  },
+  {
+   "id": 298110,
+   "name": "Far Cry 4",
+   "price": 29.99
+  }
+ ],
+ "2026-11-25": [
+  {
+   "id": 359870,
+   "name": "FINAL FANTASY X/X-2 HD Remaster",
+   "price": 29.99
+  },
+  {
+   "id": 365590,
+   "name": "Tom Clancy’s The Division",
+   "price": 29.99
+  },
+  {
+   "id": 368500,
+   "name": "Assassin's Creed Syndicate",
+   "price": 29.99
+  },
+  {
+   "id": 371660,
+   "name": "Far Cry Primal",
+   "price": 29.99
+  },
+  {
+   "id": 373420,
+   "name": "Divinity: Original Sin - Enhanced Edition",
+   "price": 39.99
+  },
+  {
+   "id": 447040,
+   "name": "Watch_Dogs 2",
+   "price": 49.99
+  }
+ ],
+ "2026-11-26": [
+  {
+   "id": 460920,
+   "name": "Steep",
+   "price": 29.99
+  },
+  {
+   "id": 546560,
+   "name": "Half-Life: Alyx",
+   "price": 59.99
+  },
+  {
+   "id": 585420,
+   "name": "Trailmakers",
+   "price": 24.99
+  },
+  {
+   "id": 629730,
+   "name": "Blade and Sorcery",
+   "price": 29.99
+  },
+  {
+   "id": 637650,
+   "name": "FINAL FANTASY XV WINDOWS EDITION",
+   "price": 34.99
+  },
+  {
+   "id": 911400,
+   "name": "Assassin's Creed III Remastered",
+   "price": 39.99
+  }
+ ],
+ "2026-11-27": [
+  {
+   "id": 916440,
+   "name": "Anno 1800",
+   "price": 59.99
+  },
+  {
+   "id": 939960,
+   "name": "Far Cry New Dawn",
+   "price": 39.99
+  },
+  {
+   "id": 1244090,
+   "name": "Sea of Stars: Sunset Edition",
+   "price": 34.99
+  },
+  {
+   "id": 1260320,
+   "name": "Party Animals",
+   "price": 19.99
+  },
+  {
+   "id": 1623730,
+   "name": "Palworld",
+   "price": 29.99
+  },
+  {
+   "id": 1627720,
+   "name": "Lies of P",
+   "price": 59.99
+  }
+ ],
+ "2026-11-28": [
+  {
+   "id": 1629520,
+   "name": "A Little to the Left",
+   "price": 14.99
+  },
+  {
+   "id": 1643320,
+   "name": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+   "price": 59.99
+  },
+  {
+   "id": 1657630,
+   "name": "Slime Rancher 2",
+   "price": 29.99
+  },
+  {
+   "id": 1659040,
+   "name": "HITMAN World of Assassination",
+   "price": 29.99
+  },
+  {
+   "id": 1669000,
+   "name": "Age of Wonders 4",
+   "price": 49.99
+  },
+  {
+   "id": 1671210,
+   "name": "DELTARUNE",
+   "price": 24.99
   }
  ]
 }
